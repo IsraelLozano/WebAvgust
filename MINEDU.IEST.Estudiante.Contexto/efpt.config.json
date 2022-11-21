@@ -1,0 +1,109 @@
+﻿{
+   "CodeGenerationMode": 2,
+   "ContextClassName": "dbContextAvgust",
+   "ContextNamespace": "IDCL.AVGUST.SIP.Contexto",
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": "IDCL.AVGUST.SIP.Entity.Avgust",
+   "OutputContextPath": "Data\\Avgust",
+   "OutputPath": "Data\\Avgust",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "IDCL.AVGUST.SIP.Contexto",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[Aplicacion]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Articulo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Caracteristicas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CientificoPlaga]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Clase]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Composicion]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Cultivo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Documentos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Formulador]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[GrupoQuimico]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[idTipoProducto]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Pais]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TipoDocumento]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TitularRegistro]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Toxicologica]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Usos]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Usuario]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UsuarioPais]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "SERVERINDUSOFT1\\SQL17.IndusoftWebAvgust",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

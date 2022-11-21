@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [Valeria]
+    WITH PASSWORD = N'%zrwf{osvkzb,1eJPgx<lp {msFT7_&#$!~<dm{jlouyo<pc', SID = 0xCD6F482D2353A443B54B7B64FC796F1E, DEFAULT_LANGUAGE = [Español], CHECK_POLICY = OFF;
+
