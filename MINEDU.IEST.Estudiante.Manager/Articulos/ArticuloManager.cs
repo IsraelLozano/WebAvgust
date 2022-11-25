@@ -79,26 +79,35 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
         public async Task<AddOrEditComposicionDto> CreateOrUpdateComposicion(AddOrEditComposicionDto model)
         {
 
-            var composicion = _mapper.Map<Composicion>(model);
-            if (model.IdArticulo == 0)
+            try
             {
-                var item = _articuloUnitOfWork._composicionRepository.GetAll(p => p.IdArticulo == model.IdArticulo).Max(p => p.Iditem) + 1;
-                composicion.Iditem = item;
-                _articuloUnitOfWork._composicionRepository.Insert(composicion);
+                var composicion = _mapper.Map<Composicion>(model);
+                if (model.Iditem == 0)
+                {
+                    var item = _articuloUnitOfWork._composicionRepository.GetAll(p => p.IdArticulo == model.IdArticulo);
+                    composicion.Iditem = item.Count() == 0 ? 1 : item.Max(p => p.Iditem) + 1;
+                    _articuloUnitOfWork._composicionRepository.Insert(composicion);
+                }
+                else
+                {
+                    _articuloUnitOfWork._composicionRepository.Update(composicion);
+                }
+
+                await _articuloUnitOfWork.SaveAsync();
+
+                model = _mapper.Map<AddOrEditComposicionDto>(composicion);
+                return model;
             }
-            else
+            catch (Exception ex)
             {
-                _articuloUnitOfWork._composicionRepository.Update(composicion);
+
+                throw ex;
             }
-
-            await _articuloUnitOfWork.SaveAsync();
-
-            model = _mapper.Map<AddOrEditComposicionDto>(composicion);
-            return model;
         }
 
         public async Task<List<GetComposicionDto>> GetListComposicionByIdArticulo(int idArticulo)
         {
+
             try
             {
                 var query = _articuloUnitOfWork._composicionRepository.GetAll(p => p.IdArticulo == idArticulo);
@@ -110,6 +119,25 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
             }
         }
 
+
+        public async Task<bool> DeleteComposicionByItem(int idArticulo, int item)
+        {
+
+            try
+            {
+                var data = _articuloUnitOfWork._composicionRepository.GetAll(p => p.IdArticulo == idArticulo && p.Iditem == item).FirstOrDefault();
+                _articuloUnitOfWork._composicionRepository.Delete(data);
+
+                await _articuloUnitOfWork.SaveAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         #endregion
 
         #region Caracteristicas
@@ -118,10 +146,10 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
         {
 
             var caracteristica = _mapper.Map<Caracteristica>(model);
-            if (model.IdArticulo == 0)
+            if (model.IdItem == 0)
             {
-                var item = _articuloUnitOfWork._caracteristicaRepository.GetAll(p => p.IdArticulo == model.IdArticulo).Max(p => p.IdItem) + 1;
-                caracteristica.IdItem = item;
+                var item = _articuloUnitOfWork._caracteristicaRepository.GetAll(p => p.IdArticulo == model.IdArticulo);
+                caracteristica.IdItem = item.Count() == 0 ? 1 : item.Max(p => p.IdItem) + 1;
                 _articuloUnitOfWork._caracteristicaRepository.Insert(caracteristica);
             }
             else
@@ -139,7 +167,7 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
         {
             try
             {
-                var query = _articuloUnitOfWork._caracteristicaRepository.GetAll(p => p.IdArticulo == idArticulo,includeProperties: "IdAplicacionNavigation,IdClaseNavigation,IdToxicologicaNavigation") ;
+                var query = _articuloUnitOfWork._caracteristicaRepository.GetAll(p => p.IdArticulo == idArticulo, includeProperties: "IdAplicacionNavigation,IdClaseNavigation,IdToxicologicaNavigation");
                 return _mapper.Map<List<GetCaracteristicaDto>>(query);
             }
             catch (Exception ex)
@@ -148,18 +176,36 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
             }
         }
 
+        public async Task<bool> DeleteCaracteristicaByItem(int idArticulo, int item)
+        {
+
+            try
+            {
+                var data = _articuloUnitOfWork._caracteristicaRepository.GetAll(p => p.IdArticulo == idArticulo && p.IdItem == item).FirstOrDefault();
+                _articuloUnitOfWork._caracteristicaRepository.Delete(data);
+
+                await _articuloUnitOfWork.SaveAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         #endregion
 
-        #region Caracteristicas
+        #region Documento
 
         public async Task<AddOrEditDocumentoDto> CreateOrUpdateDocumento(AddOrEditDocumentoDto model)
         {
 
             var documento = _mapper.Map<Documento>(model);
-            if (model.IdArticulo == 0)
+            if (model.IdItem == 0)
             {
-                var item = _articuloUnitOfWork._documentoRepository.GetAll(p => p.IdArticulo == model.IdArticulo).Max(p => p.IdItem) + 1;
-                documento.IdItem = item;
+                var item = _articuloUnitOfWork._documentoRepository.GetAll(p => p.IdArticulo == model.IdArticulo);
+                documento.IdItem = item.Count() == 0 ? 1 : item.Max(p => p.IdItem) + 1;
                 _articuloUnitOfWork._documentoRepository.Insert(documento);
             }
             else
@@ -173,19 +219,49 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
             return model;
         }
 
+        public async Task<List<GetDocumentoDto>> GetListDocumentoByIdArticulo(int idArticulo)
+        {
+            try
+            {
+                var query = _articuloUnitOfWork._documentoRepository.GetAll(p => p.IdArticulo == idArticulo, includeProperties: "IdTipoDocumentoNavigation");
+                return _mapper.Map<List<GetDocumentoDto>>(query);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<bool> DeleteDocumentoByItem(int idArticulo, int item)
+        {
+
+            try
+            {
+                var data = _articuloUnitOfWork._documentoRepository.GetAll(p => p.IdArticulo == idArticulo && p.IdItem == item).FirstOrDefault();
+                _articuloUnitOfWork._documentoRepository.Delete(data);
+
+                await _articuloUnitOfWork.SaveAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
-        #region Caracteristicas
+
+        #region Uso
 
         public async Task<AddOrEditUsoDto> CreateOrUpdateUso(AddOrEditUsoDto model)
         {
 
             var uso = _mapper.Map<Uso>(model);
-            if (model.IdArticulo == 0)
+            if (model.IdItem == 0)
             {
-                var item = _articuloUnitOfWork._usoRepository.GetAll(p => p.IdArticulo == model.IdArticulo).Max(p => p.IdItem) + 1;
-                uso.IdItem = item;
-
+                var item = _articuloUnitOfWork._usoRepository.GetAll(p => p.IdArticulo == model.IdArticulo);
+                uso.IdItem = item.Count() == 0 ? 1 : item.Max(p => p.IdItem) + 1;
                 _articuloUnitOfWork._usoRepository.Insert(uso);
             }
             else
@@ -198,6 +274,37 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
             model = _mapper.Map<AddOrEditUsoDto>(uso);
             return model;
         }
+
+        public async Task<List<GetUsoDto>> GetListUsoByIdArticulo(int idArticulo)
+        {
+            try
+            {
+                var query = _articuloUnitOfWork._usoRepository.GetAll(p => p.IdArticulo == idArticulo, includeProperties: "IdCultivoNavigation,IdNomCientificoPlagaNavigation");
+                return _mapper.Map<List<GetUsoDto>>(query);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<bool> DeleteUsoByItem(int idArticulo, int item)
+        {
+
+            try
+            {
+                var data = _articuloUnitOfWork._usoRepository.GetAll(p => p.IdArticulo == idArticulo && p.IdItem == item).FirstOrDefault();
+                _articuloUnitOfWork._usoRepository.Delete(data);
+
+                await _articuloUnitOfWork.SaveAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         #endregion
 

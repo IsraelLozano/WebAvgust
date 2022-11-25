@@ -4,6 +4,7 @@ using IDCL.AVGUST.SIP.ManagerDto.Articulos;
 using IDCL.AVGUST.SIP.ManagerDto.Articulos.Add;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad;
+using IDCL.AVGUST.SIP.ManagerDto.Seguridad.Add;
 
 namespace IDCL.AVGUST.SIP.Manager.MappingDto
 {
@@ -12,6 +13,9 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
         public AutoMapperHelper()
         {
             CreateMap<Usuario, GetUsuarioDto>().ReverseMap();
+            CreateMap<Usuario, AddOrEditUserDto>().ReverseMap();
+            CreateMap<UsuarioPai, AddOrEditUsuarioPaisDto>().ReverseMap();
+
             CreateMap<Pai, GetPaisDto>();
             CreateMap<Articulo, GetArticuloDto>();
 

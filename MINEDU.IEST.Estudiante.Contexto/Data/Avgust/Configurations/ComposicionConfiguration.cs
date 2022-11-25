@@ -20,7 +20,7 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
             entity.Property(e => e.IdArticulo).HasColumnName("idArticulo");
 
             entity.Property(e => e.Iditem)
-                .ValueGeneratedOnAdd()
+                //.ValueGeneratedOnAdd()
                 .HasColumnName("iditem");
 
             entity.Property(e => e.FormuladorMolecular)

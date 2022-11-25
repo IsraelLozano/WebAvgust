@@ -1,6 +1,7 @@
 ﻿using IDCL.AVGUST.SIP.Manager.Maestro;
 using IDCL.AVGUST.SIP.Manager.Seguridad;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad;
+using IDCL.AVGUST.SIP.ManagerDto.Seguridad.Add;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MINEDU.IEST.Estudiante.Inf_Utils.Constants;
@@ -50,9 +51,22 @@ namespace MINEDU.IEST.Estudiante.OAuth.Api.Controllers
             return Ok(resp);
         }
 
+        [HttpGet("users")]
+        public async Task<IActionResult> listUsers()
+        {
+            var resp = await _seguridadManager.GetListUsuarios();
+            return Ok(resp);
+        }
+
+        [HttpGet("user{id:int}")]
+        public async Task<IActionResult> getUserById(int id)
+        {
+            var resp = await _seguridadManager.GetUsuarioById(id);
+            return Ok(resp);
+        }
 
         [HttpPost("CreateOrUpdateUsuario")]
-        public async Task<IActionResult> AddUsuario(GetUsuarioDto model)
+        public async Task<IActionResult> AddUsuario(AddOrEditUserDto model)
         {
 
             return Ok(await _seguridadManager.CreateOrUpdateUsuario(model));

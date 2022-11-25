@@ -30,6 +30,7 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
                 .IsUnicode(false);
 
             entity.Property(e => e.Clave).HasMaxLength(256);
+            entity.Property(e => e.Email).HasMaxLength(150);
 
             entity.Property(e => e.Credencial).HasMaxLength(50);
 

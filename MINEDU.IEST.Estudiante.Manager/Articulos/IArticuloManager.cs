@@ -11,9 +11,15 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
         Task<AddOrEditComposicionDto> CreateOrUpdateComposicion(AddOrEditComposicionDto model);
         Task<AddOrEditDocumentoDto> CreateOrUpdateDocumento(AddOrEditDocumentoDto model);
         Task<AddOrEditUsoDto> CreateOrUpdateUso(AddOrEditUsoDto model);
+        Task<bool> DeleteCaracteristicaByItem(int idArticulo, int item);
+        Task<bool> DeleteComposicionByItem(int idArticulo, int item);
+        Task<bool> DeleteDocumentoByItem(int idArticulo, int item);
+        Task<bool> DeleteUsoByItem(int idArticulo, int item);
         Task<GetArticuloForEditDto> GetArticuloById(int id);
         Task<List<GetArticuloDto>> GetListArticulos();
         Task<List<GetCaracteristicaDto>> GetListCaracteristicaByIdArticulo(int idArticulo);
         Task<List<GetComposicionDto>> GetListComposicionByIdArticulo(int idArticulo);
+        Task<List<GetDocumentoDto>> GetListDocumentoByIdArticulo(int idArticulo);
+        Task<List<GetUsoDto>> GetListUsoByIdArticulo(int idArticulo);
     }
 }

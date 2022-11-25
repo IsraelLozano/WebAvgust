@@ -1,5 +1,6 @@
 using IDCL.AVGUST.SIP.Manager.MappingDto;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 using MINEDU.IEST.Estudiante.Inf_Apis.Extension;
@@ -76,9 +77,14 @@ builder.Services.AddHttpContextAccessor();
 //Inyectando CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(backEndConfig.NombrePoliticaCors, b =>
+    options.AddPolicy("AllowAllCORS", b =>
     {
-        b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        b.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+        //b.WithOrigins("http://localhost:4200").WithMethods("GET", "POST", "DELETE", "PUT").AllowAnyHeader();
+        //b.WithOrigins("http://localhost:4200").WithMethods("GET", "POST", "DELETE", "PUT");
+
     });
 });
 
@@ -140,6 +146,8 @@ builder.Services.AddSwaggerGen(opt =>
 
 // Configure the HTTP request pipeline.
 var app = builder.Build();
+
+
 app.UseStaticFiles(new StaticFileOptions()
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), $"{CurrentEnvironment.WebRootPath}/swagger-ui")),
@@ -162,13 +170,20 @@ else
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/ws-core/swagger/v1/swagger.json", "Web Api para Estudiantes v1"));
 }
+
+
 app.ConfigureCustomExceptionMiddleware();
 //app.UseSerilogRequestLogging();
-app.UseCors(backEndConfig.NombrePoliticaCors);
-
+app.UseRouting();
+app.UseCors("AllowAllCORS");
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.All
+});
+//app.UseCors();
 //app.UseAuthentication();
 //app.UseAuthorization();
-
+app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();

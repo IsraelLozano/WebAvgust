@@ -9,7 +9,7 @@ namespace IDCL.AVGUST.SIP.ManagerDto.Articulos.Add
     public class AddOrEditCaracteristicaDto
     {
         public int IdArticulo { get; set; }
-        public string IdItem { get; set; }
+        public int IdItem { get; set; }
         public int? IdAplicacion { get; set; }
         public int? IdClase { get; set; }
         public int? IdToxicologica { get; set; }
