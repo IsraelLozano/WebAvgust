@@ -26,6 +26,8 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
 
             services.AddScoped<IPaisRepository, PaisRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IUsuarioPaisRepository, UsuarioPaisRepository>();
+
             services.AddScoped<IArticuloRepository, ArticuloRepository>();
             services.AddScoped<ICaracteristicaRepository, CaracteristicaRepository>();
             services.AddScoped<IComposicionRepository, ComposicionRepository>();

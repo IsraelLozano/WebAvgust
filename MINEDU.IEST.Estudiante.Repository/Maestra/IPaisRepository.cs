@@ -3,7 +3,8 @@ using MINEDU.IEST.Estudiante.Repository.Base;
 
 namespace IDCL.AVGUST.SIP.Repository.Maestra
 {
-    public interface IPaisRepository: IGenericRepository<Pai>
+    public interface IPaisRepository : IGenericRepository<Pai>
     {
+        Task<List<Pai>> GetListUsuarioPaisByIdUsuario(int idUsuario);
     }
 }

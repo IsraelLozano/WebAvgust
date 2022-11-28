@@ -15,8 +15,12 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
             CreateMap<Usuario, GetUsuarioDto>().ReverseMap();
             CreateMap<Usuario, AddOrEditUserDto>().ReverseMap();
             CreateMap<UsuarioPai, AddOrEditUsuarioPaisDto>().ReverseMap();
+            CreateMap<UsuarioPai, GetOnlyUsuarioPaisDto>();
+            CreateMap<UsuarioPai, GetUsuarioPaisDto>();
 
             CreateMap<Pai, GetPaisDto>();
+            CreateMap<Pai, GetPaisUsuarioDto>();
+
             CreateMap<Articulo, GetArticuloDto>();
 
 
@@ -45,6 +49,11 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
             CreateMap<Composicion, AddOrEditComposicionDto>().ReverseMap();
             CreateMap<Documento, AddOrEditDocumentoDto>().ReverseMap();
             CreateMap<Uso, AddOrEditUsoDto>().ReverseMap();
+
+            #endregion
+
+            #region Usuario
+
 
             #endregion
         }

@@ -7,6 +7,6 @@ namespace IDCL.AVGUST.SIP.ManagerDto.Seguridad
         public int IdUsuario { get; set; }
         public int IdPais { get; set; }
         public bool? PorDefault { get; set; }
-        public GetPaisDto Pais { get; set; }
+        public GetPaisDto IdPaisNavigation { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using IDCL.AVGUST.SIP.ManagerDto.Seguridad;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad.Add;
 using IDCL.AVGUST.SIP.Repository.UnitOfWork;
 using MINEDU.IEST.Estudiante.Inf_Utils.Helpers;
+using MINEDU.IEST.Estudiante.Inf_Utils.Helpers.EmailSender;
 
 namespace IDCL.AVGUST.SIP.Manager.Seguridad
 {
@@ -13,12 +14,13 @@ namespace IDCL.AVGUST.SIP.Manager.Seguridad
         private readonly SeguridadUnitOfWork _seguridadUnitOfWork;
         private readonly IMapper _mapper;
         private readonly MaestraUnitOfWork _maestraUnitOfWork;
-
-        public SeguridadManager(SeguridadUnitOfWork seguridadUnitOfWork, IMapper mapper, MaestraUnitOfWork maestraUnitOfWork)
+        private readonly IEmailSender _emailSender;
+        public SeguridadManager(SeguridadUnitOfWork seguridadUnitOfWork, IMapper mapper, MaestraUnitOfWork maestraUnitOfWork, IEmailSender emailSender)
         {
             this._seguridadUnitOfWork = seguridadUnitOfWork;
             this._mapper = mapper;
             this._maestraUnitOfWork = maestraUnitOfWork;
+            _emailSender = emailSender;
         }
 
         public async Task<GetUsuarioDto> GetUsuarioAutenticar(string codigo, string clave, int idPais)
@@ -43,7 +45,7 @@ namespace IDCL.AVGUST.SIP.Manager.Seguridad
         {
             try
             {
-                var query = _seguridadUnitOfWork._usuarioRepositoy.GetAll(includeProperties: "UsuarioPais", orderBy: p => p.OrderByDescending(l => l.IdUsuario));
+                var query = _seguridadUnitOfWork._usuarioRepositoy.GetAll(includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation", orderBy: p => p.OrderByDescending(l => l.IdUsuario));
                 var response = _mapper.Map<List<GetUsuarioDto>>(query);
 
                 return response;
@@ -85,6 +87,19 @@ namespace IDCL.AVGUST.SIP.Manager.Seguridad
                     var pass = EncryptHelper.EncryptToByte(model.TextoClave);
                     user.Clave = pass;
                     _seguridadUnitOfWork._usuarioRepositoy.Insert(user);
+
+                    //Enviar correo...
+                    var message = new Message(new string[] { model.Email } //, query.persona_institucion.FirstOrDefault().CORREO
+                         , "Activacion de clave"
+                         , new string[]
+                         {
+                                model.Nombres,
+                                 model.Credencial,
+                                model.TextoClave
+                         }
+                         , null);
+
+                    await _emailSender.SendEmailRestauraClaveAsync(message);
                 }
                 else
                 {
@@ -123,6 +138,51 @@ namespace IDCL.AVGUST.SIP.Manager.Seguridad
 
 
 
+
+
+        #endregion
+
+
+        #region Usuario - Pais
+        public async Task<List<GetPaisUsuarioDto>> GetListUsuarioPaisByIdUsuario(int idUsuario)
+        {
+            //var query = _seguridadUnitOfWork._usuarioPaisRepository.GetAll(p => p.IdUsuario == idUsuario);
+            var query = await _maestraUnitOfWork._paisRepository.GetListUsuarioPaisByIdUsuario(idUsuario);
+            var response = _mapper.Map<List<GetPaisUsuarioDto>>(query);
+            response.ForEach(p =>
+            {
+                p.tieneUsuario = p.UsuarioPais.Count() > 0;
+            });
+            return response;
+        }
+
+        public async Task<bool> CreateOrUpdateUsuarioPais(List<AddOrEditUsuarioPaisDto> model)
+        {
+            try
+            {
+                var baseLine = _seguridadUnitOfWork._usuarioPaisRepository.GetAll(p => p.IdUsuario == model.FirstOrDefault().IdUsuario);
+
+                var lista = _mapper.Map<List<UsuarioPai>>(model);
+
+                foreach (var item in baseLine)
+                {
+                    _seguridadUnitOfWork._usuarioPaisRepository.Delete(item);
+                }
+                await _seguridadUnitOfWork.SaveAsync();
+
+                foreach (var item in lista)
+                {
+                    _seguridadUnitOfWork._usuarioPaisRepository.Insert(item);
+                }
+                await _seguridadUnitOfWork.SaveAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         #endregion
     }

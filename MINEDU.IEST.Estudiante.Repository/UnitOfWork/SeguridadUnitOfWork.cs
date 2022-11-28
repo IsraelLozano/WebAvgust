@@ -8,12 +8,14 @@ namespace IDCL.AVGUST.SIP.Repository.UnitOfWork
     {
         private bool disposedValue;
         public IUsuarioRepository _usuarioRepositoy { get; }
+        public IUsuarioPaisRepository _usuarioPaisRepository { get; }
         private dbContextAvgust _context;
 
-        public SeguridadUnitOfWork(IUsuarioRepository usuarioRepositoy, dbContextAvgust context)
+        public SeguridadUnitOfWork(IUsuarioRepository usuarioRepositoy, dbContextAvgust context, IUsuarioPaisRepository usuarioPaisRepository)
         {
             _usuarioRepositoy = usuarioRepositoy;
             _context = context;
+            _usuarioPaisRepository = usuarioPaisRepository;
         }
         public void Save()
         {

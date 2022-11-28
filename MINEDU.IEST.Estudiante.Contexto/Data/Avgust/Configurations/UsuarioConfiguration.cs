@@ -17,9 +17,7 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
 
             entity.ToTable("Usuario");
 
-            entity.Property(e => e.IdUsuario)
-                .ValueGeneratedNever()
-                .HasColumnName("idUsuario");
+            entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
 
             entity.Property(e => e.ApellidoMaterno)
                 .HasMaxLength(50)

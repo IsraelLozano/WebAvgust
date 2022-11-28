@@ -1,11 +1,8 @@
 ﻿using IDCL.AVGUST.SIP.Manager.Maestro;
 using IDCL.AVGUST.SIP.Manager.Seguridad;
-using IDCL.AVGUST.SIP.ManagerDto.Seguridad;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad.Add;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MINEDU.IEST.Estudiante.Inf_Utils.Constants;
-using MINEDU.IEST.Estudiante.Inf_Utils.Helpers;
 
 namespace MINEDU.IEST.Estudiante.OAuth.Api.Controllers
 {
@@ -58,7 +55,7 @@ namespace MINEDU.IEST.Estudiante.OAuth.Api.Controllers
             return Ok(resp);
         }
 
-        [HttpGet("user{id:int}")]
+        [HttpGet("user/{id:int}")]
         public async Task<IActionResult> getUserById(int id)
         {
             var resp = await _seguridadManager.GetUsuarioById(id);
@@ -73,6 +70,23 @@ namespace MINEDU.IEST.Estudiante.OAuth.Api.Controllers
         }
 
 
+
+        #region Usuario - Pais
+        [HttpGet("usuarioPais/{id:int}")]
+        public async Task<IActionResult> GetUsuarioPaisByIdUsuario(int id)
+        {
+            var resp = await _seguridadManager.GetListUsuarioPaisByIdUsuario(id);
+            return Ok(resp);
+        }
+
+        [HttpPost("CreateOrUpdateUsuarioPais")]
+        public async Task<IActionResult> AddUsuario(List<AddOrEditUsuarioPaisDto> model)
+        {
+
+            return Ok(await _seguridadManager.CreateOrUpdateUsuarioPais(model));
+        }
+
+        #endregion
 
 
     }
