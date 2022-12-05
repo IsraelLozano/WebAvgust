@@ -4,5 +4,6 @@
     {
         public int IdNomCientificoPlaga { get; set; }
         public string NombreCientificoPlaga { get; set; }
+        public bool estado { get; set; }
     }
 }

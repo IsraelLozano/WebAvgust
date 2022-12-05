@@ -8,6 +8,7 @@ namespace IDCL.AVGUST.SIP.Manager.Seguridad
     {
         Task<AddOrEditUserDto> CreateOrUpdateUsuario(AddOrEditUserDto model);
         Task<bool> CreateOrUpdateUsuarioPais(List<AddOrEditUsuarioPaisDto> model);
+        Task<GetUsuarioDto> GetForgotPassword(string email, string codigo);
         Task<List<GetPaisUsuarioDto>> GetListUsuarioPaisByIdUsuario(int idUsuario);
         Task<List<GetUsuarioDto>> GetListUsuarios();
         Task<GetUsuarioDto> GetUsuarioAutenticar(string codigo, string clave, int idPais);

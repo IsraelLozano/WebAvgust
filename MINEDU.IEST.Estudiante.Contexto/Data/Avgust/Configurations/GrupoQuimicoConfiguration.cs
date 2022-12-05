@@ -18,7 +18,6 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
             entity.ToTable("GrupoQuimico");
 
             entity.Property(e => e.IdGrupoQuimico)
-                .ValueGeneratedNever()
                 .HasColumnName("idGrupoQuimico");
 
             entity.Property(e => e.NomGrupoQuimico)

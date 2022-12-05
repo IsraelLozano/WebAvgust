@@ -10,5 +10,6 @@ namespace IDCL.AVGUST.SIP.ManagerDto.Maestros
     {
         public int IdToxicologica { get; set; }
         public string Descripcion { get; set; }
+        public bool estado { get; set; }
     }
 }

@@ -22,10 +22,10 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
             this._articuloManager = articuloManager;
         }
 
-        [HttpGet("GetListArticulo")]
-        public async Task<IActionResult> GetArticulos()
+        [HttpGet("GetListArticulo/{IdUsuario:int}")]
+        public async Task<IActionResult> GetArticulos(int IdUsuario)
         {
-            return Ok(await _articuloManager.GetListArticulos());
+            return Ok(await _articuloManager.GetListArticulos(IdUsuario));
         }
 
         [HttpGet("{id:int}")]
@@ -145,6 +145,12 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         public async Task<IActionResult> GetDocumentoByIdArticulo(int id)
         {
             return Ok(await _articuloManager.GetListDocumentoByIdArticulo(id));
+        }
+
+        [HttpGet("{idArticulo:int}/viewPdf/{idItem:int}")]
+        public async Task<IActionResult> ViewPdf(int idArticulo, int idItem)
+        {
+            return Ok(await _articuloManager.GetArticuloDocumentoPdf(idArticulo, idItem));
         }
 
         #endregion

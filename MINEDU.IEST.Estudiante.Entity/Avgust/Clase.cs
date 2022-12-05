@@ -11,7 +11,7 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust
 
         public int IdClase { get; set; }
         public string Descripcion { get; set; }
-
+        public bool estado { get; set; }
         public List<Caracteristica> Caracteristicas { get; set; }
     }
 }

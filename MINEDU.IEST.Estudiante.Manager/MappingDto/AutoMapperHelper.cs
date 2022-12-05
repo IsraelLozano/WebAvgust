@@ -18,23 +18,23 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
             CreateMap<UsuarioPai, GetOnlyUsuarioPaisDto>();
             CreateMap<UsuarioPai, GetUsuarioPaisDto>();
 
-            CreateMap<Pai, GetPaisDto>();
+            CreateMap<Pai, GetPaisDto>().ReverseMap();
             CreateMap<Pai, GetPaisUsuarioDto>();
 
             CreateMap<Articulo, GetArticuloDto>();
 
 
 
-            CreateMap<Formulador, GetFormuladorDto>();
-            CreateMap<IdTipoProducto, GetIdTipoProductoDto>();
-            CreateMap<TitularRegistro, GetTitularRegistroDto>();
-            CreateMap<TipoDocumento, GetTipoDocumentoDto>();
-            CreateMap<CientificoPlaga, GetCientificoPlagaDto>();
-            CreateMap<Cultivo, GetCultivoDto>();
-            CreateMap<Aplicacion, GetAplicacionDto>();
-            CreateMap<Clase, GetClaseDto>();
-            CreateMap<Toxicologica, GetToxicologicaDto>();
-            CreateMap<GrupoQuimico, GetGrupoQuimicoDto>();
+            CreateMap<Formulador, GetFormuladorDto>().ReverseMap();
+            CreateMap<IdTipoProducto, GetIdTipoProductoDto>().ReverseMap();
+            CreateMap<TitularRegistro, GetTitularRegistroDto>().ReverseMap();
+            CreateMap<TipoDocumento, GetTipoDocumentoDto>().ReverseMap();
+            CreateMap<CientificoPlaga, GetCientificoPlagaDto>().ReverseMap();
+            CreateMap<Cultivo, GetCultivoDto>().ReverseMap().ReverseMap();
+            CreateMap<Aplicacion, GetAplicacionDto>().ReverseMap();
+            CreateMap<Clase, GetClaseDto>().ReverseMap();
+            CreateMap<Toxicologica, GetToxicologicaDto>().ReverseMap();
+            CreateMap<GrupoQuimico, GetGrupoQuimicoDto>().ReverseMap();
 
 
             CreateMap<Composicion, GetComposicionDto>();

@@ -4,5 +4,6 @@
     {
         public int IdCultivo { get; set; }
         public string NombreCultivo { get; set; }
+        public bool estado { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust
 
         public int IdFormulador { get; set; }
         public string NomFormulador { get; set; }
-
+        public bool estado { get; set; }
         public List<Articulo> Articulos { get; set; }
     }
 }

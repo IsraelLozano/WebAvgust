@@ -11,7 +11,7 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust
 
         public int IdNomCientificoPlaga { get; set; }
         public string NombreCientificoPlaga { get; set; }
-
+        public bool estado { get; set; }
         public  List<Uso> Usos { get; set; }
     }
 }

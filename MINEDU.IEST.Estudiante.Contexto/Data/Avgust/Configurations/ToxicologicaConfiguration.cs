@@ -18,7 +18,6 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
             entity.ToTable("Toxicologica");
 
             entity.Property(e => e.IdToxicologica)
-                .ValueGeneratedNever()
                 .HasColumnName("idToxicologica");
 
             entity.Property(e => e.Descripcion)

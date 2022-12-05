@@ -4,6 +4,8 @@ using IDCL.AVGUST.SIP.ManagerDto.Articulos;
 using IDCL.AVGUST.SIP.ManagerDto.Articulos.Add;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros;
 using IDCL.AVGUST.SIP.Repository.UnitOfWork;
+using MINEDU.IEST.Estudiante.Inf_Utils.Dtos;
+using MINEDU.IEST.Estudiante.Inf_Utils.Helpers.FileManager;
 
 namespace IDCL.AVGUST.SIP.Manager.Articulos
 {
@@ -12,17 +14,26 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
         private readonly IMapper _mapper;
         private readonly ArticuloUnitOfWork _articuloUnitOfWork;
         private readonly MaestraUnitOfWork _maestraUnitOfWork;
-
-        public ArticuloManager(IMapper mapper, ArticuloUnitOfWork _articuloUnitOfWork, MaestraUnitOfWork maestraUnitOfWork)
+        private readonly ResourceDto _resourceDto;
+        private readonly IStorageManager _storageManager;
+        private readonly SeguridadUnitOfWork _seguridadUnitOfWork;
+        public ArticuloManager(IMapper mapper, ArticuloUnitOfWork _articuloUnitOfWork, MaestraUnitOfWork maestraUnitOfWork, ResourceDto resourceDto, IStorageManager storageManager, SeguridadUnitOfWork seguridadUnitOfWork)
         {
             this._mapper = mapper;
             this._articuloUnitOfWork = _articuloUnitOfWork;
             this._maestraUnitOfWork = maestraUnitOfWork;
+            this._resourceDto = resourceDto;
+            _storageManager = storageManager;
+            _seguridadUnitOfWork = seguridadUnitOfWork;
         }
 
-        public async Task<List<GetArticuloDto>> GetListArticulos()
+        public async Task<List<GetArticuloDto>> GetListArticulos(int IdUsuario)
         {
-            var query = _articuloUnitOfWork._articuloRepository.GetAll(includeProperties: "IdFormuladorNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation", orderBy: p => p.OrderByDescending(l => l.IdArticulo));
+            var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == IdUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
+            var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
+
+
+            var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value), includeProperties: "IdFormuladorNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation", orderBy: p => p.OrderByDescending(l => l.IdArticulo));
             var response = _mapper.Map<List<GetArticuloDto>>(query);
             return response;
         }
@@ -73,6 +84,22 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
             model = _mapper.Map<AddOrEditArticuloDto>(articulo);
             return model;
         }
+
+        #region Visualizados PDF
+        public async Task<GetPdfDto> GetArticuloDocumentoPdf(int idArticulo, int idItem)
+        {
+            var doc = _articuloUnitOfWork._documentoRepository.GetAll(p => p.IdArticulo == idArticulo && p.IdItem == idItem).FirstOrDefault();
+            var ruta = Path.Combine(_resourceDto.Documents, doc.NomDocumento);
+            MemoryStream _output = new MemoryStream(System.IO.File.ReadAllBytes(ruta));
+            var pdf64 = _storageManager.GetBase64(_output);
+            GetPdfDto data = new GetPdfDto
+            {
+                base64 = pdf64
+            };
+            return data;
+        }
+
+        #endregion
 
         #region Composicion
 
@@ -250,7 +277,6 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
         }
 
         #endregion
-
 
         #region Uso
 

@@ -11,6 +11,7 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust
 
         public int IdPais { get; set; }
         public string NomPais { get; set; }
+        public bool estado { get; set; }
 
         public List<Articulo> Articulos { get; set; }
         public List<UsuarioPai> UsuarioPais { get; set; }

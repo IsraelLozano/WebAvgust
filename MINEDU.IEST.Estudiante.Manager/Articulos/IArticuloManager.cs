@@ -1,6 +1,7 @@
 ﻿using IDCL.AVGUST.SIP.ManagerDto.Articulos;
 using IDCL.AVGUST.SIP.ManagerDto.Articulos.Add;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros;
+using MINEDU.IEST.Estudiante.Inf_Utils.Dtos;
 
 namespace IDCL.AVGUST.SIP.Manager.Articulos
 {
@@ -16,7 +17,8 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
         Task<bool> DeleteDocumentoByItem(int idArticulo, int item);
         Task<bool> DeleteUsoByItem(int idArticulo, int item);
         Task<GetArticuloForEditDto> GetArticuloById(int id);
-        Task<List<GetArticuloDto>> GetListArticulos();
+        Task<GetPdfDto> GetArticuloDocumentoPdf(int idArticulo, int idItem);
+        Task<List<GetArticuloDto>> GetListArticulos(int IdUsuario);
         Task<List<GetCaracteristicaDto>> GetListCaracteristicaByIdArticulo(int idArticulo);
         Task<List<GetComposicionDto>> GetListComposicionByIdArticulo(int idArticulo);
         Task<List<GetDocumentoDto>> GetListDocumentoByIdArticulo(int idArticulo);

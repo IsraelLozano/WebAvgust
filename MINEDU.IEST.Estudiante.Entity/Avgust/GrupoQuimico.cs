@@ -10,7 +10,7 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust
         
         public int IdGrupoQuimico { get; set; }
         public string NomGrupoQuimico { get; set; }
-
+        public bool estado { get; set; }
         public  List<Articulo> Articulos { get; set; }
     }
 }

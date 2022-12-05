@@ -28,8 +28,13 @@ namespace IDCL.AVGUST.SIP.Manager.Seguridad
             try
             {
                 var pass = EncryptHelper.EncryptToByte(clave);
-                var query = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.Credencial == codigo && p.Clave == pass, includeProperties: "UsuarioPais").FirstOrDefault();
+                var query = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.Credencial == codigo && p.Clave == pass, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
+
+                if (query == null)
+                    return new GetUsuarioDto();
+
                 var response = _mapper.Map<GetUsuarioDto>(query);
+
 
                 return response;
             }
@@ -118,6 +123,42 @@ namespace IDCL.AVGUST.SIP.Manager.Seguridad
             }
             catch (Exception ex)
             {
+                throw ex;
+            }
+        }
+
+        public async Task<GetUsuarioDto> GetForgotPassword(string email, string codigo)
+        {
+            try
+            {
+                var response = new GetUsuarioDto();
+                var query = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.Credencial.ToUpper() == codigo.ToUpper() && p.Email.ToUpper() == email.ToUpper()).FirstOrDefault();
+
+                if (query != null)
+                {
+                    response = _mapper.Map<GetUsuarioDto>(query);
+
+                    var clave = Guid.NewGuid().ToString().Substring(0, 8);
+                    await _seguridadUnitOfWork._usuarioRepositoy.UpdatePassword(query.Credencial, clave);
+
+                    var message = new Message(new string[] { query.Email } //, query.persona_institucion.FirstOrDefault().CORREO
+                  , "Restauración de clave"
+                  , new string[]
+                  {
+                        response.Nombres,
+                         codigo,
+                        clave
+                  }
+                  , null);
+
+                    await _emailSender.SendEmailRestauraClaveAsync(message);
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+
                 throw ex;
             }
         }

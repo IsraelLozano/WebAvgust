@@ -10,5 +10,6 @@ namespace IDCL.AVGUST.SIP.ManagerDto.Maestros
     {
         public int IdTitularRegistro { get; set; }
         public string NomTitularRegistro { get; set; }
+        public bool estado { get; set; }
     }
 }

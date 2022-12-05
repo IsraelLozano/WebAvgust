@@ -1,8 +1,10 @@
 ﻿using IDCL.AVGUST.SIP.Manager.Maestro;
 using IDCL.AVGUST.SIP.Manager.Seguridad;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad.Add;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MINEDU.IEST.Estudiante.Inf_Utils.Constants;
+using MINEDU.IEST.Estudiante.Inf_Utils.Helpers;
 
 namespace MINEDU.IEST.Estudiante.OAuth.Api.Controllers
 {
@@ -41,10 +43,15 @@ namespace MINEDU.IEST.Estudiante.OAuth.Api.Controllers
             return Ok(query);
         }
 
-        [HttpGet("oauth-login")]
+        [HttpGet("oauth-login/{codigo}/{clave}/{idPais}")]
         public async Task<IActionResult> oauthLogin(string codigo, string clave, int idPais)
         {
             var resp = await _seguridadManager.GetUsuarioAutenticar(codigo, clave, idPais);
+            if (resp.IdUsuario==0)
+            {
+                ModelState.AddModelError("Usuario", "Usuario no valido.");
+                return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+            }
             return Ok(resp);
         }
 
@@ -69,7 +76,21 @@ namespace MINEDU.IEST.Estudiante.OAuth.Api.Controllers
             return Ok(await _seguridadManager.CreateOrUpdateUsuario(model));
         }
 
+        [AllowAnonymous]
+        [HttpGet("{email}/{codigo}")]
+        public async Task<IActionResult> GetForgotPassword(string email, string codigo)
+        {
+            var query = await _seguridadManager.GetForgotPassword(email, codigo);
 
+            if (query.IdUsuario == 0)
+            {
+                ModelState.AddModelError("idPersona", "No se encuentró usuario.");
+                return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+
+            }
+
+            return Ok(query);
+        }
 
         #region Usuario - Pais
         [HttpGet("usuarioPais/{id:int}")]

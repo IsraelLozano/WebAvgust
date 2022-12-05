@@ -16,7 +16,6 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
             entity.HasKey(e => e.IdPais);
 
             entity.Property(e => e.IdPais)
-                .ValueGeneratedNever()
                 .HasColumnName("idPais");
 
             entity.Property(e => e.NomPais)

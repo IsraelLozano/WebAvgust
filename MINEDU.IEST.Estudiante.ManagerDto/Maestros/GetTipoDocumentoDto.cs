@@ -10,5 +10,7 @@ namespace IDCL.AVGUST.SIP.ManagerDto.Maestros
     {
         public int IdTipoDocumento { get; set; }
         public string Nombre { get; set; }
+        public bool estado { get; set; }
+
     }
 }

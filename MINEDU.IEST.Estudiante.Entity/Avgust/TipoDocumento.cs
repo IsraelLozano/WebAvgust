@@ -11,6 +11,7 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust
 
         public int IdTipoDocumento { get; set; }
         public string Nombre { get; set; }
+        public bool estado { get; set; }
 
         public List<Documento> Documentos { get; set; }
     }

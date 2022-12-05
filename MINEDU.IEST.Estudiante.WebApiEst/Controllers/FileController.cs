@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using IDCL.AVGUST.SIP.Manager.Articulos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using MINEDU.IEST.Estudiante.Inf_Utils.Dtos;
 using MINEDU.IEST.Estudiante.Inf_Utils.Helpers.FileManager;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System.Drawing;
 using System.Net.Http.Headers;
 
 namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
@@ -13,11 +16,12 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
     {
         private readonly ResourceDto _resourceDto;
         private readonly IStorageManager _storageManager;
-
-        public FileController(ResourceDto resourceDto, IStorageManager storageManager)
+        private readonly IArticuloManager _articuloManager;
+        public FileController(ResourceDto resourceDto, IStorageManager storageManager, IArticuloManager articuloManager)
         {
             this._resourceDto = resourceDto;
             this._storageManager = storageManager;
+            _articuloManager = articuloManager;
         }
 
         [HttpPost, DisableRequestSizeLimit]
@@ -90,6 +94,73 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
+
+        [HttpGet, DisableRequestSizeLimit]
+        [Route("GetExporToExcelArticulos/{IdUsuario:int}")]
+        public async Task<IActionResult> GetExporToExcelArticulos(int IdUsuario)
+        {
+
+            var articulos = await _articuloManager.GetListArticulos(IdUsuario);
+            var stream = new MemoryStream();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (var xlPackage = new ExcelPackage(stream))
+            {
+
+                var worksheet = xlPackage.Workbook.Worksheets.Add("Users");
+                var namedStyle = xlPackage.Workbook.Styles.CreateNamedStyle("HyperLink");
+                namedStyle.Style.Font.UnderLine = true;
+                namedStyle.Style.Font.Color.SetColor(Color.Blue);
+                const int startRow = 5;
+                var row = startRow;
+
+                //Create Headers and format them
+                worksheet.Cells["A1"].Value = "Lista de Articulos";
+                using (var r = worksheet.Cells["A1:G1"])
+                {
+                    r.Merge = true;
+                    r.Style.Font.Color.SetColor(Color.White);
+                    r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
+                    r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
+                }
+
+                worksheet.Cells["A4"].Value = "Id";
+                worksheet.Cells["B4"].Value = "Nombre";
+                worksheet.Cells["C4"].Value = "NroRegistro";
+                worksheet.Cells["D4"].Value = "Pais";
+                worksheet.Cells["E4"].Value = "TipoProducto";
+                worksheet.Cells["F4"].Value = "Titular Registro";
+                worksheet.Cells["G4"].Value = "Estado";
+                worksheet.Cells["A4:G4"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A4:G4"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(184, 204, 228));
+                worksheet.Cells["A4:G4"].Style.Font.Bold = true;
+
+                row = 5;
+                foreach (var user in articulos)
+                {
+                    worksheet.Cells[row, 1].Value = user.IdArticulo;
+                    worksheet.Cells[row, 2].Value = user.NombreComercial;
+                    worksheet.Cells[row, 3].Value = user.IdPaisNavigation.NomPais;
+                    worksheet.Cells[row, 4].Value = user.NroRegistro;
+                    worksheet.Cells[row, 5].Value = user.IdTipoProductoNavigation.NomTipoProducto;
+                    worksheet.Cells[row, 6].Value = user.IdTitularRegistroNavigation.NomTitularRegistro;
+                    worksheet.Cells[row, 7].Value = "ACTIVO";
+
+                    row++;
+                }
+
+                // set some core property values
+                xlPackage.Workbook.Properties.Title = "Lista de articulos";
+                xlPackage.Workbook.Properties.Author = "Israel Lozano del Castillo danielitolozano85@gmail.com";
+                xlPackage.Workbook.Properties.Subject = "List de Articulos";
+                // save the new spreadsheet
+                xlPackage.Save();
+                // Response.Clear();
+            }
+            stream.Position = 0;
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "users.xlsx");
+        }
+
 
         private bool IsAPhotoFile(string fileName)
         {

@@ -10,6 +10,7 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust
        
         public int IdTipoProducto1 { get; set; }
         public string NomTipoProducto { get; set; }
+        public bool estado { get; set; }
 
         public  List<Articulo> Articulos { get; set; }
     }
