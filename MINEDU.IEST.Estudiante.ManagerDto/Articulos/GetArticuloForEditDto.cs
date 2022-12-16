@@ -16,5 +16,7 @@ namespace IDCL.AVGUST.SIP.ManagerDto.Articulos
         public List<GetClaseDto> cboClase { get; set; }
         public List<GetToxicologicaDto> cboToxicologica { get; set; }
         public List<GetGrupoQuimicoDto> cboGrupoQuimico { get; set; }
+        public List<GetTipoFormulacionDto> cboTipoFormulacion { get; set; }
+        public List<GetTipoIngredienteActivoDto> cboTipoIngredienteActivo { get; set; }
     }
 }

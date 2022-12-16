@@ -31,8 +31,10 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto
         public virtual DbSet<Formulador> Formuladors { get; set; }
         public virtual DbSet<GrupoQuimico> GrupoQuimicos { get; set; }
         public virtual DbSet<IdTipoProducto> IdTipoProductos { get; set; }
+        public virtual DbSet<IngredienteActivo> IngredienteActivos { get; set; }
         public virtual DbSet<Pai> Pais { get; set; }
         public virtual DbSet<TipoDocumento> TipoDocumentos { get; set; }
+        public virtual DbSet<TipoFormulacion> TipoFormulacions { get; set; }
         public virtual DbSet<TitularRegistro> TitularRegistros { get; set; }
         public virtual DbSet<Toxicologica> Toxicologicas { get; set; }
         public virtual DbSet<Uso> Usos { get; set; }
@@ -52,8 +54,10 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto
             modelBuilder.ApplyConfiguration(new Configurations.FormuladorConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.GrupoQuimicoConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.IdTipoProductoConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.IngredienteActivoConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.PaiConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.TipoDocumentoConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.TipoFormulacionConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.TitularRegistroConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.ToxicologicaConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.UsoConfiguration());

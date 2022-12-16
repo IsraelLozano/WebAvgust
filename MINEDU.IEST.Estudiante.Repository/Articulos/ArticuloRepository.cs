@@ -29,6 +29,14 @@ namespace IDCL.AVGUST.SIP.Repository.Articulos
                             IdTipoProducto = p.IdTipoProducto,
                             IdFormulador = p.IdFormulador,
                             IdGrupoQuimico = p.IdGrupoQuimico,
+                            IdTipoFormulacion = p.IdTipoFormulacion,
+                            Concentracion = p.Concentracion,
+                            IdTipoFormulacionNavigation = p.IdTipoFormulacion != null ? new TipoFormulacion
+                            {
+                                IdTipoFormulacion = p.IdTipoFormulacionNavigation.IdTipoFormulacion,
+                                CodTipoFormulacion = p.IdTipoFormulacionNavigation.CodTipoFormulacion,
+                                NomTipoFormulacion = p.IdTipoFormulacionNavigation.NomTipoFormulacion,
+                            } : null,
                             IdGrupoQuimicoNavigation = p.IdGrupoQuimico != null ? new GrupoQuimico
                             {
                                 IdGrupoQuimico = p.IdGrupoQuimicoNavigation.IdGrupoQuimico,
@@ -43,17 +51,17 @@ namespace IDCL.AVGUST.SIP.Repository.Articulos
                             {
                                 IdPais = p.IdPaisNavigation.IdPais,
                                 NomPais = p.IdPaisNavigation.NomPais
-                            }: null,
+                            } : null,
                             IdTipoProductoNavigation = p.IdTipoProducto != null ? new IdTipoProducto
                             {
                                 IdTipoProducto1 = p.IdTipoProductoNavigation.IdTipoProducto1,
                                 NomTipoProducto = p.IdTipoProductoNavigation.NomTipoProducto
-                            }: null,
-                            IdTitularRegistroNavigation = p.IdTitularRegistro !=null ? new TitularRegistro
+                            } : null,
+                            IdTitularRegistroNavigation = p.IdTitularRegistro != null ? new TitularRegistro
                             {
                                 IdTitularRegistro = p.IdTitularRegistroNavigation.IdTitularRegistro,
                                 NomTitularRegistro = p.IdTitularRegistroNavigation.NomTitularRegistro
-                            }: null,
+                            } : null,
 
                             //Listas....
                             Composicions = p.Composicions.Select(c => new Composicion
@@ -61,7 +69,12 @@ namespace IDCL.AVGUST.SIP.Repository.Articulos
                                 IdArticulo = c.IdArticulo,
                                 Iditem = c.Iditem,
                                 IngredienteActivo = c.IngredienteActivo,
-                                FormuladorMolecular = c.FormuladorMolecular
+                                FormuladorMolecular = c.FormuladorMolecular,
+                                IngredienteActivoNavigation  = new IngredienteActivo
+                                {
+                                    IngredenteActivo = c.IngredienteActivoNavigation.IngredenteActivo,
+                                    NomIngredienteActivo = c.IngredienteActivoNavigation.NomIngredienteActivo
+                                }
                             }).ToList(),
                             Documentos = p.Documentos.Select(d => new Documento
                             {

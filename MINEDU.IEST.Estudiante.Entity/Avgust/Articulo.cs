@@ -16,10 +16,13 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust
         public int? IdTipoProducto { get; set; }
         public int? IdFormulador { get; set; }
         public int? IdGrupoQuimico { get; set; }
+        public int? IdTipoFormulacion { get; set; }
+        public string Concentracion { get; set; }
 
         public  Formulador? IdFormuladorNavigation { get; set; }
         public  GrupoQuimico? IdGrupoQuimicoNavigation { get; set; }
         public  Pai? IdPaisNavigation { get; set; }
+        public  TipoFormulacion IdTipoFormulacionNavigation { get; set; }
         public  IdTipoProducto? IdTipoProductoNavigation { get; set; }
         public  TitularRegistro? IdTitularRegistroNavigation { get; set; }
         public  List<Caracteristica> Caracteristicas { get; set; }

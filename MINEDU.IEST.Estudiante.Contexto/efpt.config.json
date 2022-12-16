@@ -12,78 +12,14 @@
    "ProjectRootNamespace": "IDCL.AVGUST.SIP.Contexto",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
-   "SelectedToBeGenerated": 0,
+   "SelectedToBeGenerated": 2,
    "Tables": [
-      {
-         "Name": "[dbo].[Aplicacion]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Articulo]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Caracteristicas]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[CientificoPlaga]",
-         "ObjectType": 0
-      },
       {
          "Name": "[dbo].[Clase]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Composicion]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Cultivo]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Documentos]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Formulador]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[GrupoQuimico]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[idTipoProducto]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Pais]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[TipoDocumento]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[TitularRegistro]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Toxicologica]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Usos]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Usuario]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[UsuarioPais]",
          "ObjectType": 0
       }
    ],

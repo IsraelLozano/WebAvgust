@@ -23,7 +23,10 @@ namespace IDCL.AVGUST.SIP.Repository.UnitOfWork
         public IClaseRepository _claseRepository { get; }
         public IToxicologicaRepository _toxicologicaRepository { get; }
         public IGrupoQuimicoRepository _grupoQuimicoRepository { get; }
-        public MaestraUnitOfWork(dbContextAvgust context, IPaisRepository paisRepository, IFormuladorRepository formuladorRepository, ITipoProductoRepository tipoProductoRepository, ITitularRepository titularRepository, ITipoDocumentoRepository tipoDocumentoRepository, ICientificoPlagaRepository cientificoPlagaRepository, ICultivoRepository cultivoRepository, IAplicacionRepository aplicacionRepository, IClaseRepository claseRepository, IToxicologicaRepository toxicologicaRepository, IGrupoQuimicoRepository grupoQuimicoRepository)
+        public ITipoFormulacionRepository _tipoFormulacionRepository { get; }
+
+        public IIngredienteActivoRepository _ingredienteActivoRepository { get; }
+        public MaestraUnitOfWork(dbContextAvgust context, IPaisRepository paisRepository, IFormuladorRepository formuladorRepository, ITipoProductoRepository tipoProductoRepository, ITitularRepository titularRepository, ITipoDocumentoRepository tipoDocumentoRepository, ICientificoPlagaRepository cientificoPlagaRepository, ICultivoRepository cultivoRepository, IAplicacionRepository aplicacionRepository, IClaseRepository claseRepository, IToxicologicaRepository toxicologicaRepository, IGrupoQuimicoRepository grupoQuimicoRepository, ITipoFormulacionRepository tipoFormulacionRepository, IIngredienteActivoRepository ingredienteActivoRepository)
         {
             this._context = context;
             _paisRepository = paisRepository;
@@ -37,6 +40,8 @@ namespace IDCL.AVGUST.SIP.Repository.UnitOfWork
             _claseRepository = claseRepository;
             _toxicologicaRepository = toxicologicaRepository;
             _grupoQuimicoRepository = grupoQuimicoRepository;
+            _tipoFormulacionRepository = tipoFormulacionRepository;
+            _ingredienteActivoRepository = ingredienteActivoRepository;
         }
         public void Save()
         {

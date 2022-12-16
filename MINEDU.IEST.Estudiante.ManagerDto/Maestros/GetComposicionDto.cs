@@ -12,5 +12,7 @@ namespace IDCL.AVGUST.SIP.ManagerDto.Maestros
         public int Iditem { get; set; }
         public int? IngredienteActivo { get; set; }
         public string FormuladorMolecular { get; set; }
+
+        public GetTipoIngredienteActivoDto IngredienteActivoNavigation { get; set; }
     }
 }

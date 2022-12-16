@@ -4,10 +4,11 @@ using MINEDU.IEST.Estudiante.Repository.Base;
 
 namespace IDCL.AVGUST.SIP.Repository.Maestra
 {
-    public class AplicacionRepository : GenericRepository<Aplicacion>, IAplicacionRepository
+    public class IngredienteActivoRepository : GenericRepository<IngredienteActivo>, IIngredienteActivoRepository
     {
-        public AplicacionRepository(dbContextAvgust context) : base(context)
+        public IngredienteActivoRepository(dbContextAvgust context) : base(context)
         {
+
         }
     }
 }

@@ -17,8 +17,12 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
 
             entity.ToTable("Cultivo");
 
-            entity.Property(e => e.IdCultivo)
-                .HasColumnName("idCultivo");
+            entity.Property(e => e.IdCultivo).HasColumnName("idCultivo");
+
+            entity.Property(e => e.estado)
+                .IsRequired()
+                .HasColumnName("estado")
+                .HasDefaultValueSql("((1))");
 
             entity.Property(e => e.NombreCultivo)
                 .HasMaxLength(100)

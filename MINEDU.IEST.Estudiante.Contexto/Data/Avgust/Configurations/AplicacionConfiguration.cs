@@ -17,12 +17,16 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
 
             entity.ToTable("Aplicacion");
 
-            entity.Property(e => e.IdAplicacion)
-                .HasColumnName("idAplicacion");
+            entity.Property(e => e.IdAplicacion).HasColumnName("idAplicacion");
 
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+
+            entity.Property(e => e.estado)
+                .IsRequired()
+                .HasColumnName("estado")
+                .HasDefaultValueSql("((1))");
 
             OnConfigurePartial(entity);
         }

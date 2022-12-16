@@ -1,5 +1,6 @@
 ﻿using IDCL.AVGUST.SIP.Manager.Maestro;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros;
+using IDCL.AVGUST.SIP.ManagerDto.Maestros.Add;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MINEDU.IEST.Estudiante.WebApiEst.Controllers;
@@ -23,7 +24,7 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
         #region Pais
         [SwaggerOperation(
-         Summary = "Obtiene una lista de paises" 
+         Summary = "Obtiene una lista de paises"
         )]
         [HttpGet("getListPais")]
         public async Task<IActionResult> getListPais()
@@ -126,7 +127,7 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         }
 
         [HttpPost(template: "CreateOrUpdateClase")]
-        public async Task<IActionResult> CreateOrUpdateClase(GetClaseDto model)
+        public async Task<IActionResult> CreateOrUpdateClase(AddClaseDto model)
         {
             return Ok(await _maestraManager.CreateOrUpdateClase(model));
         }
@@ -342,6 +343,64 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
             return Ok(await _maestraManager.AnularToxicologia(id));
         }
         #endregion
+
+
+        #region Tipo Formulacion
+
+        [HttpGet("getListTipoFormulacion")]
+        public async Task<IActionResult> getListTipoFormulacion()
+        {
+            return Ok(await _maestraManager.getListTipoFormulacion());
+        }
+
+        [HttpGet("GetTipoFormulacionById/{id}")]
+        public async Task<IActionResult> GetTipoFormulacionById(int id)
+        {
+            return Ok(await _maestraManager.GetTipoFormulacionById(id));
+        }
+
+        [HttpPost(template: "CreateOrUpdateTipoFormulacion")]
+        public async Task<IActionResult> CreateOrUpdateTipoFormulacion(GetTipoFormulacionDto model)
+        {
+            return Ok(await _maestraManager.CreateOrUpdateTipoFormulacion(model));
+        }
+
+        [HttpGet("deleteTipoFormulacion/{id}")]
+        public async Task<IActionResult> DeleteTipoFormulacion(int id)
+        {
+            return Ok(await _maestraManager.AnularToxicologia(id));
+        }
+        #endregion
+
+
+        #region IngredienteActivo
+
+        [HttpGet("getListTipoIngredienteActivo")]
+        public async Task<IActionResult> getListTipoIngredienteActivo()
+        {
+            return Ok(await _maestraManager.getListTipoIngredienteActivo());
+        }
+
+        [HttpGet("GetTipoIngredienteActivoById/{id}")]
+        public async Task<IActionResult> GetTipoIngredienteActivoById(int id)
+        {
+            return Ok(await _maestraManager.GetTipoIngredienteActivoById(id));
+        }
+
+        [HttpPost(template: "CreateOrUpdateTipoIngredienteActivo")]
+        public async Task<IActionResult> CreateOrUpdateTipoIngredienteActivo(GetTipoIngredienteActivoDto model)
+        {
+            return Ok(await _maestraManager.CreateOrUpdateTipoIngredienteActivo(model));
+        }
+
+        [HttpGet("deleteIngredienteActivo/{id}")]
+        public async Task<IActionResult> DeleteTipoIngredienteActivo(int id)
+        {
+            return Ok(await _maestraManager.AnularTipoIngredienteActivo(id));
+        }
+        #endregion
+
+
 
 
     }

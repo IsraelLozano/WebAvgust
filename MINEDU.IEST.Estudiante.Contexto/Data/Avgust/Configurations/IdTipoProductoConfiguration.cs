@@ -17,13 +17,19 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
 
             entity.ToTable("idTipoProducto");
 
-            entity.Property(e => e.IdTipoProducto1)
-                .HasColumnName("idTipoProducto");
+            entity.Property(e => e.IdTipoProducto1).HasColumnName("idTipoProducto");
+
+            entity.Property(e => e.estado)
+                .IsRequired()
+                .HasColumnName("estado")
+                .HasDefaultValueSql("((1))");
 
             entity.Property(e => e.NomTipoProducto)
-                .HasMaxLength(200)
-                .IsUnicode(false)
-                .HasColumnName("nomTipoProducto");
+               .HasMaxLength(200)
+               .IsUnicode(false)
+               .HasColumnName("nomTipoProducto");
+
+
 
             OnConfigurePartial(entity);
         }

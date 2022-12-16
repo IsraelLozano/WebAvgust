@@ -19,9 +19,7 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
 
             entity.Property(e => e.IdArticulo).HasColumnName("idArticulo");
 
-            entity.Property(e => e.Iditem)
-                //.ValueGeneratedOnAdd()
-                .HasColumnName("iditem");
+            entity.Property(e => e.Iditem).HasColumnName("iditem");
 
             entity.Property(e => e.FormuladorMolecular)
                 .HasMaxLength(50)
@@ -32,6 +30,11 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
                 .HasForeignKey(d => d.IdArticulo)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Composicion_Articulo");
+
+            entity.HasOne(d => d.IngredienteActivoNavigation)
+                .WithMany(p => p.Composicions)
+                .HasForeignKey(d => d.IngredienteActivo)
+                .HasConstraintName("FK_Composicion_IngredienteActivo");
 
             OnConfigurePartial(entity);
         }

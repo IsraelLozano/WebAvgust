@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros;
+using IDCL.AVGUST.SIP.ManagerDto.Maestros.Add;
 using IDCL.AVGUST.SIP.Repository.UnitOfWork;
 
 namespace IDCL.AVGUST.SIP.Manager.Maestro
@@ -152,18 +153,18 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         public async Task<List<GetClaseDto>> getListClase()
         {
-            var query = _maestraUnitOfWork._claseRepository.GetAll();
+            var query = _maestraUnitOfWork._claseRepository.GetAll(includeProperties: "IdTipoProductoNavigation");
 
             return _mapper.Map<List<GetClaseDto>>(query);
         }
 
         public async Task<GetClaseDto> GetClaseById(int id)
         {
-            var query = _maestraUnitOfWork._claseRepository.GetById(id);
+            var query = _maestraUnitOfWork._claseRepository.GetAll(p => p.IdTipoProducto == id, includeProperties: "IdTipoProductoNavigation").FirstOrDefault();
             return _mapper.Map<GetClaseDto>(query);
         }
 
-        public async Task<GetClaseDto> CreateOrUpdateClase(GetClaseDto model)
+        public async Task<GetClaseDto> CreateOrUpdateClase(AddClaseDto model)
         {
             var entidad = _mapper.Map<Clase>(model);
             if (entidad.IdClase == 0)
@@ -443,7 +444,7 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         public async Task<bool> AnularTitularRegistro(int id)
         {
-            var query = _maestraUnitOfWork._tipoDocumentoRepository.GetById(id);
+            var query = _maestraUnitOfWork._titularRepository.GetById(id);
             query.estado = false;
             await _maestraUnitOfWork.SaveAsync();
             return true;
@@ -487,13 +488,109 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         public async Task<bool> AnularToxicologia(int id)
         {
-            var query = _maestraUnitOfWork._tipoDocumentoRepository.GetById(id);
+            var query = _maestraUnitOfWork._toxicologicaRepository.GetById(id);
             query.estado = false;
             await _maestraUnitOfWork.SaveAsync();
             return true;
         }
 
         #endregion
+
+        #region Tipo Formulacion
+
+        public async Task<List<GetTipoFormulacionDto>> getListTipoFormulacion()
+        {
+            var query = _maestraUnitOfWork._tipoFormulacionRepository.GetAll();
+
+            return _mapper.Map<List<GetTipoFormulacionDto>>(query);
+        }
+
+        public async Task<GetTipoFormulacionDto> GetTipoFormulacionById(int id)
+        {
+            var query = _maestraUnitOfWork._tipoFormulacionRepository.GetById(id);
+            return _mapper.Map<GetTipoFormulacionDto>(query);
+        }
+
+        public async Task<GetTipoFormulacionDto> CreateOrUpdateTipoFormulacion(GetTipoFormulacionDto model)
+        {
+            try
+            {
+                var entidad = _mapper.Map<TipoFormulacion>(model);
+                if (entidad.IdTipoFormulacion == 0)
+                {
+                    _maestraUnitOfWork._tipoFormulacionRepository.Insert(entidad);
+                }
+                else
+                {
+                    entidad.estado = true;
+                    _maestraUnitOfWork._tipoFormulacionRepository.Update(entidad);
+                }
+
+                await _maestraUnitOfWork.SaveAsync();
+
+                return _mapper.Map<GetTipoFormulacionDto>(entidad);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<bool> AnularTipoFormulacion(int id)
+        {
+            var query = _maestraUnitOfWork._tipoFormulacionRepository.GetById(id);
+            query.estado = false;
+            await _maestraUnitOfWork.SaveAsync();
+            return true;
+        }
+
+        #endregion
+
+
+        #region Ingrediente Activo
+
+        public async Task<List<GetTipoIngredienteActivoDto>> getListTipoIngredienteActivo()
+        {
+            var query = _maestraUnitOfWork._ingredienteActivoRepository.GetAll();
+
+            return _mapper.Map<List<GetTipoIngredienteActivoDto>>(query);
+        }
+
+        public async Task<GetTipoIngredienteActivoDto> GetTipoIngredienteActivoById(int id)
+        {
+            var query = _maestraUnitOfWork._ingredienteActivoRepository.GetById(id);
+            return _mapper.Map<GetTipoIngredienteActivoDto>(query);
+        }
+
+        public async Task<GetTipoIngredienteActivoDto> CreateOrUpdateTipoIngredienteActivo(GetTipoIngredienteActivoDto model)
+        {
+            var entidad = _mapper.Map<IngredienteActivo>(model);
+            if (entidad.IngredenteActivo == 0)
+            {
+                _maestraUnitOfWork._ingredienteActivoRepository.Insert(entidad);
+            }
+            else
+            {
+                entidad.estado = true;
+                _maestraUnitOfWork._ingredienteActivoRepository.Update(entidad);
+            }
+
+            await _maestraUnitOfWork.SaveAsync();
+
+            return _mapper.Map<GetTipoIngredienteActivoDto>(entidad);
+        }
+
+        public async Task<bool> AnularTipoIngredienteActivo(int id)
+        {
+            var query = _maestraUnitOfWork._ingredienteActivoRepository.GetById(id);
+            query.estado = false;
+            await _maestraUnitOfWork.SaveAsync();
+            return true;
+        }
+
+        #endregion
+
 
     }
 }

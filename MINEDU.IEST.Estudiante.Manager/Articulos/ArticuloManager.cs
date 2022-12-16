@@ -62,6 +62,9 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
             response.cboClase = _mapper.Map<List<GetClaseDto>>(_maestraUnitOfWork._claseRepository.GetAll());
             response.cboToxicologica = _mapper.Map<List<GetToxicologicaDto>>(_maestraUnitOfWork._toxicologicaRepository.GetAll());
             response.cboGrupoQuimico = _mapper.Map<List<GetGrupoQuimicoDto>>(_maestraUnitOfWork._grupoQuimicoRepository.GetAll());
+            response.cboTipoFormulacion = _mapper.Map<List<GetTipoFormulacionDto>>(_maestraUnitOfWork._tipoFormulacionRepository.GetAll());
+            response.cboTipoIngredienteActivo = _mapper.Map<List<GetTipoIngredienteActivoDto>>(_maestraUnitOfWork._ingredienteActivoRepository.GetAll());
+
 
             return response;
         }
@@ -137,7 +140,7 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
 
             try
             {
-                var query = _articuloUnitOfWork._composicionRepository.GetAll(p => p.IdArticulo == idArticulo);
+                var query = _articuloUnitOfWork._composicionRepository.GetAll(p => p.IdArticulo == idArticulo, includeProperties: "IngredienteActivoNavigation");
                 return _mapper.Map<List<GetComposicionDto>>(query);
             }
             catch (Exception ex)

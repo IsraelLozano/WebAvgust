@@ -12,10 +12,12 @@ namespace IDCL.AVGUST.SIP.ManagerDto.Articulos
         public int? IdTipoProducto { get; set; }
         public int? IdFormulador { get; set; }
         public int? IdGrupoQuimico { get; set; }
-        public GetPaisDto IdPaisNavigation { get; set; }
-        public GetGrupoQuimicoDto IdGrupoQuimicoNavigation { get; set; }
+        public int? IdTipoFormulacion { get; set; }
+        public string Concentracion { get; set; }
         public GetFormuladorDto IdFormuladorNavigation { get; set; }
-
+        public GetGrupoQuimicoDto IdGrupoQuimicoNavigation { get; set; }
+        public GetPaisDto IdPaisNavigation { get; set; }
+        public GetTipoFormulacionDto IdTipoFormulacionNavigation { get; set; }
         public GetIdTipoProductoDto IdTipoProductoNavigation { get; set; }
         public GetTitularRegistroDto IdTitularRegistroNavigation { get; set; }
 

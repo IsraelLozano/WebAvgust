@@ -3,6 +3,7 @@ using IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust;
 using IDCL.AVGUST.SIP.ManagerDto.Articulos;
 using IDCL.AVGUST.SIP.ManagerDto.Articulos.Add;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros;
+using IDCL.AVGUST.SIP.ManagerDto.Maestros.Add;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad.Add;
 
@@ -33,8 +34,12 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
             CreateMap<Cultivo, GetCultivoDto>().ReverseMap().ReverseMap();
             CreateMap<Aplicacion, GetAplicacionDto>().ReverseMap();
             CreateMap<Clase, GetClaseDto>().ReverseMap();
+            CreateMap<Clase, AddClaseDto>().ReverseMap();
             CreateMap<Toxicologica, GetToxicologicaDto>().ReverseMap();
             CreateMap<GrupoQuimico, GetGrupoQuimicoDto>().ReverseMap();
+
+            CreateMap<TipoFormulacion, GetTipoFormulacionDto>().ReverseMap();
+            CreateMap<IngredienteActivo, GetTipoIngredienteActivoDto>().ReverseMap();
 
 
             CreateMap<Composicion, GetComposicionDto>();

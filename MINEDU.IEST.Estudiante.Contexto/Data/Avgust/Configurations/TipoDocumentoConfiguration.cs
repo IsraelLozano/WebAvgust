@@ -17,8 +17,12 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
 
             entity.ToTable("TipoDocumento");
 
-            entity.Property(e => e.IdTipoDocumento)
-                .HasColumnName("idTipoDocumento");
+            entity.Property(e => e.IdTipoDocumento).HasColumnName("idTipoDocumento");
+
+            entity.Property(e => e.estado)
+                .IsRequired()
+                .HasColumnName("estado")
+                .HasDefaultValueSql("((1))");
 
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)

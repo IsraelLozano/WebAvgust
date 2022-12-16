@@ -10,5 +10,7 @@
         public int? IdTipoProducto { get; set; }
         public int? IdFormulador { get; set; }
         public int? IdGrupoQuimico { get; set; }
+        public int? IdTipoFormulacion { get; set; }
+        public string Concentracion { get; set; }
     }
 }

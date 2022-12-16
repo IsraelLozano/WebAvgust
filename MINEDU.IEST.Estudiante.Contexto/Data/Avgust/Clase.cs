@@ -9,9 +9,9 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust
     {
         public int IdClase { get; set; }
         public string Descripcion { get; set; }
-        public bool estado { get; set; }
+        public bool? Estado { get; set; }
         public int? IdTipoProducto { get; set; }
-        public List<Caracteristica> Caracteristicas { get; set; }
-        public IdTipoProducto IdTipoProductoNavigation { get; set; }
+
+        public virtual IdTipoProducto IdTipoProductoNavigation { get; set; }
     }
 }

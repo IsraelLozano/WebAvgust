@@ -9,27 +9,24 @@ using System.Collections.Generic;
 
 namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
 {
-    public partial class PaiConfiguration : IEntityTypeConfiguration<Pai>
+    public partial class IngredienteActivoConfiguration : IEntityTypeConfiguration<IngredienteActivo>
     {
-        public void Configure(EntityTypeBuilder<Pai> entity)
+        public void Configure(EntityTypeBuilder<IngredienteActivo> entity)
         {
-            entity.HasKey(e => e.IdPais);
+            entity.HasKey(e => e.IngredenteActivo);
 
-            entity.Property(e => e.IdPais).HasColumnName("idPais");
+            entity.ToTable("IngredienteActivo");
 
-            entity.Property(e => e.estado)
-                .IsRequired()
-                .HasColumnName("estado")
-                .HasDefaultValueSql("((1))");
+            entity.Property(e => e.IngredenteActivo).ValueGeneratedNever();
 
-            entity.Property(e => e.NomPais)
+            entity.Property(e => e.NomIngredienteActivo)
                 .HasMaxLength(100)
                 .IsUnicode(false)
-                .HasColumnName("nomPais");
+                .HasColumnName("nomIngredienteActivo");
 
             OnConfigurePartial(entity);
         }
 
-        partial void OnConfigurePartial(EntityTypeBuilder<Pai> entity);
+        partial void OnConfigurePartial(EntityTypeBuilder<IngredienteActivo> entity);
     }
 }

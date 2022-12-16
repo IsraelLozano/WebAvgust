@@ -42,11 +42,13 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
 
             services.AddScoped<IAplicacionRepository, AplicacionRepository>();
             services.AddScoped<ICientificoPlagaRepository, CientificoPlagaRepository>();
-            services.AddScoped<IClaseRepository,ClaseRepository >();
-            services.AddScoped<ICultivoRepository,CultivoRepository >();
-            services.AddScoped<IGrupoQuimicoRepository,GrupoQuimicoRepository >();
-            services.AddScoped<ITipoDocumentoRepository,TipoDocumentoRepository >();
+            services.AddScoped<IClaseRepository, ClaseRepository>();
+            services.AddScoped<ICultivoRepository, CultivoRepository>();
+            services.AddScoped<IGrupoQuimicoRepository, GrupoQuimicoRepository>();
+            services.AddScoped<ITipoDocumentoRepository, TipoDocumentoRepository>();
             services.AddScoped<IToxicologicaRepository, ToxicologicaRepository>();
+            services.AddScoped<ITipoFormulacionRepository, TipoFormulacionRepository>();
+            services.AddScoped<IIngredienteActivoRepository, IngredienteActivoRepository>();
 
 
 

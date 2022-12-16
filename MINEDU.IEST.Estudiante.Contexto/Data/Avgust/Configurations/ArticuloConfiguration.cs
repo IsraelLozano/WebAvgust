@@ -19,15 +19,21 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
 
             entity.Property(e => e.IdArticulo).HasColumnName("idArticulo");
 
-            entity.Property(e => e.IdFormulador).HasColumnName("idFormulador").IsRequired(false);
+            entity.Property(e => e.Concentracion)
+                .HasMaxLength(50)
+                .IsUnicode(false);
 
-            entity.Property(e => e.IdGrupoQuimico).HasColumnName("idGrupoQuimico").IsRequired(false);
+            entity.Property(e => e.IdFormulador).HasColumnName("idFormulador");
 
-            entity.Property(e => e.IdPais).HasColumnName("idPais").IsRequired(false);
+            entity.Property(e => e.IdGrupoQuimico).HasColumnName("idGrupoQuimico");
 
-            entity.Property(e => e.IdTipoProducto).HasColumnName("idTipoProducto").IsRequired(false);
+            entity.Property(e => e.IdPais).HasColumnName("idPais");
 
-            entity.Property(e => e.IdTitularRegistro).HasColumnName("idTitularRegistro").IsRequired(false);
+            entity.Property(e => e.IdTipoFormulacion).HasColumnName("idTipoFormulacion");
+
+            entity.Property(e => e.IdTipoProducto).HasColumnName("idTipoProducto");
+
+            entity.Property(e => e.IdTitularRegistro).HasColumnName("idTitularRegistro");
 
             entity.Property(e => e.NombreComercial)
                 .HasMaxLength(200)
@@ -51,6 +57,11 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
                 .WithMany(p => p.Articulos)
                 .HasForeignKey(d => d.IdPais)
                 .HasConstraintName("FK_Articulo_Pais");
+
+            entity.HasOne(d => d.IdTipoFormulacionNavigation)
+                .WithMany(p => p.Articulos)
+                .HasForeignKey(d => d.IdTipoFormulacion)
+                .HasConstraintName("FK_Articulo_TipoFormulacion");
 
             entity.HasOne(d => d.IdTipoProductoNavigation)
                 .WithMany(p => p.Articulos)

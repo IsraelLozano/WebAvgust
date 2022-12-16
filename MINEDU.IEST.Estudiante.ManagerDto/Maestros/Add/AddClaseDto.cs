@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDCL.AVGUST.SIP.ManagerDto.Maestros
+namespace IDCL.AVGUST.SIP.ManagerDto.Maestros.Add
 {
-    public class GetClaseDto
+    public class AddClaseDto
     {
         public int IdClase { get; set; }
         public string Descripcion { get; set; }
         public bool estado { get; set; }
         public int? IdTipoProducto { get; set; }
-        public GetIdTipoProductoDto IdTipoProductoNavigation { get; set; }
     }
 }
