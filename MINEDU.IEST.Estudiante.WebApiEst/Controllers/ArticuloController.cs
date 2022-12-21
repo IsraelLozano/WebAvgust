@@ -22,16 +22,21 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
             this._articuloManager = articuloManager;
         }
 
-        [HttpGet("GetListArticulo/{IdUsuario:int}")]
-        public async Task<IActionResult> GetArticulos(int IdUsuario)
+        [HttpGet("GetListArticulo/{IdUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetArticulos(int IdUsuario, string filtro = "")
         {
-            return Ok(await _articuloManager.GetListArticulos(IdUsuario));
+            return Ok(await _articuloManager.GetListArticulos(IdUsuario, filtro));
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetArticuloByID(int id)
         {
             return Ok(await _articuloManager.GetArticuloById(id));
+        }
+        [HttpGet("deleteArticuloById/{id:int}")]
+        public async Task<IActionResult> deleteArticuloByID(int id)
+        {
+            return Ok(await _articuloManager.DeleteArticuloById(id));
         }
 
         [HttpPost("CreateOrUpdateArticulo")]

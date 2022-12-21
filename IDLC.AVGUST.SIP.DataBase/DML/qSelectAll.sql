@@ -1,14 +1,18 @@
 ﻿use IndusoftWebAvgust
 
-select * from Usuario
-select * from UsuarioPais
+select * from Usuario WHERE idUsuario = 3
+select * from UsuarioPais WHERE idUsuario = 3
+select * from Articulo
 
 select * from Pais
 SELECT * from Documentos
 
-select * from Articulo
+
+update Articulo
+set FlgActivo = 1
 
 select * from Composicion
+select * from Caracteristicas
 
 select * from Aplicacion
 select * from Clase
@@ -47,4 +51,8 @@ select * from TipoDocumento
 select * from TitularRegistro
 select * from Toxicologica
 
-DELETE FROM Pais WHERE idPais = 0
+
+
+select * from Articulo
+select * from Clase WHERE IdTipoProducto = 2 
+SELECT * from idTipoProducto WHERE idTipoProducto = 2

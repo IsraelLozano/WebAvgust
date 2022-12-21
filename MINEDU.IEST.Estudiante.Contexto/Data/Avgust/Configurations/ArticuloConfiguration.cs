@@ -26,6 +26,7 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
             entity.Property(e => e.IdFormulador).HasColumnName("idFormulador");
 
             entity.Property(e => e.IdGrupoQuimico).HasColumnName("idGrupoQuimico");
+            entity.Property(e => e.FlgActivo).HasColumnName("FlgActivo");
 
             entity.Property(e => e.IdPais).HasColumnName("idPais");
 

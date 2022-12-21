@@ -6,6 +6,7 @@ using IDCL.AVGUST.SIP.ManagerDto.Maestros;
 using IDCL.AVGUST.SIP.Repository.UnitOfWork;
 using MINEDU.IEST.Estudiante.Inf_Utils.Dtos;
 using MINEDU.IEST.Estudiante.Inf_Utils.Helpers.FileManager;
+using System.Linq;
 
 namespace IDCL.AVGUST.SIP.Manager.Articulos
 {
@@ -27,14 +28,19 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
             _seguridadUnitOfWork = seguridadUnitOfWork;
         }
 
-        public async Task<List<GetArticuloDto>> GetListArticulos(int IdUsuario)
+        public async Task<List<GetArticuloDto>> GetListArticulos(int IdUsuario, string filtro)
         {
             var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == IdUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
 
+            var query = _articuloUnitOfWork._articuloRepository
+                .GetAll(p => paises.Contains(p.IdPais.Value)
+                && p.FlgActivo,
+                includeProperties: "IdFormuladorNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation",
+                orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
 
-            var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value), includeProperties: "IdFormuladorNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation", orderBy: p => p.OrderByDescending(l => l.IdArticulo));
-            var response = _mapper.Map<List<GetArticuloDto>>(query);
+            var filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+            var response = _mapper.Map<List<GetArticuloDto>>(filter);
             return response;
         }
 
@@ -51,28 +57,46 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
                 response.articulo.Usos = _mapper.Map<List<GetUsoDto>>(query.Usos);
                 response.articulo.Caracteristicas = _mapper.Map<List<GetCaracteristicaDto>>(query.Caracteristicas);
             }
-            response.paises = _mapper.Map<List<GetPaisDto>>(_maestraUnitOfWork._paisRepository.GetAll());
-            response.formuladores = _mapper.Map<List<GetFormuladorDto>>(_maestraUnitOfWork._formuladorRepository.GetAll());
-            response.tiposProductos = _mapper.Map<List<GetIdTipoProductoDto>>(_maestraUnitOfWork._tipoProductoRepository.GetAll());
-            response.titulares = _mapper.Map<List<GetTitularRegistroDto>>(_maestraUnitOfWork._titularRepository.GetAll());
-            response.tiposDocumentos = _mapper.Map<List<GetTipoDocumentoDto>>(_maestraUnitOfWork._tipoDocumentoRepository.GetAll());
-            response.tiposPlagas = _mapper.Map<List<GetCientificoPlagaDto>>(_maestraUnitOfWork._cientificoPlagaRepository.GetAll());
-            response.tiposCultivos = _mapper.Map<List<GetCultivoDto>>(_maestraUnitOfWork._cultivoRepository.GetAll());
-            response.cboAplicaciones = _mapper.Map<List<GetAplicacionDto>>(_maestraUnitOfWork._aplicacionRepository.GetAll());
-            response.cboClase = _mapper.Map<List<GetClaseDto>>(_maestraUnitOfWork._claseRepository.GetAll());
-            response.cboToxicologica = _mapper.Map<List<GetToxicologicaDto>>(_maestraUnitOfWork._toxicologicaRepository.GetAll());
-            response.cboGrupoQuimico = _mapper.Map<List<GetGrupoQuimicoDto>>(_maestraUnitOfWork._grupoQuimicoRepository.GetAll());
-            response.cboTipoFormulacion = _mapper.Map<List<GetTipoFormulacionDto>>(_maestraUnitOfWork._tipoFormulacionRepository.GetAll());
-            response.cboTipoIngredienteActivo = _mapper.Map<List<GetTipoIngredienteActivoDto>>(_maestraUnitOfWork._ingredienteActivoRepository.GetAll());
+
+            response.paises = _mapper.Map<List<GetPaisDto>>(_maestraUnitOfWork._paisRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomPais)));
+            response.formuladores = _mapper.Map<List<GetFormuladorDto>>(_maestraUnitOfWork._formuladorRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomFormulador)));
+            response.tiposProductos = _mapper.Map<List<GetIdTipoProductoDto>>(_maestraUnitOfWork._tipoProductoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomTipoProducto)));
+            response.titulares = _mapper.Map<List<GetTitularRegistroDto>>(_maestraUnitOfWork._titularRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomTitularRegistro)));
+            response.tiposDocumentos = _mapper.Map<List<GetTipoDocumentoDto>>(_maestraUnitOfWork._tipoDocumentoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.Nombre)));
+            response.tiposPlagas = _mapper.Map<List<GetCientificoPlagaDto>>(_maestraUnitOfWork._cientificoPlagaRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NombreCientificoPlaga)));
+            response.tiposCultivos = _mapper.Map<List<GetCultivoDto>>(_maestraUnitOfWork._cultivoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NombreCultivo)));
+            response.cboAplicaciones = _mapper.Map<List<GetAplicacionDto>>(_maestraUnitOfWork._aplicacionRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.Descripcion)));
+            response.cboClase = _mapper.Map<List<GetClaseDto>>(_maestraUnitOfWork._claseRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.Descripcion)));
+            response.cboToxicologica = _mapper.Map<List<GetToxicologicaDto>>(_maestraUnitOfWork._toxicologicaRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.Descripcion)));
+            response.cboGrupoQuimico = _mapper.Map<List<GetGrupoQuimicoDto>>(_maestraUnitOfWork._grupoQuimicoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomGrupoQuimico)));
+            response.cboTipoFormulacion = _mapper.Map<List<GetTipoFormulacionDto>>(_maestraUnitOfWork._tipoFormulacionRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomTipoFormulacion)));
+            response.cboTipoIngredienteActivo = _mapper.Map<List<GetTipoIngredienteActivoDto>>(_maestraUnitOfWork._ingredienteActivoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomIngredienteActivo)));
 
 
             return response;
         }
 
+        public async Task<bool> DeleteArticuloById(int id)
+        {
+            try
+            {
+                var data = _articuloUnitOfWork._articuloRepository.GetById(id);
+                data.FlgActivo = false;
+                await _articuloUnitOfWork.SaveAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         public async Task<AddOrEditArticuloDto> CreateOrUpdateArticulo(AddOrEditArticuloDto model)
         {
 
             var articulo = _mapper.Map<Articulo>(model);
+            articulo.FlgActivo = true;
             if (model.IdArticulo == 0)
             {
                 _articuloUnitOfWork._articuloRepository.Insert(articulo);

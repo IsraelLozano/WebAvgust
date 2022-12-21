@@ -96,17 +96,17 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         }
 
         [HttpGet, DisableRequestSizeLimit]
-        [Route("GetExporToExcelArticulos/{IdUsuario:int}")]
-        public async Task<IActionResult> GetExporToExcelArticulos(int IdUsuario)
+        [Route("GetExporToExcelArticulos/{IdUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetExporToExcelArticulos(int IdUsuario, string filtro="")
         {
 
-            var articulos = await _articuloManager.GetListArticulos(IdUsuario);
+            var articulos = await _articuloManager.GetListArticulos(IdUsuario, filtro);
             var stream = new MemoryStream();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var xlPackage = new ExcelPackage(stream))
             {
 
-                var worksheet = xlPackage.Workbook.Worksheets.Add("Users");
+                var worksheet = xlPackage.Workbook.Worksheets.Add("Articulos");
                 var namedStyle = xlPackage.Workbook.Styles.CreateNamedStyle("HyperLink");
                 namedStyle.Style.Font.UnderLine = true;
                 namedStyle.Style.Font.Color.SetColor(Color.Blue);
@@ -158,7 +158,7 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
                 // Response.Clear();
             }
             stream.Position = 0;
-            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "users.xlsx");
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "articulos.xlsx");
         }
 
 

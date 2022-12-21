@@ -62,6 +62,7 @@
     <Folder Include="dbo\Tables\" />
     <Folder Include="Security\" />
     <Folder Include="DML" />
+    <Folder Include="DDL\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Pais.sql" />
@@ -86,6 +87,8 @@
     <Build Include="Security\Valeria_1.sql" />
     <Build Include="Security\RoleMemberships.sql" />
     <None Include="DML\qInsert.sql" />
+    <None Include="DDL\qAlters.sql" />
+    <None Include="DML\qDelete.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DML\qSelectAll.sql" />
