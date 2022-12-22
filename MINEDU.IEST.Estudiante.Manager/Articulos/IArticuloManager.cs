@@ -19,6 +19,7 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
         Task<bool> DeleteUsoByItem(int idArticulo, int item);
         Task<GetArticuloForEditDto> GetArticuloById(int id);
         Task<GetPdfDto> GetArticuloDocumentoPdf(int idArticulo, int idItem);
+        Task<string> GetEtiquetaDocumento(int idArticulo);
         Task<List<GetArticuloDto>> GetListArticulos(int IdUsuario, string filtro);
         Task<List<GetCaracteristicaDto>> GetListCaracteristicaByIdArticulo(int idArticulo);
         Task<List<GetComposicionDto>> GetListComposicionByIdArticulo(int idArticulo);

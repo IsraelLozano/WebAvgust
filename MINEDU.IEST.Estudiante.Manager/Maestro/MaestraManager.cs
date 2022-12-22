@@ -23,7 +23,7 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         public async Task<List<GetPaisDto>> getListPais()
         {
-            var query = _maestraUnitOfWork._paisRepository.GetAll();
+            var query = _maestraUnitOfWork._paisRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomPais));
 
             return _mapper.Map<List<GetPaisDto>>(query);
         }

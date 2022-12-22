@@ -46,34 +46,48 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
 
         public async Task<GetArticuloForEditDto> GetArticuloById(int id)
         {
-            var query = await _articuloUnitOfWork._articuloRepository.GetArticuloFullById(id);
-            var response = new GetArticuloForEditDto { articulo = new GetArticuloDto() };
-            if (query != null)
+            try
             {
-                response.articulo = _mapper.Map<GetArticuloDto>(query);
+                var query = await _articuloUnitOfWork._articuloRepository.GetArticuloFullById(id);
+                var response = new GetArticuloForEditDto { articulo = new GetArticuloDto() };
+                if (query != null)
+                {
+                    response.articulo = _mapper.Map<GetArticuloDto>(query);
 
-                response.articulo.Composicions = _mapper.Map<List<GetComposicionDto>>(query.Composicions);
-                response.articulo.Documentos = _mapper.Map<List<GetDocumentoDto>>(query.Documentos);
-                response.articulo.Usos = _mapper.Map<List<GetUsoDto>>(query.Usos);
-                response.articulo.Caracteristicas = _mapper.Map<List<GetCaracteristicaDto>>(query.Caracteristicas);
+                    response.articulo.Composicions = _mapper.Map<List<GetComposicionDto>>(query.Composicions);
+                    response.articulo.Documentos = _mapper.Map<List<GetDocumentoDto>>(query.Documentos);
+                    response.articulo.Usos = _mapper.Map<List<GetUsoDto>>(query.Usos);
+                    var etiqueta = await this.GetEtiquetaDocumento(id);
+                    response.articulo.Usos.ForEach(p =>
+                    {
+                        p.Dosis = etiqueta;
+                    });
+
+                    response.articulo.Caracteristicas = _mapper.Map<List<GetCaracteristicaDto>>(query.Caracteristicas);
+                }
+
+                response.paises = _mapper.Map<List<GetPaisDto>>(_maestraUnitOfWork._paisRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomPais)));
+                response.formuladores = _mapper.Map<List<GetFormuladorDto>>(_maestraUnitOfWork._formuladorRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomFormulador)));
+                response.tiposProductos = _mapper.Map<List<GetIdTipoProductoDto>>(_maestraUnitOfWork._tipoProductoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomTipoProducto)));
+                response.titulares = _mapper.Map<List<GetTitularRegistroDto>>(_maestraUnitOfWork._titularRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomTitularRegistro)));
+                response.tiposDocumentos = _mapper.Map<List<GetTipoDocumentoDto>>(_maestraUnitOfWork._tipoDocumentoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.Nombre)));
+                response.tiposPlagas = _mapper.Map<List<GetCientificoPlagaDto>>(_maestraUnitOfWork._cientificoPlagaRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NombreCientificoPlaga)));
+                response.tiposCultivos = _mapper.Map<List<GetCultivoDto>>(_maestraUnitOfWork._cultivoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NombreCultivo)));
+                response.cboAplicaciones = _mapper.Map<List<GetAplicacionDto>>(_maestraUnitOfWork._aplicacionRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.Descripcion)));
+                response.cboClase = _mapper.Map<List<GetClaseDto>>(_maestraUnitOfWork._claseRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.Descripcion)));
+                response.cboToxicologica = _mapper.Map<List<GetToxicologicaDto>>(_maestraUnitOfWork._toxicologicaRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.Descripcion)));
+                response.cboGrupoQuimico = _mapper.Map<List<GetGrupoQuimicoDto>>(_maestraUnitOfWork._grupoQuimicoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomGrupoQuimico)));
+                response.cboTipoFormulacion = _mapper.Map<List<GetTipoFormulacionDto>>(_maestraUnitOfWork._tipoFormulacionRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.CodTipoFormulacion)));
+                response.cboTipoIngredienteActivo = _mapper.Map<List<GetTipoIngredienteActivoDto>>(_maestraUnitOfWork._ingredienteActivoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomIngredienteActivo)));
+
+
+                return response;
             }
+            catch (Exception ex)
+            {
 
-            response.paises = _mapper.Map<List<GetPaisDto>>(_maestraUnitOfWork._paisRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomPais)));
-            response.formuladores = _mapper.Map<List<GetFormuladorDto>>(_maestraUnitOfWork._formuladorRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomFormulador)));
-            response.tiposProductos = _mapper.Map<List<GetIdTipoProductoDto>>(_maestraUnitOfWork._tipoProductoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomTipoProducto)));
-            response.titulares = _mapper.Map<List<GetTitularRegistroDto>>(_maestraUnitOfWork._titularRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomTitularRegistro)));
-            response.tiposDocumentos = _mapper.Map<List<GetTipoDocumentoDto>>(_maestraUnitOfWork._tipoDocumentoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.Nombre)));
-            response.tiposPlagas = _mapper.Map<List<GetCientificoPlagaDto>>(_maestraUnitOfWork._cientificoPlagaRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NombreCientificoPlaga)));
-            response.tiposCultivos = _mapper.Map<List<GetCultivoDto>>(_maestraUnitOfWork._cultivoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NombreCultivo)));
-            response.cboAplicaciones = _mapper.Map<List<GetAplicacionDto>>(_maestraUnitOfWork._aplicacionRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.Descripcion)));
-            response.cboClase = _mapper.Map<List<GetClaseDto>>(_maestraUnitOfWork._claseRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.Descripcion)));
-            response.cboToxicologica = _mapper.Map<List<GetToxicologicaDto>>(_maestraUnitOfWork._toxicologicaRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.Descripcion)));
-            response.cboGrupoQuimico = _mapper.Map<List<GetGrupoQuimicoDto>>(_maestraUnitOfWork._grupoQuimicoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomGrupoQuimico)));
-            response.cboTipoFormulacion = _mapper.Map<List<GetTipoFormulacionDto>>(_maestraUnitOfWork._tipoFormulacionRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomTipoFormulacion)));
-            response.cboTipoIngredienteActivo = _mapper.Map<List<GetTipoIngredienteActivoDto>>(_maestraUnitOfWork._ingredienteActivoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomIngredienteActivo)));
-
-
-            return response;
+                throw ex;
+            }
         }
 
         public async Task<bool> DeleteArticuloById(int id)
@@ -164,7 +178,7 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
 
             try
             {
-                var query = _articuloUnitOfWork._composicionRepository.GetAll(p => p.IdArticulo == idArticulo, includeProperties: "IngredienteActivoNavigation");
+                var query = _articuloUnitOfWork._composicionRepository.GetAll(p => p.IdArticulo == idArticulo, includeProperties: "IngredienteActivoNavigation,GrupoQuimicoNavegation");
                 return _mapper.Map<List<GetComposicionDto>>(query);
             }
             catch (Exception ex)
@@ -333,7 +347,14 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
             try
             {
                 var query = _articuloUnitOfWork._usoRepository.GetAll(p => p.IdArticulo == idArticulo, includeProperties: "IdCultivoNavigation,IdNomCientificoPlagaNavigation");
+                var etiqueta = await this.GetEtiquetaDocumento(idArticulo);
+                query.ForEach(p =>
+                {
+                    p.Dosis = etiqueta;
+                });
+
                 return _mapper.Map<List<GetUsoDto>>(query);
+
             }
             catch (Exception ex)
             {
@@ -358,6 +379,26 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
             }
         }
 
+        public async Task<string> GetEtiquetaDocumento(int idArticulo)
+        {
+            try
+            {
+                var query = _articuloUnitOfWork._documentoRepository.GetAll(p => p.IdArticulo == idArticulo && p.IdTipoDocumento == 3).FirstOrDefault();
+
+                if (query == null)
+                {
+                    return string.Empty;
+                }
+
+                return $"{query.IdItem}-{query.NomDocumento}";
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
 
         #endregion
 

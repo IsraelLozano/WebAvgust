@@ -9,7 +9,10 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust
         public int Iditem { get; set; }
         public int? IngredienteActivo { get; set; }
         public string FormuladorMolecular { get; set; }
+        public int idGrupoQuimico { get; set; }
+        public string ContracionIA { get; set; }
 
+        public GrupoQuimico GrupoQuimicoNavegation { get; set; }
         public Articulo IdArticuloNavigation { get; set; }
         public IngredienteActivo IngredienteActivoNavigation { get; set; }
     }

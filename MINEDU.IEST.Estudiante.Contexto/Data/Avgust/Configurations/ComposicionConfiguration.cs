@@ -31,6 +31,12 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Composicion_Articulo");
 
+            entity.HasOne(d => d.GrupoQuimicoNavegation)
+                .WithMany(p => p.Composiciones)
+                .HasForeignKey(d => d.idGrupoQuimico)
+                .HasConstraintName("FK__Composici__idGru__76619304")
+                .OnDelete(DeleteBehavior.Cascade);
+                
             entity.HasOne(d => d.IngredienteActivoNavigation)
                 .WithMany(p => p.Composicions)
                 .HasForeignKey(d => d.IngredienteActivo)

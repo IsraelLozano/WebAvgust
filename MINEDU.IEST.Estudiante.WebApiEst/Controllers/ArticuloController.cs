@@ -178,6 +178,12 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
             return Ok(await _articuloManager.GetListUsoByIdArticulo(id));
         }
 
+        [HttpGet("getetiqueta/{IdArticulo:int}")]
+        public async Task<IActionResult> GetEtiqueta(int IdArticulo)
+        {
+            return Ok(await _articuloManager.GetEtiquetaDocumento(IdArticulo));
+        }
+
         #endregion
 
     }

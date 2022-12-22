@@ -28,7 +28,7 @@ namespace IDCL.AVGUST.SIP.Repository.Articulos
                             NroRegistro = p.NroRegistro,
                             IdTipoProducto = p.IdTipoProducto,
                             IdFormulador = p.IdFormulador,
-                            IdGrupoQuimico = p.IdGrupoQuimico,
+                            //IdGrupoQuimico = p.IdGrupoQuimico,
                             IdTipoFormulacion = p.IdTipoFormulacion,
                             Concentracion = p.Concentracion,
                             IdTipoFormulacionNavigation = p.IdTipoFormulacion != null ? new TipoFormulacion
@@ -37,11 +37,11 @@ namespace IDCL.AVGUST.SIP.Repository.Articulos
                                 CodTipoFormulacion = p.IdTipoFormulacionNavigation.CodTipoFormulacion,
                                 NomTipoFormulacion = p.IdTipoFormulacionNavigation.NomTipoFormulacion,
                             } : null,
-                            IdGrupoQuimicoNavigation = p.IdGrupoQuimico != null ? new GrupoQuimico
-                            {
-                                IdGrupoQuimico = p.IdGrupoQuimicoNavigation.IdGrupoQuimico,
-                                NomGrupoQuimico = p.IdGrupoQuimicoNavigation.NomGrupoQuimico
-                            } : null,
+                            //IdGrupoQuimicoNavigation = p.IdGrupoQuimico != null ? new GrupoQuimico
+                            //{
+                            //    IdGrupoQuimico = p.IdGrupoQuimicoNavigation.IdGrupoQuimico,
+                            //    NomGrupoQuimico = p.IdGrupoQuimicoNavigation.NomGrupoQuimico
+                            //} : null,
                             IdFormuladorNavigation = p.IdFormulador != null ? new Formulador
                             {
                                 IdFormulador = p.IdFormuladorNavigation.IdFormulador,
@@ -70,10 +70,17 @@ namespace IDCL.AVGUST.SIP.Repository.Articulos
                                 Iditem = c.Iditem,
                                 IngredienteActivo = c.IngredienteActivo,
                                 FormuladorMolecular = c.FormuladorMolecular,
-                                IngredienteActivoNavigation  = new IngredienteActivo
+                                idGrupoQuimico = c.idGrupoQuimico,
+                                ContracionIA = c.ContracionIA,
+                                IngredienteActivoNavigation = new IngredienteActivo
                                 {
                                     IngredenteActivo = c.IngredienteActivoNavigation.IngredenteActivo,
                                     NomIngredienteActivo = c.IngredienteActivoNavigation.NomIngredienteActivo
+                                },
+                                GrupoQuimicoNavegation = new GrupoQuimico
+                                {
+                                    IdGrupoQuimico = c.GrupoQuimicoNavegation.IdGrupoQuimico,
+                                    NomGrupoQuimico = c.GrupoQuimicoNavegation.NomGrupoQuimico
                                 }
                             }).ToList(),
                             Documentos = p.Documentos.Select(d => new Documento
@@ -113,7 +120,7 @@ namespace IDCL.AVGUST.SIP.Repository.Articulos
                             {
                                 IdArticulo = c.IdArticulo,
                                 IdItem = c.IdItem,
-                                IdAplicacion = c.IdAplicacion,
+                                //IdAplicacion = c.IdAplicacion,
                                 IdClase = c.IdClase,
                                 IdToxicologica = c.IdToxicologica,
                                 IdClaseNavigation = new Clase
@@ -121,11 +128,11 @@ namespace IDCL.AVGUST.SIP.Repository.Articulos
                                     IdClase = c.IdClaseNavigation.IdClase,
                                     Descripcion = c.IdClaseNavigation.Descripcion,
                                 },
-                                IdAplicacionNavigation = new Aplicacion
-                                {
-                                    IdAplicacion = c.IdAplicacionNavigation.IdAplicacion,
-                                    Descripcion = c.IdAplicacionNavigation.Descripcion,
-                                },
+                                //IdAplicacionNavigation = new Aplicacion
+                                //{
+                                //    IdAplicacion = c.IdAplicacionNavigation.IdAplicacion,
+                                //    Descripcion = c.IdAplicacionNavigation.Descripcion,
+                                //},
                                 IdToxicologicaNavigation = new Toxicologica
                                 {
                                     IdToxicologica = c.IdToxicologicaNavigation.IdToxicologica,
