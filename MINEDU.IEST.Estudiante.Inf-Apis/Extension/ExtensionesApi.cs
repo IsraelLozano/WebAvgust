@@ -1,6 +1,7 @@
 ﻿using IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto;
 using IDCL.AVGUST.SIP.Manager.Articulos;
 using IDCL.AVGUST.SIP.Manager.Maestro;
+using IDCL.AVGUST.SIP.Manager.Reporte;
 using IDCL.AVGUST.SIP.Manager.Seguridad;
 using IDCL.AVGUST.SIP.Repository.Articulos;
 using IDCL.AVGUST.SIP.Repository.Maestra;
@@ -73,6 +74,7 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
             services.AddScoped<IArticuloManager, ArticuloManager>();
             services.AddScoped<ISeguridadManager, SeguridadManager>();
             services.AddScoped<IMaestraManager, MaestraManager>();
+            services.AddScoped<IReporteManager, ReporteManager>();
 
             return services;
 

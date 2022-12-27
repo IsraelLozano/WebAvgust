@@ -126,8 +126,8 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
                 worksheet.Cells["A4"].Value = "Id";
                 worksheet.Cells["B4"].Value = "Nombre";
-                worksheet.Cells["C4"].Value = "NroRegistro";
-                worksheet.Cells["D4"].Value = "Pais";
+                worksheet.Cells["C4"].Value = "Pais";
+                worksheet.Cells["D4"].Value = "NroRegistro";
                 worksheet.Cells["E4"].Value = "TipoProducto";
                 worksheet.Cells["F4"].Value = "Titular Registro";
                 worksheet.Cells["G4"].Value = "Estado";
@@ -144,7 +144,7 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
                     worksheet.Cells[row, 4].Value = user.NroRegistro;
                     worksheet.Cells[row, 5].Value = user.IdTipoProductoNavigation.NomTipoProducto;
                     worksheet.Cells[row, 6].Value = user.IdTitularRegistroNavigation.NomTitularRegistro;
-                    worksheet.Cells[row, 7].Value = "ACTIVO";
+                    worksheet.Cells[row, 7].Value = user.FlgActivo ? "ACTIVO" : "ANULADO";
 
                     row++;
                 }
