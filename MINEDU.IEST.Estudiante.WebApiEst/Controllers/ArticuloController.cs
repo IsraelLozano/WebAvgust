@@ -22,10 +22,10 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
             this._articuloManager = articuloManager;
         }
 
-        [HttpGet("GetListArticulo/{IdUsuario:int}/{filtro?}")]
-        public async Task<IActionResult> GetArticulos(int IdUsuario, string filtro = "")
+        [HttpGet("GetListArticulo/{IdUsuario:int}/{tipoFiltro:int}/{idIngredienteActivo:int}/{filtro?}")]
+        public async Task<IActionResult> GetArticulos(int IdUsuario, int tipoFiltro, int idIngredienteActivo = 0, string filtro = "" )
         {
-            return Ok(await _articuloManager.GetListArticulos(IdUsuario, filtro));
+            return Ok(await _articuloManager.GetListArticulos(IdUsuario, tipoFiltro, filtro, idIngredienteActivo));
         }
 
         [HttpGet("{id:int}")]

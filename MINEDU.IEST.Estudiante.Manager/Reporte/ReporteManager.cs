@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust;
 using IDCL.AVGUST.SIP.ManagerDto.Articulos;
 using IDCL.AVGUST.SIP.Repository.UnitOfWork;
 using MINEDU.IEST.Estudiante.Inf_Utils.Dtos;
+using MINEDU.IEST.Estudiante.Inf_Utils.Enumerados;
 using MINEDU.IEST.Estudiante.Inf_Utils.Helpers.FileManager;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -29,81 +31,136 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
         }
 
 
-        public async Task<List<GetArticuloDto>> GetArticulosById(int idUsuario)
+        #region Querys
+        public async Task<List<GetArticuloDto>> GetArticulosById(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
         {
             var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == idUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
 
-            var query = _articuloUnitOfWork._articuloRepository
-                .GetAll(p => paises.Contains(p.IdPais.Value)
-                   && p.FlgActivo,
-                includeProperties: "IdFormuladorNavigation,IdGrupoQuimicoNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation,IdTipoFormulacionNavigation,Composicions,Documentos,Usos,Caracteristicas,Composicions.GrupoQuimicoNavegation," +
-                "Composicions.IngredienteActivoNavigation," +
-                "Documentos.IdTipoDocumentoNavigation," +
-                "Usos.IdCultivoNavigation," +
-                "Usos.IdNomCientificoPlagaNavigation," +
-                "Caracteristicas.IdClaseNavigation," +
-                "Caracteristicas.IdToxicologicaNavigation",
-                orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+            var filter = new List<Articulo>();
 
-            var response = _mapper.Map<List<GetArticuloDto>>(query);
+            if ((int)TipoBusquedaArticulo.nombre == tipoFiltro)
+            {
+                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
+              includeProperties: "IdFormuladorNavigation,IdGrupoQuimicoNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation,IdTipoFormulacionNavigation,Composicions,Documentos,Usos,Caracteristicas,Composicions.GrupoQuimicoNavegation," +
+              "Composicions.IngredienteActivoNavigation," +
+              "Documentos.IdTipoDocumentoNavigation," +
+              "Usos.IdCultivoNavigation," +
+              "Usos.IdNomCientificoPlagaNavigation," +
+              "Caracteristicas.IdClaseNavigation," +
+              "Caracteristicas.IdToxicologicaNavigation",
+              orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+
+                filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+
+            }
+            else if ((int)TipoBusquedaArticulo.ingredienteActivo == tipoFiltro)
+            {
+                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo && p.Composicions.Any(l => l.IngredienteActivo == idIngredienteActivo),
+             includeProperties: "IdFormuladorNavigation,IdGrupoQuimicoNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation,IdTipoFormulacionNavigation,Composicions,Documentos,Usos,Caracteristicas,Composicions.GrupoQuimicoNavegation," +
+             "Composicions.IngredienteActivoNavigation," +
+             "Documentos.IdTipoDocumentoNavigation," +
+             "Usos.IdCultivoNavigation," +
+             "Usos.IdNomCientificoPlagaNavigation," +
+             "Caracteristicas.IdClaseNavigation," +
+             "Caracteristicas.IdToxicologicaNavigation", orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+                filter = query.ToList();
+            }
+
+            var response = _mapper.Map<List<GetArticuloDto>>(filter);
             return response;
         }
-
-
-        public async Task<List<GetArticuloDto>> GetArticulosPorComposicion(int idUsuario)
+        public async Task<List<GetArticuloDto>> GetArticulosPorComposicion(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
         {
             var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == idUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
 
-            var query = _articuloUnitOfWork._articuloRepository
-                .GetAll(p => paises.Contains(p.IdPais.Value)
-                    && p.FlgActivo,
-                includeProperties: "IdFormuladorNavigation,IdTitularRegistroNavigation,Composicions,Composicions.GrupoQuimicoNavegation," +
-                "Composicions.IngredienteActivoNavigation",
-                orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+            var filter = new List<Articulo>();
 
-            var response = _mapper.Map<List<GetArticuloDto>>(query);
+            if ((int)TipoBusquedaArticulo.nombre == tipoFiltro)
+            {
+                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
+           includeProperties: "IdFormuladorNavigation,IdTitularRegistroNavigation,Composicions,Composicions.GrupoQuimicoNavegation," +
+           "Composicions.IngredienteActivoNavigation",
+           orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+
+                filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            else if ((int)TipoBusquedaArticulo.ingredienteActivo == tipoFiltro)
+            {
+                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo && p.Composicions.Any(l => l.IngredienteActivo == idIngredienteActivo),
+                    includeProperties: "IdFormuladorNavigation,IdTitularRegistroNavigation,Composicions,Composicions.GrupoQuimicoNavegation," +
+         "Composicions.IngredienteActivoNavigation",
+                    orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+
+                filter = query.ToList();
+            }
+
+            var response = _mapper.Map<List<GetArticuloDto>>(filter);
             return response;
         }
-
-
-        public async Task<List<GetArticuloDto>> GetArticulosPorPlaga(int idUsuario)
+        public async Task<List<GetArticuloDto>> GetArticulosPorPlaga(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
         {
             var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == idUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
 
-            var query = _articuloUnitOfWork._articuloRepository
-                .GetAll(p => paises.Contains(p.IdPais.Value)
-                    && p.FlgActivo,
-                includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Usos,Usos.IdCultivoNavigation," +
-                "Usos.IdNomCientificoPlagaNavigation",
-                orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+            var filter = new List<Articulo>();
 
-            var response = _mapper.Map<List<GetArticuloDto>>(query);
+            if ((int)TipoBusquedaArticulo.nombre == tipoFiltro)
+            {
+                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
+                    includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Usos,Usos.IdCultivoNavigation,Usos.IdNomCientificoPlagaNavigation",
+                    orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+
+                filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            else if ((int)TipoBusquedaArticulo.ingredienteActivo == tipoFiltro)
+            {
+                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo && p.Composicions.Any(l => l.IngredienteActivo == idIngredienteActivo),
+                    includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Usos,Usos.IdCultivoNavigation,Usos.IdNomCientificoPlagaNavigation",
+                    orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+
+                filter = query.ToList();
+            }
+
+
+            var response = _mapper.Map<List<GetArticuloDto>>(filter);
             return response;
         }
-
-
-        public async Task<List<GetArticuloDto>> GetArticulosPorCultivo(int idUsuario)
+        public async Task<List<GetArticuloDto>> GetArticulosPorCultivo(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
         {
             var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == idUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
 
-            var query = _articuloUnitOfWork._articuloRepository
-                .GetAll(p => paises.Contains(p.IdPais.Value)
-                    && p.FlgActivo,
-                includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Caracteristicas,Caracteristicas.IdClaseNavigation,Usos,Usos.IdCultivoNavigation," +
-                "Usos.IdNomCientificoPlagaNavigation,Caracteristicas.IdToxicologicaNavigation",
-                orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+            var filter = new List<Articulo>();
 
-            var response = _mapper.Map<List<GetArticuloDto>>(query);
+            if ((int)TipoBusquedaArticulo.nombre == tipoFiltro)
+            {
+                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
+                    includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Caracteristicas,Caracteristicas.IdClaseNavigation,Usos,Usos.IdCultivoNavigation," +
+            "Usos.IdNomCientificoPlagaNavigation,Caracteristicas.IdToxicologicaNavigation",
+                    orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+
+                filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            else if ((int)TipoBusquedaArticulo.ingredienteActivo == tipoFiltro)
+            {
+                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo && p.Composicions.Any(l => l.IngredienteActivo == idIngredienteActivo),
+                  includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Caracteristicas,Caracteristicas.IdClaseNavigation,Usos,Usos.IdCultivoNavigation," +
+          "Usos.IdNomCientificoPlagaNavigation,Caracteristicas.IdToxicologicaNavigation",
+                  orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+                filter = query.ToList();
+            }
+
+            var response = _mapper.Map<List<GetArticuloDto>>(filter);
             return response;
         }
+        #endregion
 
-        public async Task<MemoryStream> GetExcelArticulosGeneral(int idUsuario)
+        #region Reporte Excel
+        public async Task<MemoryStream> GetExcelArticulosGeneral(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
         {
-            var data = await this.GetArticulosById(idUsuario);
+            var data = await this.GetArticulosById(idUsuario, tipoFiltro, filtro, idIngredienteActivo);
             var stream = new MemoryStream();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var xlPackage = new ExcelPackage(stream))
@@ -114,7 +171,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 namedStyle.Style.Font.Color.SetColor(Color.Blue);
                 const int startRow = 5;
                 var row = startRow;
-
+                worksheet.View.ShowGridLines = false;
                 //Create Headers and format them
                 worksheet.Cells["A1"].Value = "REPORTE DE PRODUCTOS FORMULADOS";
                 using (var r = worksheet.Cells["A1:M1"])
@@ -125,6 +182,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                     r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                     r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
                 }
+
 
                 worksheet.Cells["A4"].Value = "Nombre Comercial";
                 worksheet.Cells["B4"].Value = "Nro Registro";
@@ -148,6 +206,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 foreach (var item in data)
                 {
                     worksheet.Cells[row, 1].Value = item.NombreComercial;
+                    //worksheet.Cells[row, 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                     worksheet.Cells[row, 2].Value = item.NroRegistro;
                     worksheet.Cells[row, 3].Value = item.IdPaisNavigation.NomPais;
                     worksheet.Cells[row, 4].Value = item.IdTitularRegistroNavigation.NomTitularRegistro;
@@ -163,6 +222,18 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
 
                     row++;
                 }
+                var sRango = "A4:M" + (row - 1).ToString();
+                worksheet.Cells[sRango].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[sRango].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                worksheet.Cells[sRango].AutoFitColumns();
+                worksheet.Cells[sRango].Style.HorizontalAlignment = ExcelHorizontalAlignment.General;
+                worksheet.Cells[sRango].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Cells[sRango].Style.WrapText = false;
 
                 xlPackage.Workbook.Properties.Title = "Lista de articulos";
                 xlPackage.Workbook.Properties.Author = "Israel Lozano del Castillo danielitolozano85@gmail.com";
@@ -175,11 +246,9 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
 
             return stream;
         }
-
-
-        public async Task<MemoryStream> GetExcelArticulosPorComposicion(int idUsuario)
+        public async Task<MemoryStream> GetExcelArticulosPorComposicion(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
         {
-            var data = await this.GetArticulosPorComposicion(idUsuario);
+            var data = await this.GetArticulosPorComposicion(idUsuario, tipoFiltro, filtro, idIngredienteActivo);
             var stream = new MemoryStream();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var xlPackage = new ExcelPackage(stream))
@@ -190,6 +259,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 namedStyle.Style.Font.Color.SetColor(Color.Blue);
                 const int startRow = 5;
                 var row = startRow;
+                worksheet.View.ShowGridLines = false;
 
                 //Create Headers and format them
                 worksheet.Cells["A1"].Value = "REPORTE POR COMPOSICIÓN";
@@ -219,12 +289,25 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                     worksheet.Cells[row, 1].Value = item.NombreComercial;
                     worksheet.Cells[row, 2].Value = "'" + string.Join(Environment.NewLine, item.Composicions.Select(p => $"- {p.IngredienteActivoNavigation.NomIngredienteActivo}"));
                     worksheet.Cells[row, 3].Value = "'" + string.Join(Environment.NewLine, item.Composicions.Select(p => $"- {p.ContracionIA}"));
-                    worksheet.Cells[row, 4].Value = "'" + string.Join(Environment.NewLine, item.Composicions.Select(p=>$"- {p.GrupoQuimicoNavegation.NomGrupoQuimico}"));
+                    worksheet.Cells[row, 4].Value = "'" + string.Join(Environment.NewLine, item.Composicions.Select(p => $"- {p.GrupoQuimicoNavegation.NomGrupoQuimico}"));
                     worksheet.Cells[row, 5].Value = item.IdTitularRegistroNavigation.NomTitularRegistro;
                     worksheet.Cells[row, 6].Value = item.IdFormuladorNavigation.NomFormulador;
 
                     row++;
                 }
+
+                var sRango = "A4:F" + (row - 1).ToString();
+                worksheet.Cells[sRango].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[sRango].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                worksheet.Cells[sRango].AutoFitColumns();
+                worksheet.Cells[sRango].Style.HorizontalAlignment = ExcelHorizontalAlignment.General;
+                worksheet.Cells[sRango].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Cells[sRango].Style.WrapText = false;
 
                 xlPackage.Workbook.Properties.Title = "Lista de articulos";
                 xlPackage.Workbook.Properties.Author = "Israel Lozano del Castillo danielitolozano85@gmail.com";
@@ -237,11 +320,9 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
 
             return stream;
         }
-
-
-        public async Task<MemoryStream> GetExcelArticulosPorPlaga(int idUsuario)
+        public async Task<MemoryStream> GetExcelArticulosPorPlaga(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
         {
-            var data = await this.GetArticulosPorPlaga(idUsuario);
+            var data = await this.GetArticulosPorPlaga(idUsuario, tipoFiltro, filtro, idIngredienteActivo);
             var stream = new MemoryStream();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var xlPackage = new ExcelPackage(stream))
@@ -252,6 +333,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 namedStyle.Style.Font.Color.SetColor(Color.Blue);
                 const int startRow = 5;
                 var row = startRow;
+                worksheet.View.ShowGridLines = false;
 
                 //Create Headers and format them
                 worksheet.Cells["A1"].Value = "REPORTE POR PLAGA";
@@ -287,6 +369,19 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                     row++;
                 }
 
+                var sRango = "A4:F" + (row - 1).ToString();
+                worksheet.Cells[sRango].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[sRango].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                worksheet.Cells[sRango].AutoFitColumns();
+                worksheet.Cells[sRango].Style.HorizontalAlignment = ExcelHorizontalAlignment.General;
+                worksheet.Cells[sRango].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Cells[sRango].Style.WrapText = false;
+
                 xlPackage.Workbook.Properties.Title = "Lista de articulos";
                 xlPackage.Workbook.Properties.Author = "Israel Lozano del Castillo danielitolozano85@gmail.com";
                 xlPackage.Workbook.Properties.Subject = "List de Articulos";
@@ -298,10 +393,9 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
 
             return stream;
         }
-
-        public async Task<MemoryStream> GetExcelArticulosPorCultivo(int idUsuario)
+        public async Task<MemoryStream> GetExcelArticulosPorCultivo(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
         {
-            var data = await this.GetArticulosPorCultivo(idUsuario);
+            var data = await this.GetArticulosPorCultivo(idUsuario, tipoFiltro, filtro, idIngredienteActivo);
             var stream = new MemoryStream();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var xlPackage = new ExcelPackage(stream))
@@ -312,6 +406,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 namedStyle.Style.Font.Color.SetColor(Color.Blue);
                 const int startRow = 5;
                 var row = startRow;
+                worksheet.View.ShowGridLines = false;
 
                 //Create Headers and format them
                 worksheet.Cells["A1"].Value = "REPORTE POR CULTIVO";
@@ -347,6 +442,19 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                     row++;
                 }
 
+                var sRango = "A4:F" + (row - 1).ToString();
+                worksheet.Cells[sRango].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[sRango].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                worksheet.Cells[sRango].AutoFitColumns();
+                worksheet.Cells[sRango].Style.HorizontalAlignment = ExcelHorizontalAlignment.General;
+                worksheet.Cells[sRango].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Cells[sRango].Style.WrapText = false;
+
                 xlPackage.Workbook.Properties.Title = "Lista de articulos";
                 xlPackage.Workbook.Properties.Author = "Israel Lozano del Castillo danielitolozano85@gmail.com";
                 xlPackage.Workbook.Properties.Subject = "List de Articulos";
@@ -358,6 +466,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
 
             return stream;
         }
+        #endregion
 
     }
 }

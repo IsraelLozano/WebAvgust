@@ -5,6 +5,7 @@ using IDCL.AVGUST.SIP.ManagerDto.Articulos.Add;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros;
 using IDCL.AVGUST.SIP.Repository.UnitOfWork;
 using MINEDU.IEST.Estudiante.Inf_Utils.Dtos;
+using MINEDU.IEST.Estudiante.Inf_Utils.Enumerados;
 using MINEDU.IEST.Estudiante.Inf_Utils.Helpers.FileManager;
 using System.Linq;
 
@@ -28,18 +29,34 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
             _seguridadUnitOfWork = seguridadUnitOfWork;
         }
 
-        public async Task<List<GetArticuloDto>> GetListArticulos(int IdUsuario, string filtro)
+        public async Task<List<GetArticuloDto>> GetListArticulos(int IdUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
         {
             var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == IdUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
 
-            var query = _articuloUnitOfWork._articuloRepository
-                .GetAll(p => paises.Contains(p.IdPais.Value)
-                && p.FlgActivo,
-                includeProperties: "IdFormuladorNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation",
-                orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+            var filter = new List<Articulo>();
 
-            var filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+            if ((int)TipoBusquedaArticulo.nombre == tipoFiltro)
+            {
+                var query = _articuloUnitOfWork._articuloRepository
+                    .GetAll(p => paises.Contains(p.IdPais.Value)
+                    && p.FlgActivo,
+                    includeProperties: "IdFormuladorNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation",
+                    orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+
+                filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            else if ((int)TipoBusquedaArticulo.ingredienteActivo == tipoFiltro)
+            {
+                var query = _articuloUnitOfWork._articuloRepository
+                   .GetAll(p => paises.Contains(p.IdPais.Value)
+                   && p.FlgActivo
+                   && p.Composicions.Any(l => l.IngredienteActivo == idIngredienteActivo),
+                   includeProperties: "IdFormuladorNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation",
+                   orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+                filter = query.ToList();
+            }
+
             var response = _mapper.Map<List<GetArticuloDto>>(filter);
             return response;
         }

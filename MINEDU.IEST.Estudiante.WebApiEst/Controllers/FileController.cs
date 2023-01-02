@@ -96,11 +96,11 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         }
 
         [HttpGet, DisableRequestSizeLimit]
-        [Route("GetExporToExcelArticulos/{IdUsuario:int}/{filtro?}")]
-        public async Task<IActionResult> GetExporToExcelArticulos(int IdUsuario, string filtro="")
+        [Route("GetExporToExcelArticulos/{IdUsuario:int}/{tipoFiltro:int}/{idIngredienteActivo:int}/{filtro?}")]
+        public async Task<IActionResult> GetExporToExcelArticulos(int IdUsuario, int tipoFiltro, int idIngredienteActivo = 0, string filtro = "")
         {
 
-            var articulos = await _articuloManager.GetListArticulos(IdUsuario, filtro);
+            var articulos = await _articuloManager.GetListArticulos(IdUsuario, tipoFiltro, filtro, idIngredienteActivo);
             var stream = new MemoryStream();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var xlPackage = new ExcelPackage(stream))
@@ -112,7 +112,7 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
                 namedStyle.Style.Font.Color.SetColor(Color.Blue);
                 const int startRow = 5;
                 var row = startRow;
-
+                worksheet.View.ShowGridLines = false;
                 //Create Headers and format them
                 worksheet.Cells["A1"].Value = "Lista de Articulos";
                 using (var r = worksheet.Cells["A1:G1"])
@@ -148,6 +148,19 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
                     row++;
                 }
+
+                var sRango = "A4:G" + (row - 1).ToString();
+                worksheet.Cells[sRango].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[sRango].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                worksheet.Cells[sRango].AutoFitColumns();
+                worksheet.Cells[sRango].Style.HorizontalAlignment = ExcelHorizontalAlignment.General;
+                worksheet.Cells[sRango].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Cells[sRango].Style.WrapText = false;
 
                 // set some core property values
                 xlPackage.Workbook.Properties.Title = "Lista de articulos";

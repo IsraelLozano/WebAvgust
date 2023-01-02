@@ -54,5 +54,15 @@ select * from Toxicologica
 
 
 select * from Articulo
+
+select * from Composicion
+ select * from Caracteristicas
+select * from Usos
+select * from documentos
+
+select * from ingredienteactivo
 select * from Clase WHERE IdTipoProducto = 2 
 SELECT * from idTipoProducto WHERE idTipoProducto = 2
+
+
+select * from TipoDocumento

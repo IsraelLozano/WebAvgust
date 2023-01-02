@@ -62,6 +62,11 @@
 
     #region Enumerado - Detalle
 
+    public enum TipoBusquedaArticulo
+    {
+        nombre = 1,
+        ingredienteActivo = 2
+    }
     public enum EnumTIPO_ESTADO_REGISTRO
     {
         ACTIVO = 1,
