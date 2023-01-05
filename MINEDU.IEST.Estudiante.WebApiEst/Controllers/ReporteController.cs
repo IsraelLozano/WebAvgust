@@ -30,16 +30,16 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
             return Ok(await _reporteManager.GetArticulosPorComposicion(IdUsuario, tipoFiltro, filtro, idIngredienteActivo));
         }
 
-        [HttpGet("GetReporteArticulosPlaga/{IdUsuario:int}/{tipoFiltro:int}/{idIngredienteActivo:int}/{filtro?}")]
-        public async Task<IActionResult> GetReporteArticulosPlaga(int IdUsuario, int tipoFiltro, string filtro = "", int idIngredienteActivo = 0)
+        [HttpGet("GetReporteArticulosPlaga/{idUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetReporteArticulosPlaga(int idUsuario, string filtro)
         {
-            return Ok(await _reporteManager.GetArticulosPorPlaga(IdUsuario, tipoFiltro, filtro, idIngredienteActivo));
+            return Ok(await _reporteManager.GetArticulosPorPlaga(idUsuario, filtro));
         }
 
-        [HttpGet("GetReporteArticulosCultivo/{IdUsuario:int}/{tipoFiltro:int}/{idIngredienteActivo:int}/{filtro?}")]
-        public async Task<IActionResult> GetReporteArticulosCultivo(int IdUsuario, int tipoFiltro, string filtro = "", int idIngredienteActivo = 0)
+        [HttpGet("GetReporteArticulosCultivo/{idUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetReporteArticulosCultivo(int idUsuario, string filtro)
         {
-            return Ok(await _reporteManager.GetArticulosPorCultivo(IdUsuario, tipoFiltro, filtro, idIngredienteActivo));
+            return Ok(await _reporteManager.GetArticulosPorCultivo(idUsuario, filtro));
         }
 
         #region Excel
@@ -66,19 +66,19 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         }
 
         [HttpGet, DisableRequestSizeLimit]
-        [Route("GetExcelArticulosPorPlaga/{IdUsuario:int}/{tipoFiltro:int}/{idIngredienteActivo:int}/{filtro?}")]
-        public async Task<IActionResult> GetExcelArticulosPorPlaga(int IdUsuario, int tipoFiltro, string filtro = "", int idIngredienteActivo = 0)
+        [Route("GetExcelArticulosPorPlaga/{idUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetExcelArticulosPorPlaga(int idUsuario, string filtro)
         {
-            var query = await _reporteManager.GetExcelArticulosPorPlaga(IdUsuario, tipoFiltro, filtro, idIngredienteActivo);
+            var query = await _reporteManager.GetExcelArticulosPorPlaga(idUsuario, filtro);
 
             return File(query, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "articulosByPlaga.xlsx");
 
         }
         [HttpGet, DisableRequestSizeLimit]
-        [Route("GetExcelArticulosPorCultivo/{IdUsuario:int}/{tipoFiltro:int}/{idIngredienteActivo:int}/{filtro?}")]
-        public async Task<IActionResult> GetExcelArticulosPorCultivo(int IdUsuario, int tipoFiltro, string filtro = "", int idIngredienteActivo = 0)
+        [Route("GetExcelArticulosPorCultivo/{idUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetExcelArticulosPorCultivo(int idUsuario, string filtro)
         {
-            var query = await _reporteManager.GetExcelArticulosPorCultivo(IdUsuario, tipoFiltro, filtro, idIngredienteActivo);
+            var query = await _reporteManager.GetExcelArticulosPorCultivo(idUsuario, filtro);
 
             return File(query, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "articulosByPlaga.xlsx");
 

@@ -17,7 +17,7 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
 
             entity.ToTable("IngredienteActivo");
 
-            entity.Property(e => e.IngredenteActivo).ValueGeneratedNever();
+            entity.Property(e => e.IngredenteActivo);
 
             entity.Property(e => e.NomIngredienteActivo)
                 .HasMaxLength(100)

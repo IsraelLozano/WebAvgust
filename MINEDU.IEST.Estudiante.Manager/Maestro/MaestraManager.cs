@@ -565,20 +565,28 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         public async Task<GetTipoIngredienteActivoDto> CreateOrUpdateTipoIngredienteActivo(GetTipoIngredienteActivoDto model)
         {
-            var entidad = _mapper.Map<IngredienteActivo>(model);
-            if (entidad.IngredenteActivo == 0)
+            try
             {
-                _maestraUnitOfWork._ingredienteActivoRepository.Insert(entidad);
+                var entidad = _mapper.Map<IngredienteActivo>(model);
+                if (entidad.IngredenteActivo == 0)
+                {
+                    _maestraUnitOfWork._ingredienteActivoRepository.Insert(entidad);
+                }
+                else
+                {
+                    entidad.estado = true;
+                    _maestraUnitOfWork._ingredienteActivoRepository.Update(entidad);
+                }
+
+                await _maestraUnitOfWork.SaveAsync();
+
+                return _mapper.Map<GetTipoIngredienteActivoDto>(entidad);
             }
-            else
+            catch (Exception ex)
             {
-                entidad.estado = true;
-                _maestraUnitOfWork._ingredienteActivoRepository.Update(entidad);
+
+                throw ex;
             }
-
-            await _maestraUnitOfWork.SaveAsync();
-
-            return _mapper.Map<GetTipoIngredienteActivoDto>(entidad);
         }
 
         public async Task<bool> AnularTipoIngredienteActivo(int id)

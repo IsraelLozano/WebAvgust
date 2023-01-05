@@ -8,6 +8,7 @@ using MINEDU.IEST.Estudiante.Inf_Utils.Helpers.FileManager;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Drawing;
+using System.Linq;
 
 namespace IDCL.AVGUST.SIP.Manager.Reporte
 {
@@ -99,58 +100,43 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
             var response = _mapper.Map<List<GetArticuloDto>>(filter);
             return response;
         }
-        public async Task<List<GetArticuloDto>> GetArticulosPorPlaga(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
+        public async Task<List<GetArticuloDto>> GetArticulosPorPlaga(int idUsuario, string filtro)
         {
             var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == idUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
 
             var filter = new List<Articulo>();
 
-            if ((int)TipoBusquedaArticulo.nombre == tipoFiltro)
-            {
-                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
-                    includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Usos,Usos.IdCultivoNavigation,Usos.IdNomCientificoPlagaNavigation",
-                    orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
 
-                filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
-            else if ((int)TipoBusquedaArticulo.ingredienteActivo == tipoFiltro)
-            {
-                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo && p.Composicions.Any(l => l.IngredienteActivo == idIngredienteActivo),
-                    includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Usos,Usos.IdCultivoNavigation,Usos.IdNomCientificoPlagaNavigation",
-                    orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+            var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value)
+            && p.FlgActivo,
+                includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Usos,Usos.IdCultivoNavigation,Usos.IdNomCientificoPlagaNavigation",
+                orderBy: p => p.OrderByDescending(l => l.NombreComercial)).ToList();
 
-                filter = query.ToList();
-            }
-
+            filter = query
+                .Where(p => p.Usos.Select(l => l.IdNomCientificoPlagaNavigation.NombreCientificoPlaga).Contains(filtro)).ToList();
 
             var response = _mapper.Map<List<GetArticuloDto>>(filter);
             return response;
         }
-        public async Task<List<GetArticuloDto>> GetArticulosPorCultivo(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
+        public async Task<List<GetArticuloDto>> GetArticulosPorCultivo(int idUsuario, string filtro)
         {
             var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == idUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
 
             var filter = new List<Articulo>();
-
-            if ((int)TipoBusquedaArticulo.nombre == tipoFiltro)
-            {
+                      
                 var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
                     includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Caracteristicas,Caracteristicas.IdClaseNavigation,Usos,Usos.IdCultivoNavigation," +
             "Usos.IdNomCientificoPlagaNavigation,Caracteristicas.IdToxicologicaNavigation",
                     orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
 
-                filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
-            else if ((int)TipoBusquedaArticulo.ingredienteActivo == tipoFiltro)
-            {
-                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo && p.Composicions.Any(l => l.IngredienteActivo == idIngredienteActivo),
-                  includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Caracteristicas,Caracteristicas.IdClaseNavigation,Usos,Usos.IdCultivoNavigation," +
-          "Usos.IdNomCientificoPlagaNavigation,Caracteristicas.IdToxicologicaNavigation",
-                  orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
-                filter = query.ToList();
-            }
+
+            filter = query
+                .Where(p => p.Usos.Select(l => l.IdCultivoNavigation.NombreCultivo).Contains(filtro)).ToList();
+
+            //filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+
 
             var response = _mapper.Map<List<GetArticuloDto>>(filter);
             return response;
@@ -320,9 +306,9 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
 
             return stream;
         }
-        public async Task<MemoryStream> GetExcelArticulosPorPlaga(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
+        public async Task<MemoryStream> GetExcelArticulosPorPlaga(int idUsuario, string filtro)
         {
-            var data = await this.GetArticulosPorPlaga(idUsuario, tipoFiltro, filtro, idIngredienteActivo);
+            var data = await this.GetArticulosPorPlaga(idUsuario, filtro);
             var stream = new MemoryStream();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var xlPackage = new ExcelPackage(stream))
@@ -393,9 +379,9 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
 
             return stream;
         }
-        public async Task<MemoryStream> GetExcelArticulosPorCultivo(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
+        public async Task<MemoryStream> GetExcelArticulosPorCultivo(int idUsuario, string filtro)
         {
-            var data = await this.GetArticulosPorCultivo(idUsuario, tipoFiltro, filtro, idIngredienteActivo);
+            var data = await this.GetArticulosPorCultivo(idUsuario, filtro);
             var stream = new MemoryStream();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var xlPackage = new ExcelPackage(stream))

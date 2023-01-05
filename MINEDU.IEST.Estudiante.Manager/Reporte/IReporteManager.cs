@@ -6,11 +6,11 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
     {
         Task<List<GetArticuloDto>> GetArticulosById(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo);
         Task<List<GetArticuloDto>> GetArticulosPorComposicion(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo);
-        Task<List<GetArticuloDto>> GetArticulosPorCultivo(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo);
-        Task<List<GetArticuloDto>> GetArticulosPorPlaga(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo);
+        Task<List<GetArticuloDto>> GetArticulosPorCultivo(int idUsuario, string filtro);
+        Task<List<GetArticuloDto>> GetArticulosPorPlaga(int idUsuario, string filtro);
         Task<MemoryStream> GetExcelArticulosGeneral(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo);
         Task<MemoryStream> GetExcelArticulosPorComposicion(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo);
-        Task<MemoryStream> GetExcelArticulosPorCultivo(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo);
-        Task<MemoryStream> GetExcelArticulosPorPlaga(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo);
+        Task<MemoryStream> GetExcelArticulosPorCultivo(int idUsuario, string filtro);
+        Task<MemoryStream> GetExcelArticulosPorPlaga(int idUsuario, string filtro);
     }
 }
