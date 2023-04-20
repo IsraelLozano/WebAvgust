@@ -89,6 +89,7 @@
     <None Include="DML\qInsert.sql" />
     <None Include="DDL\qAlters.sql" />
     <None Include="DML\qDelete.sql" />
+    <None Include="DDL\qCreateTables.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DML\qSelectAll.sql" />

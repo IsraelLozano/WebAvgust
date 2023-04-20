@@ -43,13 +43,15 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
             if ((int)TipoBusquedaArticulo.nombre == tipoFiltro)
             {
                 var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
-              includeProperties: "IdFormuladorNavigation,IdGrupoQuimicoNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation,IdTipoFormulacionNavigation,Composicions,Documentos,Usos,Caracteristicas,Composicions.GrupoQuimicoNavegation," +
+              includeProperties: "IdGrupoQuimicoNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation,IdTipoFormulacionNavigation,Composicions,Documentos,Usos,Caracteristicas,Composicions.GrupoQuimicoNavegation," +
               "Composicions.IngredienteActivoNavigation," +
               "Documentos.IdTipoDocumentoNavigation," +
               "Usos.IdCultivoNavigation," +
               "Usos.IdNomCientificoPlagaNavigation," +
               "Caracteristicas.IdClaseNavigation," +
-              "Caracteristicas.IdToxicologicaNavigation",
+              "Caracteristicas.IdToxicologicaNavigation," +
+              "ProductoFabricantes.IdFabricanteNavigation," +
+              "ProductoFormuladors.IdFormuladorNavigation",
               orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
 
                 filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -58,13 +60,15 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
             else if ((int)TipoBusquedaArticulo.ingredienteActivo == tipoFiltro)
             {
                 var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo && p.Composicions.Any(l => l.IngredienteActivo == idIngredienteActivo),
-             includeProperties: "IdFormuladorNavigation,IdGrupoQuimicoNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation,IdTipoFormulacionNavigation,Composicions,Documentos,Usos,Caracteristicas,Composicions.GrupoQuimicoNavegation," +
+             includeProperties: "IdGrupoQuimicoNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation,IdTipoFormulacionNavigation,Composicions,Documentos,Usos,Caracteristicas,Composicions.GrupoQuimicoNavegation," +
              "Composicions.IngredienteActivoNavigation," +
              "Documentos.IdTipoDocumentoNavigation," +
              "Usos.IdCultivoNavigation," +
              "Usos.IdNomCientificoPlagaNavigation," +
              "Caracteristicas.IdClaseNavigation," +
-             "Caracteristicas.IdToxicologicaNavigation", orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+             "Caracteristicas.IdToxicologicaNavigation" + 
+             "ProductoFabricantes.IdFabricanteNavigation," +
+             "ProductoFormuladors.IdFormuladorNavigation", orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
                 filter = query.ToList();
             }
 
@@ -81,7 +85,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
             if ((int)TipoBusquedaArticulo.nombre == tipoFiltro)
             {
                 var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
-           includeProperties: "IdFormuladorNavigation,IdTitularRegistroNavigation,Composicions,Composicions.GrupoQuimicoNavegation," +
+           includeProperties: "IdTitularRegistroNavigation,Composicions,Composicions.GrupoQuimicoNavegation," +
            "Composicions.IngredienteActivoNavigation",
            orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
 
@@ -90,7 +94,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
             else if ((int)TipoBusquedaArticulo.ingredienteActivo == tipoFiltro)
             {
                 var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo && p.Composicions.Any(l => l.IngredienteActivo == idIngredienteActivo),
-                    includeProperties: "IdFormuladorNavigation,IdTitularRegistroNavigation,Composicions,Composicions.GrupoQuimicoNavegation," +
+                    includeProperties: "IdTitularRegistroNavigation,Composicions,Composicions.GrupoQuimicoNavegation," +
          "Composicions.IngredienteActivoNavigation",
                     orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
 
@@ -160,7 +164,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 worksheet.View.ShowGridLines = false;
                 //Create Headers and format them
                 worksheet.Cells["A1"].Value = "REPORTE DE PRODUCTOS FORMULADOS";
-                using (var r = worksheet.Cells["A1:M1"])
+                using (var r = worksheet.Cells["A1:O1"])
                 {
                     r.Merge = true;
                     r.Style.Font.Color.SetColor(Color.White);
@@ -183,9 +187,11 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 worksheet.Cells["K4"].Value = "Cultivo";
                 worksheet.Cells["L4"].Value = "Plaga";
                 worksheet.Cells["M4"].Value = "Dosis";
-                worksheet.Cells["A4:M4"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A4:M4"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(184, 204, 228));
-                worksheet.Cells["A4:M4"].Style.Font.Bold = true;
+                worksheet.Cells["N4"].Value = "Formuladores";
+                worksheet.Cells["O4"].Value = "Fabricantes";
+                worksheet.Cells["A4:O4"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A4:O4"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(184, 204, 228));
+                worksheet.Cells["A4:O4"].Style.Font.Bold = true;
 
 
                 row = 5;
@@ -198,17 +204,19 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                     worksheet.Cells[row, 4].Value = item.IdTitularRegistroNavigation.NomTitularRegistro;
                     worksheet.Cells[row, 5].Value = item.IdTipoProductoNavigation.NomTipoProducto;
                     worksheet.Cells[row, 6].Value = item.IdTipoFormulacionNavigation.NomTipoFormulacion;
-                    worksheet.Cells[row, 7].Value = item.IdFormuladorNavigation.NomFormulador;
+                    //worksheet.Cells[row, 7].Value = item.NomFormulador;
                     worksheet.Cells[row, 8].Value = "'" + string.Join(Environment.NewLine, item.Composicions.Select(p => $"- {p.IngredienteActivoNavigation.NomIngredienteActivo}"));
                     worksheet.Cells[row, 9].Value = "'" + string.Join(Environment.NewLine, item.Composicions.Select(p => $"- {p.ContracionIA}"));
                     worksheet.Cells[row, 10].Value = "'" + string.Join(Environment.NewLine, item.Caracteristicas.Select(p => $"- {p.IdToxicologicaNavigation.Descripcion}"));
                     worksheet.Cells[row, 11].Value = "'" + string.Join(Environment.NewLine, item.Usos.Select(p => $"- {p.IdCultivoNavigation.NombreCultivo}"));
                     worksheet.Cells[row, 12].Value = "'" + string.Join(Environment.NewLine, item.Usos.Select(p => $"- {p.IdNomCientificoPlagaNavigation.NombreCientificoPlaga}"));
                     worksheet.Cells[row, 13].Value = "Ver Etiqueta";
+                    worksheet.Cells[row, 14].Value = "'" + string.Join(Environment.NewLine, item.ProductoFormuladors.Select(p => $"- {p.IdFormuladorNavigation.NomFormulador}"));
+                    worksheet.Cells[row, 15].Value = "'" + string.Join(Environment.NewLine, item.ProductoFabricantes.Select(p => $"- {p.IdFabricanteNavigation.NombreFabricante}"));
 
                     row++;
                 }
-                var sRango = "A4:M" + (row - 1).ToString();
+                var sRango = "A4:O" + (row - 1).ToString();
                 worksheet.Cells[sRango].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
                 worksheet.Cells[sRango].Style.Border.Top.Style = ExcelBorderStyle.Thin;
@@ -219,7 +227,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 worksheet.Cells[sRango].AutoFitColumns();
                 worksheet.Cells[sRango].Style.HorizontalAlignment = ExcelHorizontalAlignment.General;
                 worksheet.Cells[sRango].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Cells[sRango].Style.WrapText = false;
+                worksheet.Cells[sRango].Style.WrapText = true;
 
                 xlPackage.Workbook.Properties.Title = "Lista de articulos";
                 xlPackage.Workbook.Properties.Author = "Israel Lozano del Castillo danielitolozano85@gmail.com";
@@ -263,7 +271,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 worksheet.Cells["C4"].Value = "Concentracion (IA)";
                 worksheet.Cells["D4"].Value = "Grupo Quimico";
                 worksheet.Cells["E4"].Value = "Titular Registro";
-                worksheet.Cells["F4"].Value = "Formulador";
+                //worksheet.Cells["F4"].Value = "Formulador";
                 worksheet.Cells["A4:F4"].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 worksheet.Cells["A4:F4"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(184, 204, 228));
                 worksheet.Cells["A4:F4"].Style.Font.Bold = true;
@@ -277,7 +285,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                     worksheet.Cells[row, 3].Value = "'" + string.Join(Environment.NewLine, item.Composicions.Select(p => $"- {p.ContracionIA}"));
                     worksheet.Cells[row, 4].Value = "'" + string.Join(Environment.NewLine, item.Composicions.Select(p => $"- {p.GrupoQuimicoNavegation.NomGrupoQuimico}"));
                     worksheet.Cells[row, 5].Value = item.IdTitularRegistroNavigation.NomTitularRegistro;
-                    worksheet.Cells[row, 6].Value = item.IdFormuladorNavigation.NomFormulador;
+                    //worksheet.Cells[row, 6].Value = item.NomFormulador;
 
                     row++;
                 }
@@ -293,7 +301,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 worksheet.Cells[sRango].AutoFitColumns();
                 worksheet.Cells[sRango].Style.HorizontalAlignment = ExcelHorizontalAlignment.General;
                 worksheet.Cells[sRango].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Cells[sRango].Style.WrapText = false;
+                worksheet.Cells[sRango].Style.WrapText = true;
 
                 xlPackage.Workbook.Properties.Title = "Lista de articulos";
                 xlPackage.Workbook.Properties.Author = "Israel Lozano del Castillo danielitolozano85@gmail.com";
@@ -366,7 +374,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 worksheet.Cells[sRango].AutoFitColumns();
                 worksheet.Cells[sRango].Style.HorizontalAlignment = ExcelHorizontalAlignment.General;
                 worksheet.Cells[sRango].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Cells[sRango].Style.WrapText = false;
+                worksheet.Cells[sRango].Style.WrapText = true;
 
                 xlPackage.Workbook.Properties.Title = "Lista de articulos";
                 xlPackage.Workbook.Properties.Author = "Israel Lozano del Castillo danielitolozano85@gmail.com";
@@ -439,7 +447,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 worksheet.Cells[sRango].AutoFitColumns();
                 worksheet.Cells[sRango].Style.HorizontalAlignment = ExcelHorizontalAlignment.General;
                 worksheet.Cells[sRango].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                worksheet.Cells[sRango].Style.WrapText = false;
+                worksheet.Cells[sRango].Style.WrapText = true;
 
                 xlPackage.Workbook.Properties.Title = "Lista de articulos";
                 xlPackage.Workbook.Properties.Author = "Israel Lozano del Castillo danielitolozano85@gmail.com";

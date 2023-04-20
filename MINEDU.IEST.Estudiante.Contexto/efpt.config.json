@@ -1,44 +1,56 @@
 ﻿{
    "CodeGenerationMode": 2,
-   "ContextClassName": "dbContextAvgust",
-   "ContextNamespace": "IDCL.AVGUST.SIP.Contexto",
+   "ContextClassName": "dbContextAvgust2",
+   "ContextNamespace": "IDCL.AVGUST.SIP.Contexto2",
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": "IDCL.AVGUST.SIP.Entity.Avgust",
-   "OutputContextPath": "Data\\Avgust",
-   "OutputPath": "Data\\Avgust",
+   "OutputContextPath": "Data2\\Security",
+   "OutputPath": "Data2\\Security",
    "PreserveCasingWithRegex": true,
-   "ProjectRootNamespace": "IDCL.AVGUST.SIP.Contexto",
+   "ProjectRootNamespace": "IDCL.AVGUST.SIP.Contexto2",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
-   "SelectedToBeGenerated": 2,
+   "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[Clase]",
+         "Name": "[dbo].[Opcion]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[idTipoProducto]",
+         "Name": "[dbo].[Perfil]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PerfilOpcion]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Usuario]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UsuarioPerfil]",
          "ObjectType": 0
       }
    ],
    "UiHint": "SERVERINDUSOFT1\\SQL17.IndusoftWebAvgust",
+   "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
    "UseDbContextSplitting": true,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
    "UseHierarchyId": false,
    "UseInflector": true,
    "UseLegacyPluralizer": false,
-   "UseManyToManyEntity": false,
-   "UseNoConstructor": false,
+   "UseManyToManyEntity": true,
    "UseNoDefaultConstructor": false,
-   "UseNoNavigations": false,
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
-   "UseNullableReferences": false,
+   "UseNullableReferences": true,
    "UseSchemaFolders": false,
    "UseSpatial": false,
    "UseT4": false

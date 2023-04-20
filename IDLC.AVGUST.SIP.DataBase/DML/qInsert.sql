@@ -1,3 +1,15 @@
+
+
+INSERT INTO [IndusoftWebAvgust].[dbo].[Fabricante]
+(
+		 [NombreFabricante]
+		,[estado]
+)
+VALUES
+(
+		'FABRICANTE 1', 1
+)
+
 -- -- Write your own SQL object definition here, and it'll be included in your package.
 
 -- SELECT * FROM Usuario

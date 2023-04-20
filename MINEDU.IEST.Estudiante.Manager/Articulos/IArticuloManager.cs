@@ -11,11 +11,15 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
         Task<AddOrEditCaracteristicaDto> CreateOrUpdateCaracteristica(AddOrEditCaracteristicaDto model);
         Task<AddOrEditComposicionDto> CreateOrUpdateComposicion(AddOrEditComposicionDto model);
         Task<AddOrEditDocumentoDto> CreateOrUpdateDocumento(AddOrEditDocumentoDto model);
+        Task<bool> CreateOrUpdateProductoFabricante(List<AddOrEditProductoFabricanteDto> model);
+        Task<bool> CreateOrUpdateProductoFormulador(List<AddOrEditProductoFormuladorDto> model);
         Task<AddOrEditUsoDto> CreateOrUpdateUso(AddOrEditUsoDto model);
         Task<bool> DeleteArticuloById(int id);
         Task<bool> DeleteCaracteristicaByItem(int idArticulo, int item);
         Task<bool> DeleteComposicionByItem(int idArticulo, int item);
         Task<bool> DeleteDocumentoByItem(int idArticulo, int item);
+        Task<bool> DeleteProductoFabricanteById(int IdArticulo, int IdFabricante);
+        Task<bool> DeleteProductoFormuladorById(int IdArticulo, int IdFormulador);
         Task<bool> DeleteUsoByItem(int idArticulo, int item);
         Task<GetArticuloForEditDto> GetArticuloById(int id);
         Task<GetPdfDto> GetArticuloDocumentoPdf(int idArticulo, int idItem);

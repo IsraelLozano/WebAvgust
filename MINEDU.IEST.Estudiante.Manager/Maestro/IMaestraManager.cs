@@ -9,6 +9,7 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         Task<bool> AnularCientificoPlaga(int id);
         Task<bool> AnularClase(int id);
         Task<bool> AnularCultivo(int id);
+        Task<bool> AnularFabricante(int id);
         Task<bool> AnularFormulador(int id);
         Task<bool> AnularGrupoQuimico(int id);
         Task<bool> AnularPais(int id);
@@ -22,6 +23,7 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         Task<GetCientificoPlagaDto> CreateOrUpdateCientificoPlaga(GetCientificoPlagaDto model);
         Task<GetClaseDto> CreateOrUpdateClase(AddClaseDto model);
         Task<GetCultivoDto> CreateOrUpdateCultivo(GetCultivoDto model);
+        Task<GetFabricanteDto> CreateOrUpdateFabricante(GetFabricanteDto model);
         Task<GetFormuladorDto> CreateOrUpdateFormulador(GetFormuladorDto model);
         Task<GetGrupoQuimicoDto> CreateOrUpdateGrupoQuimico(GetGrupoQuimicoDto model);
         Task<GetIdTipoProductoDto> CreateOrUpdateIdTipoProducto(GetIdTipoProductoDto model);
@@ -35,6 +37,7 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         Task<GetCientificoPlagaDto> GetCientificoPlagaById(int id);
         Task<GetClaseDto> GetClaseById(int id);
         Task<GetCultivoDto> GetCultivoById(int id);
+        Task<GetFabricanteDto> GetFabricanteById(int id);
         Task<GetFormuladorDto> GetFormuladorById(int id);
         Task<GetGrupoQuimicoDto> GetGrupoQuimicoById(int id);
         Task<GetIdTipoProductoDto> GetIdTipoProductoById(int id);
@@ -42,6 +45,7 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         Task<List<GetCientificoPlagaDto>> getListCientificoPlaga();
         Task<List<GetClaseDto>> getListClase();
         Task<List<GetCultivoDto>> getListCultivo();
+        Task<List<GetFabricanteDto>> getListFabricante();
         Task<List<GetFormuladorDto>> getListFormulador();
         Task<List<GetGrupoQuimicoDto>> getListGrupoQuimico();
         Task<List<GetIdTipoProductoDto>> getListIdTipoProducto();

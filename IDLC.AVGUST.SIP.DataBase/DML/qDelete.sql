@@ -7,3 +7,9 @@ truncate table Composicion
 truncate table Caracteristicas
 truncate table usos
 truncate table Documentos
+
+delete from IngredienteActivo where IngredenteActivo = 546
+
+
+delete from Fabricante
+DBCC CHECKIDENT (Fabricante,RESEED,0)

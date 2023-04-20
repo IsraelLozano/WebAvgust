@@ -23,7 +23,7 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         }
 
         [HttpGet("GetListArticulo/{IdUsuario:int}/{tipoFiltro:int}/{idIngredienteActivo:int}/{filtro?}")]
-        public async Task<IActionResult> GetArticulos(int IdUsuario, int tipoFiltro, int idIngredienteActivo = 0, string filtro = "" )
+        public async Task<IActionResult> GetArticulos(int IdUsuario, int tipoFiltro, int idIngredienteActivo = 0, string filtro = "")
         {
             return Ok(await _articuloManager.GetListArticulos(IdUsuario, tipoFiltro, filtro, idIngredienteActivo));
         }
@@ -185,6 +185,44 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         }
 
         #endregion
+
+        #region Producto-Fabricante
+
+        [HttpPost("CreateOrUpdateProductoFabricante")]
+        public async Task<IActionResult> CreateOrUpdateProductoFabricante(List<AddOrEditProductoFabricanteDto> model)
+        {
+            return Ok(await _articuloManager.CreateOrUpdateProductoFabricante(model));
+        }
+
+        [HttpGet("deleteProductoFabricante/{IdArticulo:int}/{IdFabricante:int}")]
+        public async Task<IActionResult> DeleteProductoFabricanteByItem(int IdArticulo, int IdFabricante)
+        {
+            return Ok(await _articuloManager.DeleteProductoFabricanteById(IdArticulo, IdFabricante));
+        }
+
+
+
+        #endregion
+
+
+        #region Producto-Formulador
+
+        [HttpPost("CreateOrUpdateProductoFormulador")]
+        public async Task<IActionResult> CreateOrUpdateProductoFormulador(List<AddOrEditProductoFormuladorDto> model)
+        {
+            return Ok(await _articuloManager.CreateOrUpdateProductoFormulador(model));
+        }
+
+        [HttpGet("deleteProductoFormulador/{IdArticulo:int}/{IdFormulador:int}")]
+        public async Task<IActionResult> DeleteProductoFormuladorByItem(int IdArticulo, int IdFormulador)
+        {
+            return Ok(await _articuloManager.DeleteProductoFabricanteById(IdArticulo, IdFormulador));
+        }
+
+
+
+        #endregion
+
 
     }
 }

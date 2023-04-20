@@ -8,8 +8,8 @@ select * from Pais
 SELECT * from Documentos
 
 
-update Articulo
-set FlgActivo = 1
+-- update Articulo
+-- set FlgActivo = 1
 
 select * from Composicion
 select * from Caracteristicas
@@ -65,4 +65,11 @@ select * from Clase WHERE IdTipoProducto = 2
 SELECT * from idTipoProducto WHERE idTipoProducto = 2
 
 
-select * from TipoDocumento
+select * from Articulo
+select * from Usos
+select * from CientificoPlaga
+select * from Cultivo
+go
+
+
+select * from Formulador

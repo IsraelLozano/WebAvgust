@@ -15,7 +15,7 @@ namespace IDCL.AVGUST.SIP.ManagerDto.Articulos
         public int? IdTipoFormulacion { get; set; }
         public string Concentracion { get; set; }
         public bool FlgActivo { get; set; }
-        public GetFormuladorDto IdFormuladorNavigation { get; set; }
+        //public GetFormuladorDto IdFormuladorNavigation { get; set; }5
         public GetGrupoQuimicoDto IdGrupoQuimicoNavigation { get; set; }
         public GetPaisDto IdPaisNavigation { get; set; }
         public GetTipoFormulacionDto IdTipoFormulacionNavigation { get; set; }
@@ -26,6 +26,9 @@ namespace IDCL.AVGUST.SIP.ManagerDto.Articulos
         public List<GetDocumentoDto> Documentos { get; set; }
         public List<GetUsoDto> Usos { get; set; }
         public List<GetCaracteristicaDto> Caracteristicas { get; set; }
+
+        public List<GetProductoFabricanteDto> ProductoFabricantes { get; set; }
+        public List<GetProductoFormuladorDto> ProductoFormuladors { get; set; }
 
 
     }

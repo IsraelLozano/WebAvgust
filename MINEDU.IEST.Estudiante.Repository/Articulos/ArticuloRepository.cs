@@ -42,11 +42,11 @@ namespace IDCL.AVGUST.SIP.Repository.Articulos
                             //    IdGrupoQuimico = p.IdGrupoQuimicoNavigation.IdGrupoQuimico,
                             //    NomGrupoQuimico = p.IdGrupoQuimicoNavigation.NomGrupoQuimico
                             //} : null,
-                            IdFormuladorNavigation = p.IdFormulador != null ? new Formulador
-                            {
-                                IdFormulador = p.IdFormuladorNavigation.IdFormulador,
-                                NomFormulador = p.IdFormuladorNavigation.NomFormulador
-                            } : null,
+                            //IdFormuladorNavigation = p.IdFormulador != null ? new Formulador
+                            //{
+                            //    IdFormulador = p.IdFormuladorNavigation.IdFormulador,
+                            //    NomFormulador = p.IdFormuladorNavigation.NomFormulador
+                            //} : null,
                             IdPaisNavigation = p.IdPais != null ? new Pai
                             {
                                 IdPais = p.IdPaisNavigation.IdPais,
@@ -138,9 +138,27 @@ namespace IDCL.AVGUST.SIP.Repository.Articulos
                                     IdToxicologica = c.IdToxicologicaNavigation.IdToxicologica,
                                     Descripcion = c.IdToxicologicaNavigation.Descripcion
                                 }
-                            }).ToList()
-
-
+                            }).ToList(),
+                            ProductoFabricantes = p.ProductoFabricantes.Select(pf => new ProductoFabricante
+                            {
+                                IdFabricante = pf.IdFabricante,
+                                IdArticulo = pf.IdArticulo,
+                                IdFabricanteNavigation = new Fabricante
+                                {
+                                    IdFabricante = pf.IdFabricante,
+                                    NombreFabricante = pf.IdFabricanteNavigation.NombreFabricante
+                                }
+                            }).ToList() ?? new List<ProductoFabricante>(),
+                            ProductoFormuladors = p.ProductoFormuladors.Select(pFo => new ProductoFormulador
+                            {
+                                IdProducto = pFo.IdProducto,
+                                IdFormualdor = pFo.IdFormualdor,
+                                IdFormuladorNavigation = new Formulador
+                                {
+                                    IdFormulador = pFo.IdFormualdor,
+                                    NomFormulador = pFo.IdFormuladorNavigation.NomFormulador
+                                }
+                            }).ToList() ?? new List<ProductoFormulador>()
                         });
                 return await query.FirstOrDefaultAsync();
             }

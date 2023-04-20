@@ -6,6 +6,7 @@ namespace MINEDU.IEST.Estudiante.Repository.Base
     {
 
         void Delete(object id);
+        void Delete(object[] keyValues);
         void Delete(TEntity entityToDelete);
         List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "");
         TEntity GetById(object id);

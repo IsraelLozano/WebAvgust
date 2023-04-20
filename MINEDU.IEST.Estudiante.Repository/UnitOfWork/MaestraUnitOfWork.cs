@@ -26,7 +26,10 @@ namespace IDCL.AVGUST.SIP.Repository.UnitOfWork
         public ITipoFormulacionRepository _tipoFormulacionRepository { get; }
 
         public IIngredienteActivoRepository _ingredienteActivoRepository { get; }
-        public MaestraUnitOfWork(dbContextAvgust context, IPaisRepository paisRepository, IFormuladorRepository formuladorRepository, ITipoProductoRepository tipoProductoRepository, ITitularRepository titularRepository, ITipoDocumentoRepository tipoDocumentoRepository, ICientificoPlagaRepository cientificoPlagaRepository, ICultivoRepository cultivoRepository, IAplicacionRepository aplicacionRepository, IClaseRepository claseRepository, IToxicologicaRepository toxicologicaRepository, IGrupoQuimicoRepository grupoQuimicoRepository, ITipoFormulacionRepository tipoFormulacionRepository, IIngredienteActivoRepository ingredienteActivoRepository)
+
+        public IFabricanteRepository _fabricanteRepository { get; }
+
+        public MaestraUnitOfWork(dbContextAvgust context, IPaisRepository paisRepository, IFormuladorRepository formuladorRepository, ITipoProductoRepository tipoProductoRepository, ITitularRepository titularRepository, ITipoDocumentoRepository tipoDocumentoRepository, ICientificoPlagaRepository cientificoPlagaRepository, ICultivoRepository cultivoRepository, IAplicacionRepository aplicacionRepository, IClaseRepository claseRepository, IToxicologicaRepository toxicologicaRepository, IGrupoQuimicoRepository grupoQuimicoRepository, ITipoFormulacionRepository tipoFormulacionRepository, IIngredienteActivoRepository ingredienteActivoRepository, IFabricanteRepository fabricanteRepository)
         {
             this._context = context;
             _paisRepository = paisRepository;
@@ -42,6 +45,7 @@ namespace IDCL.AVGUST.SIP.Repository.UnitOfWork
             _grupoQuimicoRepository = grupoQuimicoRepository;
             _tipoFormulacionRepository = tipoFormulacionRepository;
             _ingredienteActivoRepository = ingredienteActivoRepository;
+            _fabricanteRepository = fabricanteRepository;
         }
         public void Save()
         {

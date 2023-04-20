@@ -35,11 +35,9 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
             services.AddScoped<IDocumentoRepository, DocumentoRepository>();
             services.AddScoped<IUsoRepository, UsoRepository>();
 
-
             services.AddScoped<IFormuladorRepository, FormuladoresRepository>();
             services.AddScoped<ITipoProductoRepository, TipoProductoRepository>();
             services.AddScoped<ITitularRepository, TitularRepository>();
-
 
             services.AddScoped<IAplicacionRepository, AplicacionRepository>();
             services.AddScoped<ICientificoPlagaRepository, CientificoPlagaRepository>();
@@ -50,14 +48,14 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
             services.AddScoped<IToxicologicaRepository, ToxicologicaRepository>();
             services.AddScoped<ITipoFormulacionRepository, TipoFormulacionRepository>();
             services.AddScoped<IIngredienteActivoRepository, IngredienteActivoRepository>();
+            services.AddScoped<IFabricanteRepository, FabricanteRepository>();
 
-
-
+            services.AddScoped<IProductoFormuladorRepository, ProductoFormuladorRepository>();
+            services.AddScoped<IProductoFabricanteRepository, ProductoFabricanteRepository>();
 
             services.AddScoped<ArticuloUnitOfWork>();
             services.AddScoped<MaestraUnitOfWork>();
             services.AddScoped<SeguridadUnitOfWork>();
-
 
             services.AddDbContext<dbContextAvgust>(opt =>
             {

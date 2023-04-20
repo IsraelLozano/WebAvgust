@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust
 {
-    public partial class Formulador
+    public partial class ProductoFormulador
     {
+        public int IdProducto { get; set; }
+        public int IdFormualdor { get; set; }
 
+        public Articulo IdProductoNavigation { get; set; }
 
-        public int IdFormulador { get; set; }
-        public string NomFormulador { get; set; }
-        public bool estado { get; set; }
+        public Formulador IdFormuladorNavigation { get; set; }
 
-        public List<ProductoFormulador> ProductoFormuladors { get; set; }
     }
 }

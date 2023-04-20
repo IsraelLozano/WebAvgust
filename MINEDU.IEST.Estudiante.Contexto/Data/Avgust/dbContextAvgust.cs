@@ -41,6 +41,11 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto
         public virtual DbSet<Usuario> Usuarios { get; set; }
         public virtual DbSet<UsuarioPai> UsuarioPais { get; set; }
 
+        public virtual DbSet<Fabricante> Fabricantes { get; set; }
+        public virtual DbSet<ProductoFabricante> ProductoFabricantes { get; set; }
+        public virtual DbSet<ProductoFormulador> ProductoFormuladors { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new Configurations.AplicacionConfiguration());
@@ -63,6 +68,9 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto
             modelBuilder.ApplyConfiguration(new Configurations.UsoConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.UsuarioConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.UsuarioPaiConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.FabricanteConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.ProductoFabricanteConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.ProductoFormuladorConfiguration());
 
             OnModelCreatingPartial(modelBuilder);
         }

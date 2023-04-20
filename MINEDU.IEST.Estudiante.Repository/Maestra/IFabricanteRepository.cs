@@ -3,7 +3,7 @@ using MINEDU.IEST.Estudiante.Repository.Base;
 
 namespace IDCL.AVGUST.SIP.Repository.Maestra
 {
-    public interface ICultivoRepository: IGenericRepository<Cultivo>
+    public interface IFabricanteRepository : IGenericRepository<Fabricante>
     {
     }
 }

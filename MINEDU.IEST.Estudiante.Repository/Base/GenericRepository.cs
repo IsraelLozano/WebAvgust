@@ -47,6 +47,11 @@ namespace MINEDU.IEST.Estudiante.Repository.Base
             _dbSet.Add(entity);
         }
 
+        public virtual void Delete(object[] keyValues)
+        {
+            TEntity entityToDelete = _dbSet.Find(keyValues);
+            Delete(entityToDelete);
+        }
         public virtual void Delete(object id)
         {
             TEntity entityToDelete = _dbSet.Find(id);

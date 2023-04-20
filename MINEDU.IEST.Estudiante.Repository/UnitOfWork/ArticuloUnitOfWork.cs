@@ -10,11 +10,21 @@ namespace IDCL.AVGUST.SIP.Repository.UnitOfWork
         private readonly dbContextAvgust _context;
         public IArticuloRepository _articuloRepository { get; }
         public ICaracteristicaRepository _caracteristicaRepository { get; }
-        public IComposicionRepository _composicionRepository { get; set; }
-        public IDocumentoRepository _documentoRepository { get; set; }
-        public IUsoRepository _usoRepository { get; set; }
+        public IComposicionRepository _composicionRepository { get; }
+        public IDocumentoRepository _documentoRepository { get; }
+        public IUsoRepository _usoRepository { get; }
 
-        public ArticuloUnitOfWork(dbContextAvgust context, IArticuloRepository articuloRepository, ICaracteristicaRepository caracteristicaRepository, IComposicionRepository composicionRepository, IDocumentoRepository documentoRepository, IUsoRepository usoRepository)
+        public IProductoFormuladorRepository _productoFormuladorRepository { get; }
+        public IProductoFabricanteRepository _productoFabricanteRepository { get; }
+
+        public ArticuloUnitOfWork(dbContextAvgust context,
+            IArticuloRepository articuloRepository,
+            ICaracteristicaRepository caracteristicaRepository,
+            IComposicionRepository composicionRepository,
+            IDocumentoRepository documentoRepository,
+            IUsoRepository usoRepository,
+            IProductoFormuladorRepository productoFormuladorRepository,
+            IProductoFabricanteRepository productoFabricanteRepository)
         {
             this._context = context;
             _articuloRepository = articuloRepository;
@@ -22,6 +32,8 @@ namespace IDCL.AVGUST.SIP.Repository.UnitOfWork
             _composicionRepository = composicionRepository;
             _documentoRepository = documentoRepository;
             _usoRepository = usoRepository;
+            _productoFormuladorRepository = productoFormuladorRepository;
+            _productoFabricanteRepository = productoFabricanteRepository;
         }
         public void Save()
         {

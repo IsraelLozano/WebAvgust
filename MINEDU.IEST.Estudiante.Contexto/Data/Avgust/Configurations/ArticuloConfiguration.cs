@@ -44,11 +44,6 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
                 .HasMaxLength(40)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.IdFormuladorNavigation)
-                .WithMany(p => p.Articulos)
-                .HasForeignKey(d => d.IdFormulador)
-                .HasConstraintName("FK_Articulo_Formulador");
-
             entity.HasOne(d => d.IdGrupoQuimicoNavigation)
                 .WithMany(p => p.Articulos)
                 .HasForeignKey(d => d.IdGrupoQuimico)

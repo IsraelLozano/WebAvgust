@@ -7,7 +7,6 @@ using IDCL.AVGUST.SIP.Repository.UnitOfWork;
 using MINEDU.IEST.Estudiante.Inf_Utils.Dtos;
 using MINEDU.IEST.Estudiante.Inf_Utils.Enumerados;
 using MINEDU.IEST.Estudiante.Inf_Utils.Helpers.FileManager;
-using System.Linq;
 
 namespace IDCL.AVGUST.SIP.Manager.Articulos
 {
@@ -41,7 +40,7 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
                 var query = _articuloUnitOfWork._articuloRepository
                     .GetAll(p => paises.Contains(p.IdPais.Value)
                     && p.FlgActivo,
-                    includeProperties: "IdFormuladorNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation",
+                    includeProperties: "IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation",
                     orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
 
                 filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
@@ -52,7 +51,7 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
                    .GetAll(p => paises.Contains(p.IdPais.Value)
                    && p.FlgActivo
                    && p.Composicions.Any(l => l.IngredienteActivo == idIngredienteActivo),
-                   includeProperties: "IdFormuladorNavigation,IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation",
+                   includeProperties: "IdPaisNavigation,IdTipoProductoNavigation,IdTitularRegistroNavigation",
                    orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
                 filter = query.ToList();
             }
@@ -74,6 +73,10 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
                     response.articulo.Composicions = _mapper.Map<List<GetComposicionDto>>(query.Composicions);
                     response.articulo.Documentos = _mapper.Map<List<GetDocumentoDto>>(query.Documentos);
                     response.articulo.Usos = _mapper.Map<List<GetUsoDto>>(query.Usos);
+                    response.articulo.ProductoFabricantes = _mapper.Map<List<GetProductoFabricanteDto>>(query.ProductoFabricantes);
+                    response.articulo.ProductoFormuladors = _mapper.Map<List<GetProductoFormuladorDto>>(query.ProductoFormuladors);
+
+
                     var etiqueta = await this.GetEtiquetaDocumento(id);
                     response.articulo.Usos.ForEach(p =>
                     {
@@ -96,7 +99,7 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
                 response.cboGrupoQuimico = _mapper.Map<List<GetGrupoQuimicoDto>>(_maestraUnitOfWork._grupoQuimicoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomGrupoQuimico)));
                 response.cboTipoFormulacion = _mapper.Map<List<GetTipoFormulacionDto>>(_maestraUnitOfWork._tipoFormulacionRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.CodTipoFormulacion)));
                 response.cboTipoIngredienteActivo = _mapper.Map<List<GetTipoIngredienteActivoDto>>(_maestraUnitOfWork._ingredienteActivoRepository.GetAll(p => p.estado, orderBy: p => p.OrderBy(l => l.NomIngredienteActivo)));
-
+                response.cboFabricante = _mapper.Map<List<GetFabricanteDto>>(_maestraUnitOfWork._fabricanteRepository.GetAll(p => p.Estado, orderBy: p => p.OrderBy(l => l.NombreFabricante)));
 
                 return response;
             }
@@ -418,6 +421,79 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
         }
 
         #endregion
+
+
+        #region Producto Fabricante
+
+        public async Task<bool> CreateOrUpdateProductoFabricante(List<AddOrEditProductoFabricanteDto> model)
+        {
+
+            var listaEntidad = _mapper.Map<List<ProductoFabricante>>(model);
+
+            var resp = _articuloUnitOfWork._productoFabricanteRepository.DeleteForIdProducto(listaEntidad.First().IdArticulo);
+            await _articuloUnitOfWork.SaveAsync();
+
+
+            _articuloUnitOfWork._productoFabricanteRepository.AddRangeProductoFabricante(listaEntidad);
+            await _articuloUnitOfWork.SaveAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeleteProductoFabricanteById(int IdArticulo, int IdFabricante)
+        {
+
+            try
+            {
+                _articuloUnitOfWork._productoFabricanteRepository.Delete(new { IdArticulo, IdFabricante });
+                await _articuloUnitOfWork.SaveAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+
+        #region Producto Formulador
+
+        public async Task<bool> CreateOrUpdateProductoFormulador(List<AddOrEditProductoFormuladorDto> model)
+        {
+
+            var listaEntidad = _mapper.Map<List<ProductoFormulador>>(model);
+
+            var resp = _articuloUnitOfWork._productoFormuladorRepository.DeleteForIdProducto(listaEntidad.First().IdProducto);
+            await _articuloUnitOfWork.SaveAsync();
+
+
+            await _articuloUnitOfWork._productoFormuladorRepository.AddRangeProductoFormulador(listaEntidad);
+            await _articuloUnitOfWork.SaveAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeleteProductoFormuladorById(int IdArticulo, int IdFormulador)
+        {
+            try
+            {
+                _articuloUnitOfWork._productoFormuladorRepository.Delete(new { IdArticulo, IdFormulador });
+                await _articuloUnitOfWork.SaveAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
+
+
+
+
 
 
     }

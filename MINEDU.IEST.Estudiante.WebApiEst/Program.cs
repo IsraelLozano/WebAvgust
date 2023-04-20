@@ -77,16 +77,12 @@ builder.Services.AddHttpContextAccessor();
 //Inyectando CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllCORS", b =>
+    options.AddPolicy(backEndConfig.NombrePoliticaCors, b =>
     {
-        b.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-        //b.WithOrigins("http://localhost:4200").WithMethods("GET", "POST", "DELETE", "PUT").AllowAnyHeader();
-        //b.WithOrigins("http://localhost:4200").WithMethods("GET", "POST", "DELETE", "PUT");
-
+        b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
+
 
 
 //builder.Services.AddAuthentication(
@@ -160,7 +156,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("../swagger/v1/swagger.json", "Web Api para Estudiantes v1");
+        c.SwaggerEndpoint("../swagger/v1/swagger.json", "Web Api Avgust v1");
         c.InjectStylesheet("/swagger-ui/custom.css");
     });
 }
@@ -168,19 +164,14 @@ else
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/ws-core/swagger/v1/swagger.json", "Web Api para Estudiantes v1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/ws-core/swagger/v1/swagger.json", "Web Api Avgust v1"));
 }
 
 
 app.ConfigureCustomExceptionMiddleware();
 //app.UseSerilogRequestLogging();
 app.UseRouting();
-app.UseCors("AllowAllCORS");
-app.UseForwardedHeaders(new ForwardedHeadersOptions
-{
-    ForwardedHeaders = ForwardedHeaders.All
-});
-//app.UseCors();
+app.UseCors(backEndConfig.NombrePoliticaCors);
 //app.UseAuthentication();
 //app.UseAuthorization();
 app.UseHttpsRedirection();

@@ -402,6 +402,33 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
 
 
+        #region Fabridante
+
+        [HttpGet("getListFabricante")]
+        public async Task<IActionResult> getListFabricante()
+        {
+            return Ok(await _maestraManager.getListFabricante());
+        }
+
+        [HttpGet("GetFabricanteById/{id}")]
+        public async Task<IActionResult> GetFabricanteById(int id)
+        {
+            return Ok(await _maestraManager.GetFabricanteById(id));
+        }
+
+        [HttpPost(template: "CreateOrUpdateFabricante")]
+        public async Task<IActionResult> CreateOrUpdateFabricante(GetFabricanteDto model)
+        {
+            return Ok(await _maestraManager.CreateOrUpdateFabricante(model));
+        }
+
+        [HttpGet("deleteFabricante/{id}")]
+        public async Task<IActionResult> DeleteFabricante(int id)
+        {
+            return Ok(await _maestraManager.AnularFabricante(id));
+        }
+        #endregion
+
 
     }
 }

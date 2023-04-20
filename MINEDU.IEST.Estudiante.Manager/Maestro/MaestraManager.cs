@@ -600,5 +600,57 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         #endregion
 
 
+        #region Fabricante
+
+
+        public async Task<List<GetFabricanteDto>> getListFabricante()
+        {
+            var query = _maestraUnitOfWork._fabricanteRepository.GetAll();
+
+            return _mapper.Map<List<GetFabricanteDto>>(query);
+        }
+
+        public async Task<GetFabricanteDto> GetFabricanteById(int id)
+        {
+            var query = _maestraUnitOfWork._fabricanteRepository.GetById(id);
+            return _mapper.Map<GetFabricanteDto>(query);
+        }
+
+        public async Task<GetFabricanteDto> CreateOrUpdateFabricante(GetFabricanteDto model)
+        {
+            try
+            {
+                var entidad = _mapper.Map<Fabricante>(model);
+                if (entidad.IdFabricante == 0)
+                {
+                    _maestraUnitOfWork._fabricanteRepository.Insert(entidad);
+                }
+                else
+                {
+                    entidad.Estado = true;
+                    _maestraUnitOfWork._fabricanteRepository.Update(entidad);
+                }
+
+                await _maestraUnitOfWork.SaveAsync();
+
+                return _mapper.Map<GetFabricanteDto>(entidad);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<bool> AnularFabricante(int id)
+        {
+            var query = _maestraUnitOfWork._fabricanteRepository.GetById(id);
+            query.Estado = false;
+            await _maestraUnitOfWork.SaveAsync();
+            return true;
+        }
+
+
+        #endregion
     }
 }

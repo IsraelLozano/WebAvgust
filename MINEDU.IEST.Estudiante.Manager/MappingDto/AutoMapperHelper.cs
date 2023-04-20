@@ -41,7 +41,10 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
             CreateMap<TipoFormulacion, GetTipoFormulacionDto>().ReverseMap();
             CreateMap<IngredienteActivo, GetTipoIngredienteActivoDto>().ReverseMap();
 
+            CreateMap<ProductoFormulador, GetProductoFormuladorDto>().ReverseMap();
+            CreateMap<ProductoFabricante, GetProductoFabricanteDto>().ReverseMap();
 
+            CreateMap<Fabricante, GetFabricanteDto>().ReverseMap();
             CreateMap<Composicion, GetComposicionDto>();
             CreateMap<Documento, GetDocumentoDto>();
             CreateMap<Uso, GetUsoDto>();
@@ -54,6 +57,8 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
             CreateMap<Composicion, AddOrEditComposicionDto>().ReverseMap();
             CreateMap<Documento, AddOrEditDocumentoDto>().ReverseMap();
             CreateMap<Uso, AddOrEditUsoDto>().ReverseMap();
+            CreateMap<ProductoFormulador, AddOrEditProductoFormuladorDto>().ReverseMap();
+            CreateMap<ProductoFabricante, AddOrEditProductoFabricanteDto>().ReverseMap();
 
             #endregion
 
