@@ -54,20 +54,12 @@
   <ItemGroup>
     <Folder Include="Content\Captcha\" />
     <Folder Include="Content\Resource\" />
+    <Folder Include="Resources\Documents\images\" />
     <Folder Include="Resources\documents\pdf\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\Documents\CONSTANCIA_DE_RECEPCION %281%29.pdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\Documents\Dialnet-SindromeDeNinoSacudido-5599319.pdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\documents\images\logo-minedu.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Resources\documents\pdf\FichaMatricula.pdf">
+    <None Update="Resources\Documents\images\logo-avgust.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\template-correo\account_validate.html">

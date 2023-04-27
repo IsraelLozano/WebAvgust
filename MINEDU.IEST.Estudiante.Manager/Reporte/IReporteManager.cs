@@ -1,4 +1,5 @@
 ﻿using IDCL.AVGUST.SIP.ManagerDto.Articulos;
+using MINEDU.IEST.Estudiante.Inf_Utils.Dtos;
 
 namespace IDCL.AVGUST.SIP.Manager.Reporte
 {
@@ -12,5 +13,13 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
         Task<MemoryStream> GetExcelArticulosPorComposicion(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo);
         Task<MemoryStream> GetExcelArticulosPorCultivo(int idUsuario, string filtro);
         Task<MemoryStream> GetExcelArticulosPorPlaga(int idUsuario, string filtro);
+
+        #region Reportes en PDF
+        Task<GetPdfDto> GetProductosFormuladosPdfAsync(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo);
+        Task<GetPdfDto> GetArticulosPorComposicionPdfAsync(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo);
+        Task<GetPdfDto> GetArticulosPorCultivoPdfAsync(int idUsuario, string filtro);
+        Task<GetPdfDto> GetArticulosPorPlagaPdfAsync(int idUsuario, string filtro);
+
+        #endregion
     }
 }

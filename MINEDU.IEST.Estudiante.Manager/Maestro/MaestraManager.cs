@@ -18,7 +18,6 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         }
 
 
-
         #region Pais
 
         public async Task<List<GetPaisDto>> getListPais()
@@ -60,7 +59,6 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
             return true;
         }
         #endregion
-
 
         #region Aplicacion
 
@@ -104,12 +102,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         }
         #endregion
 
-
         #region Cientifico - Plaga
 
         public async Task<List<GetCientificoPlagaDto>> getListCientificoPlaga()
         {
-            var query = _maestraUnitOfWork._cientificoPlagaRepository.GetAll();
+            var query = _maestraUnitOfWork._cientificoPlagaRepository.GetAll(orderBy: l => l.OrderBy(o => o.NombreCientificoPlaga));
 
             return _mapper.Map<List<GetCientificoPlagaDto>>(query);
         }
@@ -147,7 +144,6 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         }
 
         #endregion
-
 
         #region Clase
 
@@ -192,12 +188,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #endregion
 
-
         #region Cultivo
 
         public async Task<List<GetCultivoDto>> getListCultivo()
         {
-            var query = _maestraUnitOfWork._cultivoRepository.GetAll();
+            var query = _maestraUnitOfWork._cultivoRepository.GetAll(orderBy: l => l.OrderBy(o => o.NombreCultivo));
 
             return _mapper.Map<List<GetCultivoDto>>(query);
         }
@@ -277,7 +272,6 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         }
 
         #endregion
-
 
         #region GrupoQuimico
 
@@ -365,7 +359,6 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #endregion
 
-
         #region Tipo Documento
 
         public async Task<List<GetTipoDocumentoDto>> getListTipoDocumento()
@@ -451,7 +444,6 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         }
 
         #endregion
-
 
         #region Toxicologica
 
@@ -547,12 +539,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #endregion
 
-
         #region Ingrediente Activo
 
         public async Task<List<GetTipoIngredienteActivoDto>> getListTipoIngredienteActivo()
         {
-            var query = _maestraUnitOfWork._ingredienteActivoRepository.GetAll();
+            var query = _maestraUnitOfWork._ingredienteActivoRepository.GetAll(orderBy: l => l.OrderBy(o => o.NomIngredienteActivo));
 
             return _mapper.Map<List<GetTipoIngredienteActivoDto>>(query);
         }
@@ -599,13 +590,12 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #endregion
 
-
         #region Fabricante
 
 
         public async Task<List<GetFabricanteDto>> getListFabricante()
         {
-            var query = _maestraUnitOfWork._fabricanteRepository.GetAll();
+            var query = _maestraUnitOfWork._fabricanteRepository.GetAll(orderBy: l => l.OrderBy(o => o.NombreFabricante));
 
             return _mapper.Map<List<GetFabricanteDto>>(query);
         }

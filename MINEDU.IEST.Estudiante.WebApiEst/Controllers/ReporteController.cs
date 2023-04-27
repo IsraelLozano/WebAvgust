@@ -85,5 +85,34 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         }
         #endregion
 
+
+        #region Reportes en PDF
+
+        [HttpGet("GetProductosFormuladosPdfAsync/{IdUsuario:int}/{tipoFiltro:int}/{idIngredienteActivo:int}/{filtro?}")]
+        public async Task<IActionResult> GetProductosFormuladosPdfAsync(int IdUsuario, int tipoFiltro, string filtro = "", int idIngredienteActivo = 0)
+        {
+            return Ok(await _reporteManager.GetProductosFormuladosPdfAsync(IdUsuario, tipoFiltro, filtro, idIngredienteActivo));
+        }
+
+        [HttpGet("GetArticulosPorComposicionPdfAsync/{IdUsuario:int}/{tipoFiltro:int}/{idIngredienteActivo:int}/{filtro?}")]
+        public async Task<IActionResult> GetArticulosPorComposicionPdfAsync(int IdUsuario, int tipoFiltro, string filtro = "", int idIngredienteActivo = 0)
+        {
+            return Ok(await _reporteManager.GetArticulosPorComposicionPdfAsync(IdUsuario, tipoFiltro, filtro, idIngredienteActivo));
+        }
+
+        [HttpGet("GetArticulosPorPlagaPdfAsync/{idUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetArticulosPorPlagaPdfAsync(int idUsuario, string filtro)
+        {
+            return Ok(await _reporteManager.GetArticulosPorPlagaPdfAsync(idUsuario, filtro));
+        }
+
+        [HttpGet("GetArticulosPorCultivoPdfAsync/{idUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetArticulosPorCultivoPdfAsync(int idUsuario, string filtro)
+        {
+            return Ok(await _reporteManager.GetArticulosPorCultivoPdfAsync(idUsuario, filtro));
+        }
+
+        #endregion
+
     }
 }

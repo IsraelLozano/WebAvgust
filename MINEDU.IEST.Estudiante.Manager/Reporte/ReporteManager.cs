@@ -2,13 +2,22 @@
 using IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust;
 using IDCL.AVGUST.SIP.ManagerDto.Articulos;
 using IDCL.AVGUST.SIP.Repository.UnitOfWork;
+using iText.IO.Font.Constants;
+using iText.IO.Image;
+using iText.Kernel.Colors;
+using iText.Kernel.Font;
+using iText.Kernel.Geom;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
 using MINEDU.IEST.Estudiante.Inf_Utils.Dtos;
 using MINEDU.IEST.Estudiante.Inf_Utils.Enumerados;
 using MINEDU.IEST.Estudiante.Inf_Utils.Helpers.FileManager;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using Org.BouncyCastle.Utilities;
 using System.Drawing;
-using System.Linq;
 
 namespace IDCL.AVGUST.SIP.Manager.Reporte
 {
@@ -66,7 +75,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
              "Usos.IdCultivoNavigation," +
              "Usos.IdNomCientificoPlagaNavigation," +
              "Caracteristicas.IdClaseNavigation," +
-             "Caracteristicas.IdToxicologicaNavigation" + 
+             "Caracteristicas.IdToxicologicaNavigation" +
              "ProductoFabricantes.IdFabricanteNavigation," +
              "ProductoFormuladors.IdFormuladorNavigation", orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
                 filter = query.ToList();
@@ -84,18 +93,20 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
 
             if ((int)TipoBusquedaArticulo.nombre == tipoFiltro)
             {
-                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
-           includeProperties: "IdTitularRegistroNavigation,Composicions,Composicions.GrupoQuimicoNavegation," +
-           "Composicions.IngredienteActivoNavigation",
-           orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+                var query = _articuloUnitOfWork._articuloRepository
+                    .GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
+                    includeProperties: "IdTitularRegistroNavigation,Composicions," +
+                    "Composicions.GrupoQuimicoNavegation,Composicions.IngredienteActivoNavigation",
+                    orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
 
-                filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+                filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase)
+                || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
             }
             else if ((int)TipoBusquedaArticulo.ingredienteActivo == tipoFiltro)
             {
-                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo && p.Composicions.Any(l => l.IngredienteActivo == idIngredienteActivo),
-                    includeProperties: "IdTitularRegistroNavigation,Composicions,Composicions.GrupoQuimicoNavegation," +
-         "Composicions.IngredienteActivoNavigation",
+                var query = _articuloUnitOfWork._articuloRepository
+                    .GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo && p.Composicions.Any(l => l.IngredienteActivo == idIngredienteActivo),
+                    includeProperties: "IdTitularRegistroNavigation,Composicions,Composicions.GrupoQuimicoNavegation,Composicions.IngredienteActivoNavigation",
                     orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
 
                 filter = query.ToList();
@@ -129,11 +140,11 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
 
             var filter = new List<Articulo>();
-                      
-                var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
-                    includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Caracteristicas,Caracteristicas.IdClaseNavigation,Usos,Usos.IdCultivoNavigation," +
-            "Usos.IdNomCientificoPlagaNavigation,Caracteristicas.IdToxicologicaNavigation",
-                    orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+
+            var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
+                includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Caracteristicas,Caracteristicas.IdClaseNavigation,Usos,Usos.IdCultivoNavigation," +
+        "Usos.IdNomCientificoPlagaNavigation,Caracteristicas.IdToxicologicaNavigation",
+                orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
 
 
             filter = query
@@ -148,6 +159,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
         #endregion
 
         #region Reporte Excel
+
         public async Task<MemoryStream> GetExcelArticulosGeneral(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
         {
             var data = await this.GetArticulosById(idUsuario, tipoFiltro, filtro, idIngredienteActivo);
@@ -158,7 +170,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 var worksheet = xlPackage.Workbook.Worksheets.Add("articulos");
                 var namedStyle = xlPackage.Workbook.Styles.CreateNamedStyle("HyperLink");
                 namedStyle.Style.Font.UnderLine = true;
-                namedStyle.Style.Font.Color.SetColor(Color.Blue);
+                namedStyle.Style.Font.Color.SetColor(System.Drawing.Color.Blue);
                 const int startRow = 5;
                 var row = startRow;
                 worksheet.View.ShowGridLines = false;
@@ -167,10 +179,10 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 using (var r = worksheet.Cells["A1:O1"])
                 {
                     r.Merge = true;
-                    r.Style.Font.Color.SetColor(Color.White);
+                    r.Style.Font.Color.SetColor(System.Drawing.Color.White);
                     r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
                     r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
+                    r.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(23, 55, 93));
                 }
 
 
@@ -190,7 +202,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 worksheet.Cells["N4"].Value = "Formuladores";
                 worksheet.Cells["O4"].Value = "Fabricantes";
                 worksheet.Cells["A4:O4"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A4:O4"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(184, 204, 228));
+                worksheet.Cells["A4:O4"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(184, 204, 228));
                 worksheet.Cells["A4:O4"].Style.Font.Bold = true;
 
 
@@ -250,7 +262,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 var worksheet = xlPackage.Workbook.Worksheets.Add("articulos");
                 var namedStyle = xlPackage.Workbook.Styles.CreateNamedStyle("HyperLink");
                 namedStyle.Style.Font.UnderLine = true;
-                namedStyle.Style.Font.Color.SetColor(Color.Blue);
+                namedStyle.Style.Font.Color.SetColor(System.Drawing.Color.Blue);
                 const int startRow = 5;
                 var row = startRow;
                 worksheet.View.ShowGridLines = false;
@@ -260,10 +272,10 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 using (var r = worksheet.Cells["A1:F1"])
                 {
                     r.Merge = true;
-                    r.Style.Font.Color.SetColor(Color.White);
+                    r.Style.Font.Color.SetColor(System.Drawing.Color.White);
                     r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
                     r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
+                    r.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(23, 55, 93));
                 }
 
                 worksheet.Cells["A4"].Value = "Nombre Comercial";
@@ -273,7 +285,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 worksheet.Cells["E4"].Value = "Titular Registro";
                 //worksheet.Cells["F4"].Value = "Formulador";
                 worksheet.Cells["A4:F4"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A4:F4"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(184, 204, 228));
+                worksheet.Cells["A4:F4"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(184, 204, 228));
                 worksheet.Cells["A4:F4"].Style.Font.Bold = true;
 
 
@@ -324,7 +336,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 var worksheet = xlPackage.Workbook.Worksheets.Add("articulos");
                 var namedStyle = xlPackage.Workbook.Styles.CreateNamedStyle("HyperLink");
                 namedStyle.Style.Font.UnderLine = true;
-                namedStyle.Style.Font.Color.SetColor(Color.Blue);
+                namedStyle.Style.Font.Color.SetColor(System.Drawing.Color.Blue);
                 const int startRow = 5;
                 var row = startRow;
                 worksheet.View.ShowGridLines = false;
@@ -334,10 +346,10 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 using (var r = worksheet.Cells["A1:F1"])
                 {
                     r.Merge = true;
-                    r.Style.Font.Color.SetColor(Color.White);
+                    r.Style.Font.Color.SetColor(System.Drawing.Color.White);
                     r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
                     r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
+                    r.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(23, 55, 93));
                 }
 
                 worksheet.Cells["A4"].Value = "Plaga";
@@ -347,7 +359,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 worksheet.Cells["E4"].Value = "Titular Registro";
                 worksheet.Cells["F4"].Value = "Pais";
                 worksheet.Cells["A4:F4"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A4:F4"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(184, 204, 228));
+                worksheet.Cells["A4:F4"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(184, 204, 228));
                 worksheet.Cells["A4:F4"].Style.Font.Bold = true;
 
 
@@ -397,7 +409,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 var worksheet = xlPackage.Workbook.Worksheets.Add("articulos");
                 var namedStyle = xlPackage.Workbook.Styles.CreateNamedStyle("HyperLink");
                 namedStyle.Style.Font.UnderLine = true;
-                namedStyle.Style.Font.Color.SetColor(Color.Blue);
+                namedStyle.Style.Font.Color.SetColor(System.Drawing.Color.Blue);
                 const int startRow = 5;
                 var row = startRow;
                 worksheet.View.ShowGridLines = false;
@@ -407,10 +419,10 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 using (var r = worksheet.Cells["A1:F1"])
                 {
                     r.Merge = true;
-                    r.Style.Font.Color.SetColor(Color.White);
+                    r.Style.Font.Color.SetColor(System.Drawing.Color.White);
                     r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
                     r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
+                    r.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(23, 55, 93));
                 }
 
                 worksheet.Cells["A4"].Value = "Cultivo";
@@ -420,7 +432,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 worksheet.Cells["E4"].Value = "Titular Registro";
                 worksheet.Cells["F4"].Value = "Pais";
                 worksheet.Cells["A4:F4"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A4:F4"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(184, 204, 228));
+                worksheet.Cells["A4:F4"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(184, 204, 228));
                 worksheet.Cells["A4:F4"].Style.Font.Bold = true;
 
 
@@ -460,7 +472,671 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
 
             return stream;
         }
+
         #endregion
 
+        #region Reportes - PDF
+        public async Task<GetPdfDto> GetProductosFormuladosPdfAsync(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
+        {
+            var model = await GetArticulosById(idUsuario, tipoFiltro, filtro, idIngredienteActivo);
+
+            var fileLogo = System.IO.Path.Combine(_resourceDto.Documents, "images", "logo-avgust.jpg");
+
+            PdfFont fontSubTitle = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontTitle = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontHeaderTable = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontTable = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontTexto = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontMR = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontFirma = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+
+            float setHeight = 13f;
+            float setFontSize = 7f;
+            float setMinHeight = 6f;
+
+            PdfWriter writer = null;
+
+            var cellColor = new DeviceRgb(224, 224, 224);
+
+            MemoryStream baos = new MemoryStream();
+
+            using (writer = new PdfWriter(baos))
+            {
+                PdfDocument pdf = new PdfDocument(writer);
+                Document doc = new Document(pdf, PageSize.A4.Rotate(), false);
+
+                #region LOGO
+
+                iText.Layout.Element.Image image = new iText.Layout.Element.Image(ImageDataFactory.Create(fileLogo));
+                image.GetXObject().GetPdfObject().SetCompressionLevel(CompressionConstants.BEST_COMPRESSION);
+
+                image.ScaleToFit(200, 35);
+                float offsetX = (200 - image.GetImageScaledWidth());
+                float offsetY = (523 - image.GetImageScaledHeight());
+                image.SetFixedPosition(9 + offsetX, 60 + offsetY);
+
+                //image.ScaleAbsolute(200, 40);
+                //image.SetFixedPosition(PageSize.A4.Rotate().GetWidth() / 2, 800);
+
+                doc.Add(image);
+                doc.Add(new Paragraph(" "));
+
+                #endregion
+
+
+                #region Titulo de Pagina
+                Paragraph title = new Paragraph();
+                title.SetFont(fontTitle).SetFontSize(setFontSize).SetFontColor(ColorConstants.BLACK).SetBold()
+                    .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetUnderline()
+                    .Add("SISTEMA DE INFORMACIÓN DE PLAGUICIDA\r\nReporte de Productos Formulados");
+
+                doc.Add(title);
+
+                #endregion
+
+
+                #region Data
+
+                Table tableBienesServicios = new Table(UnitValue.CreatePercentArray(new float[] { 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 })).UseAllAvailableWidth().SetVerticalBorderSpacing(3).SetHorizontalBorderSpacing(3);
+                //SetBackgroundColor(cellColor)
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Item")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Nombre Comercial")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Nro Registro")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Pais")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Titular Registro")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Tipo Producto")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Tipo Formulacion")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                //tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Formulador")
+                //    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Ingrediente Activo")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Concentracion (IA)")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Toxicologia")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Cultivo")
+               .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Plaga")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Formuladores")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Fabricantes")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                int ind = 0;
+
+                foreach (var item in model)
+                {
+                    ind++;
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER)
+                        .SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(ind.ToString())
+                        .SetTextAlignment(TextAlignment.CENTER)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(item.NombreComercial)
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(item.NroRegistro)
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(item.IdPaisNavigation.NomPais)
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(item.IdTitularRegistroNavigation.NomTitularRegistro)
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(item.IdTipoProductoNavigation.NomTipoProducto)
+                        .SetTextAlignment(TextAlignment.CENTER)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(item.IdTipoFormulacionNavigation.NomTipoFormulacion)
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(string.Join(Environment.NewLine, item.Composicions.Select(p => $"- {p.IngredienteActivoNavigation.NomIngredienteActivo}")))
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(string.Join(Environment.NewLine, item.Composicions.Select(p => $"- {p.ContracionIA}")))
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(string.Join(Environment.NewLine, item.Caracteristicas.Select(p => $"- {p.IdToxicologicaNavigation.Descripcion}")))
+                        .SetTextAlignment(TextAlignment.CENTER)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(string.Join(Environment.NewLine, item.Usos.Select(p => $"- {p.IdCultivoNavigation.NombreCultivo}")))
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                                       .Add(new Paragraph(string.Join(Environment.NewLine, item.Usos.Select(p => $"- {p.IdNomCientificoPlagaNavigation.NombreCientificoPlaga}")))
+                                       .SetTextAlignment(TextAlignment.LEFT)
+                                       .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                                       .Add(new Paragraph(string.Join(Environment.NewLine, item.ProductoFormuladors.Select(p => $"- {p.IdFormuladorNavigation.NomFormulador}")))
+                                       .SetTextAlignment(TextAlignment.LEFT)
+                                       .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                                       .Add(new Paragraph(string.Join(Environment.NewLine, item.ProductoFabricantes.Select(p => $"- {p.IdFabricanteNavigation.NombreFabricante}")))
+                                       .SetTextAlignment(TextAlignment.LEFT)
+                                       .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+                }
+
+                doc.Add(tableBienesServicios);
+                #endregion
+
+
+                #region Numeración de Página
+                int numberOfPages = pdf.GetNumberOfPages();
+                for (int i = 1; i <= numberOfPages; i++)
+                {
+                    doc.ShowTextAligned(new Paragraph($"Pag: {i} / {numberOfPages}"),
+                        800, 590, i, TextAlignment.RIGHT, VerticalAlignment.TOP, 0).SetFontSize(setFontSize - 1);
+
+                    doc.ShowTextAligned(new Paragraph($"Fecha y Hora de Emisión: {DateTime.Now.ToString("dd/MM/yyyy hh:mm tt")}"),
+                       780, 575, i, TextAlignment.RIGHT, VerticalAlignment.TOP, 0).SetFontSize(setFontSize - 1);
+                }
+                #endregion
+
+                // Ceramos el documento
+                doc.Close();
+            }
+
+            var pdf64 = Convert.ToBase64String(baos.ToArray());
+            GetPdfDto data = new GetPdfDto
+            {
+                base64 = pdf64
+            };
+            return data;
+
+        }
+
+        public async Task<GetPdfDto> GetArticulosPorComposicionPdfAsync(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
+        {
+            var model = await GetArticulosPorComposicion(idUsuario, tipoFiltro, filtro, idIngredienteActivo);
+
+            var fileLogo = System.IO.Path.Combine(_resourceDto.Documents, "images", "logo-avgust.jpg");
+
+            PdfFont fontSubTitle = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontTitle = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontHeaderTable = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontTable = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontTexto = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontMR = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontFirma = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+
+            float setHeight = 13f;
+            float setFontSize = 7f;
+            float setMinHeight = 6f;
+
+            PdfWriter writer = null;
+
+            var cellColor = new DeviceRgb(224, 224, 224);
+
+            MemoryStream baos = new MemoryStream();
+
+            using (writer = new PdfWriter(baos))
+            {
+                PdfDocument pdf = new PdfDocument(writer);
+                Document doc = new Document(pdf, PageSize.A4.Rotate(), false);
+
+                #region LOGO
+
+                iText.Layout.Element.Image image = new iText.Layout.Element.Image(ImageDataFactory.Create(fileLogo));
+                image.GetXObject().GetPdfObject().SetCompressionLevel(CompressionConstants.BEST_COMPRESSION);
+
+                image.ScaleToFit(200, 35);
+                float offsetX = (200 - image.GetImageScaledWidth());
+                float offsetY = (523 - image.GetImageScaledHeight());
+                image.SetFixedPosition(9 + offsetX, 60 + offsetY);
+
+                //image.ScaleAbsolute(200, 40);
+                //image.SetFixedPosition(PageSize.A4.Rotate().GetWidth() / 2, 800);
+
+                doc.Add(image);
+                doc.Add(new Paragraph(" "));
+
+                #endregion
+
+                #region Titulo de Pagina
+                Paragraph title = new Paragraph();
+                title.SetFont(fontTitle).SetFontSize(setFontSize).SetFontColor(ColorConstants.BLACK).SetBold()
+                    .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetUnderline()
+                    .Add("SISTEMA DE INFORMACIÓN DE PLAGUICIDA\r\nReporte de Composición");
+
+                doc.Add(title);
+
+                #endregion
+
+                #region Data
+
+                Table tableBienesServicios = new Table(UnitValue.CreatePercentArray(new float[] { 1, 2, 2, 2, 2, 2 })).UseAllAvailableWidth().SetVerticalBorderSpacing(3).SetHorizontalBorderSpacing(3);
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Item")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Ingrediente Activo")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Nombre Comercial")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Titular Registro")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Concentracion IA")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Grupo Químico")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+
+                int ind = 0;
+
+                foreach (var item in model)
+                {
+                    ind++;
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(ind.ToString())
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(string.Join(Environment.NewLine, item.Composicions.Select(p => $"- {p.IngredienteActivoNavigation.NomIngredienteActivo}")))
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(item.NombreComercial)
+                        .SetTextAlignment(TextAlignment.CENTER)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(item.IdTitularRegistroNavigation.NomTitularRegistro)
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(string.Join(Environment.NewLine, item.Composicions.Select(p => $"- {p.ContracionIA}")))
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(string.Join(Environment.NewLine, item.Composicions.Select(p => $"- {p.GrupoQuimicoNavegation.NomGrupoQuimico}")))
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+                }
+
+                doc.Add(tableBienesServicios);
+                #endregion
+
+                #region Numeración de Página
+                int numberOfPages = pdf.GetNumberOfPages();
+                for (int i = 1; i <= numberOfPages; i++)
+                {
+                    doc.ShowTextAligned(new Paragraph($"Pag: {i} / {numberOfPages}"),
+                        800, 590, i, TextAlignment.RIGHT, VerticalAlignment.TOP, 0).SetFontSize(setFontSize - 1);
+
+                    doc.ShowTextAligned(new Paragraph($"Fecha y Hora de Emisión: {DateTime.Now.ToString("dd/MM/yyyy hh:mm tt")}"),
+                       780, 575, i, TextAlignment.RIGHT, VerticalAlignment.TOP, 0).SetFontSize(setFontSize - 1);
+                }
+                #endregion
+
+                // Ceramos el documento
+                doc.Close();
+            }
+
+            var pdf64 = Convert.ToBase64String(baos.ToArray());
+            GetPdfDto data = new GetPdfDto
+            {
+                base64 = pdf64
+            };
+            return data;
+
+        }
+
+
+        public async Task<GetPdfDto> GetArticulosPorPlagaPdfAsync(int idUsuario, string filtro)
+        {
+            var model = await GetArticulosPorPlaga(idUsuario, filtro);
+
+            var fileLogo = System.IO.Path.Combine(_resourceDto.Documents, "images", "logo-avgust.jpg");
+
+            PdfFont fontSubTitle = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontTitle = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontHeaderTable = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontTable = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontTexto = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontMR = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontFirma = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+
+            float setHeight = 13f;
+            float setFontSize = 7f;
+            float setMinHeight = 6f;
+
+            PdfWriter writer = null;
+
+            var cellColor = new DeviceRgb(224, 224, 224);
+
+            MemoryStream baos = new MemoryStream();
+
+            using (writer = new PdfWriter(baos))
+            {
+                PdfDocument pdf = new PdfDocument(writer);
+                Document doc = new Document(pdf, PageSize.A4.Rotate(), false);
+
+                #region LOGO
+
+                iText.Layout.Element.Image image = new iText.Layout.Element.Image(ImageDataFactory.Create(fileLogo));
+                image.GetXObject().GetPdfObject().SetCompressionLevel(CompressionConstants.BEST_COMPRESSION);
+
+                image.ScaleToFit(200, 35);
+                float offsetX = (200 - image.GetImageScaledWidth());
+                float offsetY = (523 - image.GetImageScaledHeight());
+                image.SetFixedPosition(9 + offsetX, 60 + offsetY);
+
+                //image.ScaleAbsolute(200, 40);
+                //image.SetFixedPosition(PageSize.A4.Rotate().GetWidth() / 2, 800);
+
+                doc.Add(image);
+                doc.Add(new Paragraph(" "));
+
+                #endregion
+
+
+                #region Titulo de Pagina
+                Paragraph title = new Paragraph();
+                title.SetFont(fontTitle).SetFontSize(setFontSize).SetFontColor(ColorConstants.BLACK).SetBold()
+                    .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetUnderline()
+                    .Add("SISTEMA DE INFORMACIÓN DE PLAGUICIDA\r\nReporte de Plagas");
+
+                doc.Add(title);
+
+                #endregion
+
+
+                #region Data
+
+                Table tableBienesServicios = new Table(UnitValue.CreatePercentArray(new float[] { 1, 2, 2, 2, 2, 2 })).UseAllAvailableWidth().SetVerticalBorderSpacing(3).SetHorizontalBorderSpacing(3);
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Item")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Plaga")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Nombre Comercial")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Pais")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Titular Registro")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Cultivo")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+
+                int ind = 0;
+
+                foreach (var item in model)
+                {
+                    ind++;
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                 .Add(new Paragraph(ind.ToString())
+                 .SetTextAlignment(TextAlignment.LEFT)
+                 .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(string.Join(Environment.NewLine, item.Usos.Select(p => $"- {p.IdNomCientificoPlagaNavigation.NombreCientificoPlaga}")))
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(item.NombreComercial)
+                        .SetTextAlignment(TextAlignment.CENTER)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(item.IdPaisNavigation.NomPais)
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                                       .Add(new Paragraph(item.IdTitularRegistroNavigation.NomTitularRegistro)
+                                       .SetTextAlignment(TextAlignment.LEFT)
+                                       .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                                       .Add(new Paragraph(string.Join(Environment.NewLine, item.Usos.Select(p => $"- {p.IdCultivoNavigation.NombreCultivo}")))
+                                       .SetTextAlignment(TextAlignment.LEFT)
+                                       .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+
+                }
+
+                doc.Add(tableBienesServicios);
+                #endregion
+
+
+                #region Numeración de Página
+                int numberOfPages = pdf.GetNumberOfPages();
+                for (int i = 1; i <= numberOfPages; i++)
+                {
+                    doc.ShowTextAligned(new Paragraph($"Pag: {i} / {numberOfPages}"),
+                        800, 590, i, TextAlignment.RIGHT, VerticalAlignment.TOP, 0).SetFontSize(setFontSize - 1);
+
+                    doc.ShowTextAligned(new Paragraph($"Fecha y Hora de Emisión: {DateTime.Now.ToString("dd/MM/yyyy hh:mm tt")}"),
+                       780, 575, i, TextAlignment.RIGHT, VerticalAlignment.TOP, 0).SetFontSize(setFontSize - 1);
+                }
+                #endregion
+
+                // Ceramos el documento
+                doc.Close();
+            }
+
+            var pdf64 = Convert.ToBase64String(baos.ToArray());
+            GetPdfDto data = new GetPdfDto
+            {
+                base64 = pdf64
+            };
+            return data;
+
+        }
+
+
+        public async Task<GetPdfDto> GetArticulosPorCultivoPdfAsync(int idUsuario, string filtro)
+        {
+            var model = await GetArticulosPorCultivo(idUsuario, filtro);
+
+            var fileLogo = System.IO.Path.Combine(_resourceDto.Documents, "images", "logo-avgust.jpg");
+
+            PdfFont fontSubTitle = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontTitle = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontHeaderTable = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontTable = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontTexto = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontMR = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont fontFirma = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+
+            float setHeight = 13f;
+            float setFontSize = 7f;
+            float setMinHeight = 6f;
+
+            PdfWriter writer = null;
+
+            var cellColor = new DeviceRgb(224, 224, 224);
+
+            MemoryStream baos = new MemoryStream();
+
+            using (writer = new PdfWriter(baos))
+            {
+                PdfDocument pdf = new PdfDocument(writer);
+                Document doc = new Document(pdf, PageSize.A4.Rotate(), false);
+
+                #region LOGO
+
+                iText.Layout.Element.Image image = new iText.Layout.Element.Image(ImageDataFactory.Create(fileLogo));
+                image.GetXObject().GetPdfObject().SetCompressionLevel(CompressionConstants.BEST_COMPRESSION);
+
+                image.ScaleToFit(200, 35);
+                float offsetX = (200 - image.GetImageScaledWidth());
+                float offsetY = (523 - image.GetImageScaledHeight());
+                image.SetFixedPosition(9 + offsetX, 60 + offsetY);
+
+                //image.ScaleAbsolute(200, 40);
+                //image.SetFixedPosition(PageSize.A4.Rotate().GetWidth() / 2, 800);
+
+                doc.Add(image);
+                doc.Add(new Paragraph(" "));
+
+                #endregion
+
+
+                #region Titulo de Pagina
+                Paragraph title = new Paragraph();
+                title.SetFont(fontTitle).SetFontSize(setFontSize).SetFontColor(ColorConstants.BLACK).SetBold()
+                    .SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER).SetUnderline()
+                    .Add("SISTEMA DE INFORMACIÓN DE PLAGUICIDA\r\nReporte por Cultivo");
+
+                doc.Add(title);
+
+                #endregion
+
+
+                #region Data
+
+                Table tableBienesServicios = new Table(UnitValue.CreatePercentArray(new float[] { 1, 2, 2, 2, 2, 2 })).UseAllAvailableWidth().SetVerticalBorderSpacing(3).SetHorizontalBorderSpacing(3);
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Item")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Cultivo")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Nombre Comercial")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Pais")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Titular Registro")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Plaga")
+                    .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+
+                int ind = 0;
+
+                foreach (var item in model)
+                {
+                    ind++;
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                 .Add(new Paragraph(ind.ToString())
+                 .SetTextAlignment(TextAlignment.LEFT)
+                 .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                                       .Add(new Paragraph(string.Join(Environment.NewLine, item.Usos.Select(p => $"- {p.IdCultivoNavigation.NombreCultivo}")))
+                                       .SetTextAlignment(TextAlignment.LEFT)
+                                       .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(item.NombreComercial)
+                        .SetTextAlignment(TextAlignment.CENTER)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(item.IdPaisNavigation.NomPais)
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                                       .Add(new Paragraph(item.IdTitularRegistroNavigation.NomTitularRegistro)
+                                       .SetTextAlignment(TextAlignment.LEFT)
+                                       .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                    tableBienesServicios.AddCell(new Cell().SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE)
+                        .Add(new Paragraph(string.Join(Environment.NewLine, item.Usos.Select(p => $"- {p.IdNomCientificoPlagaNavigation.NombreCientificoPlaga}")))
+                        .SetTextAlignment(TextAlignment.LEFT)
+                        .SetFont(fontTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
+
+                }
+
+                doc.Add(tableBienesServicios);
+                #endregion
+
+
+                #region Numeración de Página
+                int numberOfPages = pdf.GetNumberOfPages();
+                for (int i = 1; i <= numberOfPages; i++)
+                {
+                    doc.ShowTextAligned(new Paragraph($"Pag: {i} / {numberOfPages}"),
+                        800, 590, i, TextAlignment.RIGHT, VerticalAlignment.TOP, 0).SetFontSize(setFontSize - 1);
+
+                    doc.ShowTextAligned(new Paragraph($"Fecha y Hora de Emisión: {DateTime.Now.ToString("dd/MM/yyyy hh:mm tt")}"),
+                       780, 575, i, TextAlignment.RIGHT, VerticalAlignment.TOP, 0).SetFontSize(setFontSize - 1);
+                }
+                #endregion
+
+                // Ceramos el documento
+                doc.Close();
+            }
+
+            var pdf64 = Convert.ToBase64String(baos.ToArray());
+            GetPdfDto data = new GetPdfDto
+            {
+                base64 = pdf64
+            };
+            return data;
+
+        }
+
+        #endregion
     }
 }
