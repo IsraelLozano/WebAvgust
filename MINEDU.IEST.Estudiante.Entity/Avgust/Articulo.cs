@@ -17,7 +17,6 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust
         public int? IdFormulador { get; set; }
         public int? IdGrupoQuimico { get; set; }
         public int? IdTipoFormulacion { get; set; }
-        public string Concentracion { get; set; }
         public bool FlgActivo { get; set; }
         //public Formulador? IdFormuladorNavigation { get; set; }
         public GrupoQuimico? IdGrupoQuimicoNavigation { get; set; }

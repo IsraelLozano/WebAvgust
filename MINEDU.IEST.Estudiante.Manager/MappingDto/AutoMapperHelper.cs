@@ -1,7 +1,13 @@
 ﻿using AutoMapper;
 using IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust;
+using IDCL.AVGUST.SIP.Entity.Calculator;
 using IDCL.AVGUST.SIP.ManagerDto.Articulos;
 using IDCL.AVGUST.SIP.ManagerDto.Articulos.Add;
+using IDCL.AVGUST.SIP.ManagerDto.Calculator.ArticuloCalc;
+using IDCL.AVGUST.SIP.ManagerDto.Calculator.ArticuloFamilia;
+using IDCL.AVGUST.SIP.ManagerDto.Calculator.ListaPreciosItem;
+using IDCL.AVGUST.SIP.ManagerDto.Calculator.RentabilidadComicion;
+using IDCL.AVGUST.SIP.ManagerDto.Calculator.Simulador;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros.Add;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad;
@@ -64,6 +70,17 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
 
             #region Usuario
 
+
+            #endregion
+
+            #region Calculadora
+            CreateMap<ArticuloServ, GetArticuloCalDto>().ReverseMap();
+            CreateMap<ArticuloCategorium, GetArticuloCategoriDto>().ReverseMap();
+            CreateMap<RentabilidadComision, GetRenatabilidadDto>().ReverseMap();
+            CreateMap<ListaPrecioItem, GetListaPrecioItemDto>().ReverseMap();
+
+            CreateMap<SimuladorPedidoItem, GetPedidoItemDto>().ReverseMap();
+            CreateMap<SimuladorPedido, GetPedidoDto>().ReverseMap();
 
             #endregion
         }

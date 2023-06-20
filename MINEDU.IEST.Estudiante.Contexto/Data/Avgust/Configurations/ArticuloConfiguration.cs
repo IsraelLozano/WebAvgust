@@ -19,10 +19,6 @@ namespace IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto.Configurations
 
             entity.Property(e => e.IdArticulo).HasColumnName("idArticulo");
 
-            entity.Property(e => e.Concentracion)
-                .HasMaxLength(50)
-                .IsUnicode(false);
-
             entity.Property(e => e.IdFormulador).HasColumnName("idFormulador");
 
             entity.Property(e => e.IdGrupoQuimico).HasColumnName("idGrupoQuimico");

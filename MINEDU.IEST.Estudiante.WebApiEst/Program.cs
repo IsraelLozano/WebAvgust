@@ -1,6 +1,5 @@
 using IDCL.AVGUST.SIP.Manager.MappingDto;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 using MINEDU.IEST.Estudiante.Inf_Apis.Extension;
@@ -39,22 +38,6 @@ builder.Services.AddSingleton(recursos);
 //Configuracion para el BackEnd-------------------------------------/
 BackEndConfig backEndConfig = configuration.GetSection("BackEndConfig").Get<BackEndConfig>();
 
-//Seri Log - Config
-//var logger = new LoggerConfiguration()
-//    .ReadFrom.Configuration(configuration.GetSection("Logging"))
-//    .WriteTo.MSSqlServer(
-//        connectionString: backEndConfig.BdSqlServer,
-//        sinkOptions: new MSSqlServerSinkOptions { TableName = "Log", SchemaName = "Audit" }
-//    )
-//    .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
-//    .CreateLogger();
-
-//builder.Host.UseSerilog(logger).ConfigureLogging(opt =>
-//{
-//    opt.ClearProviders();
-//    opt.SetMinimumLevel(LogLevel.Trace);
-//});
-
 //Habilitando Authorize
 //builder.Services.AddControllers(o => o.Filters.Add(new AuthorizeFilter()));
 
@@ -82,20 +65,6 @@ builder.Services.AddCors(options =>
         b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
-
-
-
-//builder.Services.AddAuthentication(
-//          IdentityServerAuthenticationDefaults.AuthenticationScheme)
-//          .AddIdentityServerAuthentication(opt =>
-//          {
-//              opt.Authority = backEndConfig.UrlOAuth;
-//              opt.ApiName = "MINEDU.IEST.Estudiante.WebApiEst";
-//              opt.ApiSecret = "49C1A7E1-0C79-4A89-A3D6-A37998FB86B0";
-//              opt.RoleClaimType = JwtClaimTypes.Role;
-//              opt.NameClaimType = JwtClaimTypes.Name;
-//              opt.RequireHttpsMetadata = false;
-//          });
 
 //Filters
 builder.Services.AddScoped<ModelValidationAttribute>();
@@ -169,7 +138,6 @@ else
 
 
 app.ConfigureCustomExceptionMiddleware();
-//app.UseSerilogRequestLogging();
 app.UseRouting();
 app.UseCors(backEndConfig.NombrePoliticaCors);
 //app.UseAuthentication();

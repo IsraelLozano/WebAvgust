@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MINEDU.IEST.Estudiante.Inf_Utils.Dtos;
 
 namespace IDCL.AVGUST.SIP.ManagerDto.Maestros.Add
 {

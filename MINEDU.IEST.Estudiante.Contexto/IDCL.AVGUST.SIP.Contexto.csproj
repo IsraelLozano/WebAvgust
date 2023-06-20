@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data2\**" />
+    <Compile Remove="Data\Audit\**" />
+    <Compile Remove="Data\Security\**" />
+    <EmbeddedResource Remove="Data2\**" />
+    <EmbeddedResource Remove="Data\Audit\**" />
+    <EmbeddedResource Remove="Data\Security\**" />
+    <None Remove="Data2\**" />
+    <None Remove="Data\Audit\**" />
+    <None Remove="Data\Security\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Data\Avgust\Clase.cs" />
     <Compile Remove="Data\Avgust\IdTipoProducto.cs" />
   </ItemGroup>

@@ -42,6 +42,21 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
             return Ok(await _reporteManager.GetArticulosPorCultivo(idUsuario, filtro));
         }
 
+        [HttpGet("GetArticulosFabricante/{idUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetArticulosFabricante(int idUsuario, string filtro)
+        {
+            return Ok(await _reporteManager.GetArticulosFabricante(idUsuario, filtro));
+        }
+
+
+        [HttpGet("GetArticulosFormuladorAll/{idUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetArticulosFormuladorAll(int idUsuario, string filtro)
+        {
+            return Ok(await _reporteManager.GetArticulosFormuladorAll(idUsuario, filtro));
+        }
+
+
+
         #region Excel
 
 
@@ -74,6 +89,7 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
             return File(query, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "articulosByPlaga.xlsx");
 
         }
+        
         [HttpGet, DisableRequestSizeLimit]
         [Route("GetExcelArticulosPorCultivo/{idUsuario:int}/{filtro?}")]
         public async Task<IActionResult> GetExcelArticulosPorCultivo(int idUsuario, string filtro)
@@ -81,8 +97,28 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
             var query = await _reporteManager.GetExcelArticulosPorCultivo(idUsuario, filtro);
 
             return File(query, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "articulosByPlaga.xlsx");
-
         }
+
+        [HttpGet, DisableRequestSizeLimit]
+        [Route("GetExcelGetArticulosFabricante/{idUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetExcelGetArticulosFabricante(int idUsuario, string filtro)
+        {
+            var query = await _reporteManager.GetExcelGetArticulosFabricante(idUsuario, filtro);
+
+            return File(query, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "GetExcelGetArticulosFabricante.xlsx");
+        }
+
+
+        [HttpGet, DisableRequestSizeLimit]
+        [Route("GetExcelGetArticulosFormuladorAll/{idUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetExcelGetArticulosFormuladorAll(int idUsuario, string filtro)
+        {
+            var query = await _reporteManager.GetExcelGetArticulosFormuladorAll(idUsuario, filtro);
+
+            return File(query, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "GetExcelGetArticulosFormuladorAll.xlsx");
+        }
+
+
         #endregion
 
 
@@ -110,6 +146,19 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         public async Task<IActionResult> GetArticulosPorCultivoPdfAsync(int idUsuario, string filtro)
         {
             return Ok(await _reporteManager.GetArticulosPorCultivoPdfAsync(idUsuario, filtro));
+        }
+
+
+        [HttpGet("GetArticulosFabricantePdfAsync/{idUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetArticulosFabricantePdfAsync(int idUsuario, string filtro)
+        {
+            return Ok(await _reporteManager.GetArticulosFabricantePdfAsync(idUsuario, filtro));
+        }
+
+        [HttpGet("GetArticulosFormuladorAllPdfAsync/{idUsuario:int}/{filtro?}")]
+        public async Task<IActionResult> GetArticulosFormuladorAllPdfAsync(int idUsuario, string filtro)
+        {
+            return Ok(await _reporteManager.GetArticulosFormuladorAllPdfAsync(idUsuario, filtro));
         }
 
         #endregion

@@ -19,6 +19,12 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
         Task<GetPdfDto> GetArticulosPorComposicionPdfAsync(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo);
         Task<GetPdfDto> GetArticulosPorCultivoPdfAsync(int idUsuario, string filtro);
         Task<GetPdfDto> GetArticulosPorPlagaPdfAsync(int idUsuario, string filtro);
+        Task<List<GetArticuloDto>> GetArticulosFabricante(int idUsuario, string filtro);
+        Task<List<GetArticuloDto>> GetArticulosFormuladorAll(int idUsuario, string filtro);
+        Task<GetPdfDto> GetArticulosFabricantePdfAsync(int idUsuario, string filtro);
+        Task<GetPdfDto> GetArticulosFormuladorAllPdfAsync(int idUsuario, string filtro);
+        Task<MemoryStream> GetExcelGetArticulosFabricante(int idUsuario, string filtro);
+        Task<MemoryStream> GetExcelGetArticulosFormuladorAll(int idUsuario, string filtro);
 
         #endregion
     }

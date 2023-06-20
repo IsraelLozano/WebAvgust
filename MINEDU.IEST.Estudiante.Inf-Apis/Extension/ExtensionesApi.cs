@@ -1,9 +1,12 @@
 ﻿using IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto;
+using IDCL.AVGUST.SIP.Contextos.IDCL.AVGUST.SIP.Contexto;
 using IDCL.AVGUST.SIP.Manager.Articulos;
+using IDCL.AVGUST.SIP.Manager.Calculator;
 using IDCL.AVGUST.SIP.Manager.Maestro;
 using IDCL.AVGUST.SIP.Manager.Reporte;
 using IDCL.AVGUST.SIP.Manager.Seguridad;
 using IDCL.AVGUST.SIP.Repository.Articulos;
+using IDCL.AVGUST.SIP.Repository.Calculator;
 using IDCL.AVGUST.SIP.Repository.Maestra;
 using IDCL.AVGUST.SIP.Repository.Seguridad;
 using IDCL.AVGUST.SIP.Repository.UnitOfWork;
@@ -66,6 +69,35 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
 
             return services;
         }
+
+
+        public static IServiceCollection AddRepositoriesCalculator(this IServiceCollection services, Action<RepositoriesOptions> configureOptions)
+        {
+            var options = new RepositoriesOptions();
+            configureOptions(options);
+
+            services.AddScoped<IArticuloCalcRepository, ArticuloCalcRepository>();
+            services.AddScoped<IArticuloCategoriaRepository, ArticuloCategoriaRepository>();
+            services.AddScoped<ISimuladorPedidoRepository, SimuladorPedidoRepository>();
+            services.AddScoped<ISimuladorPedidoDetalleRepository, SimuladorPedidoDetalleRepository>();
+
+            services.AddScoped<IArticuloCalculatorManager, ArticuloCalculatorManager>();
+            services.AddScoped<ISimuladorPedidoManager, SimuladorPedidoManager>();
+
+            services.AddScoped<CalculatorUnitOfWork>();
+
+            services.AddDbContext<DbAvgustCalcContext>(opt =>
+            {
+                opt.UseSqlServer(options.ConnectionString);
+                
+            });
+
+            return services;
+        }
+
+
+
+
         public static IServiceCollection AddManager(this IServiceCollection services)
         {
 

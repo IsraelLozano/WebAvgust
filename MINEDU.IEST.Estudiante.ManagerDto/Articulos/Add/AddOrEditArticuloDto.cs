@@ -11,7 +11,6 @@
         public int? IdFormulador { get; set; }
         public int? IdGrupoQuimico { get; set; }
         public int? IdTipoFormulacion { get; set; }
-        public string Concentracion { get; set; }
         public bool FlgActivo { get; set; }
     }
 }

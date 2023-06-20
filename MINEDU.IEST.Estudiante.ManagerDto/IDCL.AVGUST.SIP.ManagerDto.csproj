@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MINEDU.IEST.Estudiante.Inf-Utils\IDCL.AVGUST.SIP.Inf-Utils.csproj" />
+  </ItemGroup>
+
 </Project>

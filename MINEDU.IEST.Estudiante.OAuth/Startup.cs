@@ -1,13 +1,10 @@
 ﻿using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MINEDU.IEST.Estudiante.Contexto.Data.Security;
 using MINEDU.IEST.Estudiante.Entity.Security;
 using MINEDU.IEST.Estudiante.Inf_Utils.Dtos;
 using MINEDU.IEST.Estudiante.OAuth.Infraestructure;
@@ -34,12 +31,12 @@ namespace MINEDU.IEST.Estudiante.OAuth
 
             services.AddControllersWithViews();
 
-            services.AddDbContext<SecurityDbContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("BdSqlServer")));
+            //services.AddDbContext<SecurityDbContext>(options =>
+            //   options.UseSqlServer(Configuration.GetConnectionString("BdSqlServer")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<SecurityDbContext>()
-                .AddDefaultTokenProviders();
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<SecurityDbContext>()
+            //    .AddDefaultTokenProviders();
 
             var builder = services.AddIdentityServer(options =>
             {

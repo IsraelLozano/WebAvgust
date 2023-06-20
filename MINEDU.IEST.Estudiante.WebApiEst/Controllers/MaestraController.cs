@@ -3,6 +3,7 @@ using IDCL.AVGUST.SIP.ManagerDto.Maestros;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros.Add;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MINEDU.IEST.Estudiante.Inf_Utils.Helpers;
 using MINEDU.IEST.Estudiante.WebApiEst.Controllers;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -84,10 +85,10 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
         #region Cientifico - Plaga
 
-        [HttpGet("getListCientificoPlaga")]
-        public async Task<IActionResult> getListCientificoPlaga()
+        [HttpGet("getListCientificoPlaga/{filter?}")]
+        public async Task<IActionResult> getListCientificoPlaga(string filter = "")
         {
-            return Ok(await _maestraManager.getListCientificoPlaga());
+            return Ok(await _maestraManager.getListCientificoPlaga(filter));
         }
 
         [HttpGet("GetCientificoPlagaById/{id}")]
@@ -99,7 +100,22 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         [HttpPost(template: "CreateOrUpdateCientificoPlaga")]
         public async Task<IActionResult> CreateOrUpdateCientificoPlaga(GetCientificoPlagaDto model)
         {
-            return Ok(await _maestraManager.CreateOrUpdateCientificoPlaga(model));
+            try
+            {
+                var response = await _maestraManager.CreateOrUpdateCientificoPlaga(model);
+                if (response.EsError)
+                {
+                    ModelState.AddModelError("validacion", response.MensajeError);
+                    return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
+
         }
 
         [HttpGet("deletePlaga/{id}")]
@@ -114,10 +130,10 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
         #region Clase
 
-        [HttpGet("getListClase")]
-        public async Task<IActionResult> getListClase()
+        [HttpGet("getListClase/{filter?}")]
+        public async Task<IActionResult> getListClase(string filter = "")
         {
-            return Ok(await _maestraManager.getListClase());
+            return Ok(await _maestraManager.getListClase(filter));
         }
 
         [HttpGet("GetClaseById/{id}")]
@@ -129,7 +145,21 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         [HttpPost(template: "CreateOrUpdateClase")]
         public async Task<IActionResult> CreateOrUpdateClase(AddClaseDto model)
         {
-            return Ok(await _maestraManager.CreateOrUpdateClase(model));
+            try
+            {
+                var response = await _maestraManager.CreateOrUpdateClase(model);
+                if (response.EsError)
+                {
+                    ModelState.AddModelError("validacion", response.MensajeError);
+                    return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
         }
 
         [HttpGet("deleteClase/{id}")]
@@ -143,10 +173,10 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
         #region Cultivo
 
-        [HttpGet("getListCultivo")]
-        public async Task<IActionResult> getListCultivo()
+        [HttpGet("getListCultivo/{filter?}")]
+        public async Task<IActionResult> getListCultivo(string filter = "")
         {
-            return Ok(await _maestraManager.getListCultivo());
+            return Ok(await _maestraManager.getListCultivo(filter));
         }
 
         [HttpGet("GetCultivoById/{id}")]
@@ -158,7 +188,22 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         [HttpPost(template: "CreateOrUpdateCultivo")]
         public async Task<IActionResult> CreateOrUpdateCultivo(GetCultivoDto model)
         {
-            return Ok(await _maestraManager.CreateOrUpdateCultivo(model));
+            try
+            {
+                var response = await _maestraManager.CreateOrUpdateCultivo(model);
+                if (response.EsError)
+                {
+                    ModelState.AddModelError("validacion", response.MensajeError);
+                    return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
+
         }
 
         [HttpGet("deleteCultivo/{id}")]
@@ -172,10 +217,10 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
         #region Formulador
 
-        [HttpGet("getListFormulador")]
-        public async Task<IActionResult> getListFormulador()
+        [HttpGet("getListFormulador/{filter?}")]
+        public async Task<IActionResult> getListFormulador(string filter = "")
         {
-            return Ok(await _maestraManager.getListFormulador());
+            return Ok(await _maestraManager.getListFormulador(filter));
         }
 
         [HttpGet("GetFormuladorById/{id}")]
@@ -187,7 +232,22 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         [HttpPost(template: "CreateOrUpdateFormulador")]
         public async Task<IActionResult> CreateOrUpdateFormulador(GetFormuladorDto model)
         {
-            return Ok(await _maestraManager.CreateOrUpdateFormulador(model));
+            try
+            {
+                var response = await _maestraManager.CreateOrUpdateFormulador(model);
+                if (response.EsError)
+                {
+                    ModelState.AddModelError("validacion", response.MensajeError);
+                    return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
+
         }
 
         [HttpGet("deleteFormulador/{id}")]
@@ -200,10 +260,10 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
         #region GrupoQuimico
 
-        [HttpGet("getListGrupoQuimico")]
-        public async Task<IActionResult> getListGrupoQuimico()
+        [HttpGet("getListGrupoQuimico/{filter?}")]
+        public async Task<IActionResult> getListGrupoQuimico(string filter = "")
         {
-            return Ok(await _maestraManager.getListGrupoQuimico());
+            return Ok(await _maestraManager.getListGrupoQuimico(filter));
         }
 
         [HttpGet("GetGrupoQuimicoById/{id}")]
@@ -215,7 +275,22 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         [HttpPost(template: "CreateOrUpdateGrupoQuimico")]
         public async Task<IActionResult> CreateOrUpdateGrupoQuimico(GetGrupoQuimicoDto model)
         {
-            return Ok(await _maestraManager.CreateOrUpdateGrupoQuimico(model));
+            try
+            {
+                var response = await _maestraManager.CreateOrUpdateGrupoQuimico(model);
+                if (response.EsError)
+                {
+                    ModelState.AddModelError("validacion", response.MensajeError);
+                    return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
+
         }
 
 
@@ -229,10 +304,10 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
         #region Id Tipo Produycto
 
-        [HttpGet("getListIdTipoProducto")]
-        public async Task<IActionResult> getListIdTipoProducto()
+        [HttpGet("getListIdTipoProducto/{filter?}")]
+        public async Task<IActionResult> getListIdTipoProducto(string filter = "")
         {
-            return Ok(await _maestraManager.getListIdTipoProducto());
+            return Ok(await _maestraManager.getListIdTipoProducto(filter));
         }
 
         [HttpGet("GetIdTipoProductoById/{id}")]
@@ -244,7 +319,22 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         [HttpPost(template: "CreateOrUpdateIdTipoProducto")]
         public async Task<IActionResult> CreateOrUpdateIdTipoProducto(GetIdTipoProductoDto model)
         {
-            return Ok(await _maestraManager.CreateOrUpdateIdTipoProducto(model));
+            try
+            {
+                var response = await _maestraManager.CreateOrUpdateIdTipoProducto(model);
+                if (response.EsError)
+                {
+                    ModelState.AddModelError("validacion", response.MensajeError);
+                    return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
+
         }
 
 
@@ -288,10 +378,10 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
         #region Titular registros
 
-        [HttpGet("getListTitularRegistro")]
-        public async Task<IActionResult> getListTitularRegistro()
+        [HttpGet("getListTitularRegistro/{filter?}")]
+        public async Task<IActionResult> getListTitularRegistro(string filter = "")
         {
-            return Ok(await _maestraManager.getListTitularRegistro());
+            return Ok(await _maestraManager.getListTitularRegistro(filter));
         }
 
         [HttpGet("GetTitularRegistroById/{id}")]
@@ -303,7 +393,21 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         [HttpPost(template: "CreateOrUpdateTitularRegistro")]
         public async Task<IActionResult> CreateOrUpdateTitularRegistro(GetTitularRegistroDto model)
         {
-            return Ok(await _maestraManager.CreateOrUpdateTitularRegistro(model));
+            try
+            {
+                var response = await _maestraManager.CreateOrUpdateTitularRegistro(model);
+                if (response.EsError)
+                {
+                    ModelState.AddModelError("validacion", response.MensajeError);
+                    return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
         }
 
 
@@ -318,10 +422,10 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
         #region Toxicologica
 
-        [HttpGet("getListToxicologica")]
-        public async Task<IActionResult> getListToxicologica()
+        [HttpGet("getListToxicologica/{filter?}")]
+        public async Task<IActionResult> getListToxicologica(string filter = "")
         {
-            return Ok(await _maestraManager.getListToxicologica());
+            return Ok(await _maestraManager.getListToxicologica(filter));
         }
 
         [HttpGet("GetToxicologicaById/{id}")]
@@ -333,7 +437,21 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         [HttpPost(template: "CreateOrUpdateToxicologica")]
         public async Task<IActionResult> CreateOrUpdateToxicologica(GetToxicologicaDto model)
         {
-            return Ok(await _maestraManager.CreateOrUpdateToxicologica(model));
+            try
+            {
+                var response = await _maestraManager.CreateOrUpdateToxicologica(model);
+                if (response.EsError)
+                {
+                    ModelState.AddModelError("validacion", response.MensajeError);
+                    return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
         }
 
 
@@ -347,10 +465,10 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
         #region Tipo Formulacion
 
-        [HttpGet("getListTipoFormulacion")]
-        public async Task<IActionResult> getListTipoFormulacion()
+        [HttpGet("getListTipoFormulacion/{filter?}")]
+        public async Task<IActionResult> getListTipoFormulacion(string filter = "")
         {
-            return Ok(await _maestraManager.getListTipoFormulacion());
+            return Ok(await _maestraManager.getListTipoFormulacion(filter));
         }
 
         [HttpGet("GetTipoFormulacionById/{id}")]
@@ -362,7 +480,21 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         [HttpPost(template: "CreateOrUpdateTipoFormulacion")]
         public async Task<IActionResult> CreateOrUpdateTipoFormulacion(GetTipoFormulacionDto model)
         {
-            return Ok(await _maestraManager.CreateOrUpdateTipoFormulacion(model));
+            try
+            {
+                var response = await _maestraManager.CreateOrUpdateTipoFormulacion(model);
+                if (response.EsError)
+                {
+                    ModelState.AddModelError("validacion", response.MensajeError);
+                    return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
         }
 
         [HttpGet("deleteTipoFormulacion/{id}")]
@@ -375,10 +507,10 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
 
         #region IngredienteActivo
 
-        [HttpGet("getListTipoIngredienteActivo")]
-        public async Task<IActionResult> getListTipoIngredienteActivo()
+        [HttpGet("getListTipoIngredienteActivo/{filter?}")]
+        public async Task<IActionResult> getListTipoIngredienteActivo(string filter = "")
         {
-            return Ok(await _maestraManager.getListTipoIngredienteActivo());
+            return Ok(await _maestraManager.getListTipoIngredienteActivo(filter));
         }
 
         [HttpGet("GetTipoIngredienteActivoById/{id}")]
@@ -390,7 +522,22 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         [HttpPost(template: "CreateOrUpdateTipoIngredienteActivo")]
         public async Task<IActionResult> CreateOrUpdateTipoIngredienteActivo(GetTipoIngredienteActivoDto model)
         {
-            return Ok(await _maestraManager.CreateOrUpdateTipoIngredienteActivo(model));
+            try
+            {
+                var response = await _maestraManager.CreateOrUpdateTipoIngredienteActivo(model);
+                if (response.EsError)
+                {
+                    ModelState.AddModelError("validacion", response.MensajeError);
+                    return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
+
         }
 
         [HttpGet("deleteIngredienteActivo/{id}")]
@@ -400,14 +547,15 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         }
         #endregion
 
-
-
         #region Fabridante
 
-        [HttpGet("getListFabricante")]
-        public async Task<IActionResult> getListFabricante()
+        [HttpGet("getListFabricante/{filter?}")]
+        public async Task<IActionResult> getListFabricante(string filter = "")
         {
-            return Ok(await _maestraManager.getListFabricante());
+            return Ok(await _maestraManager.getListFabricante(filter));
+
+
+
         }
 
         [HttpGet("GetFabricanteById/{id}")]
@@ -419,7 +567,23 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         [HttpPost(template: "CreateOrUpdateFabricante")]
         public async Task<IActionResult> CreateOrUpdateFabricante(GetFabricanteDto model)
         {
-            return Ok(await _maestraManager.CreateOrUpdateFabricante(model));
+
+            try
+            {
+                var response = await _maestraManager.CreateOrUpdateFabricante(model);
+                if (response.EsError)
+                {
+                    ModelState.AddModelError("validacion", response.MensajeError);
+                    return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                throw ex;
+            }
+
         }
 
         [HttpGet("deleteFabricante/{id}")]

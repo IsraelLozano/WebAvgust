@@ -1,6 +1,8 @@
-﻿namespace IDCL.AVGUST.SIP.ManagerDto.Maestros
+﻿using MINEDU.IEST.Estudiante.Inf_Utils.Dtos;
+
+namespace IDCL.AVGUST.SIP.ManagerDto.Maestros
 {
-    public class GetTipoIngredienteActivoDto
+    public class GetTipoIngredienteActivoDto: Validation
     {
         public int IngredenteActivo { get; set; }
         public string NomIngredienteActivo { get; set; }

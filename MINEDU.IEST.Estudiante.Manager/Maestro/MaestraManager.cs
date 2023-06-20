@@ -104,9 +104,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #region Cientifico - Plaga
 
-        public async Task<List<GetCientificoPlagaDto>> getListCientificoPlaga()
+        public async Task<List<GetCientificoPlagaDto>> getListCientificoPlaga(string filter)
         {
-            var query = _maestraUnitOfWork._cientificoPlagaRepository.GetAll(orderBy: l => l.OrderBy(o => o.NombreCientificoPlaga));
+            var query = _maestraUnitOfWork._cientificoPlagaRepository.GetAll(l => l.estado
+            && (l.NombreCientificoPlaga.Contains(filter) || filter.Contains(l.NombreCientificoPlaga))
+            , orderBy: l => l.OrderBy(o => o.NombreCientificoPlaga));
 
             return _mapper.Map<List<GetCientificoPlagaDto>>(query);
         }
@@ -120,6 +122,17 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         public async Task<GetCientificoPlagaDto> CreateOrUpdateCientificoPlaga(GetCientificoPlagaDto model)
         {
             var entidad = _mapper.Map<CientificoPlaga>(model);
+
+            var resp = new GetCientificoPlagaDto();
+            resp.EsError = _maestraUnitOfWork._cientificoPlagaRepository.GetAll(l => l.NombreCientificoPlaga == model.NombreCientificoPlaga && l.IdNomCientificoPlaga != model.IdNomCientificoPlaga).Any();
+            if (resp.EsError)
+            {
+                resp.MensajeError = "Ya existe un registro con esa descripción";
+                return resp;
+            }
+
+
+
             if (entidad.IdNomCientificoPlaga == 0)
             {
                 _maestraUnitOfWork._cientificoPlagaRepository.Insert(entidad);
@@ -147,9 +160,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #region Clase
 
-        public async Task<List<GetClaseDto>> getListClase()
+        public async Task<List<GetClaseDto>> getListClase(string filter)
         {
-            var query = _maestraUnitOfWork._claseRepository.GetAll(includeProperties: "IdTipoProductoNavigation");
+            var query = _maestraUnitOfWork._claseRepository.GetAll(l => l.estado
+             && (l.Descripcion.Contains(filter) || filter.Contains(l.Descripcion))
+            , includeProperties: "IdTipoProductoNavigation");
 
             return _mapper.Map<List<GetClaseDto>>(query);
         }
@@ -163,6 +178,13 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         public async Task<GetClaseDto> CreateOrUpdateClase(AddClaseDto model)
         {
             var entidad = _mapper.Map<Clase>(model);
+            var resp = new GetClaseDto();
+            resp.EsError = _maestraUnitOfWork._claseRepository.GetAll(l => l.Descripcion == model.Descripcion && l.IdClase != model.IdClase).Any();
+            if (resp.EsError)
+            {
+                resp.MensajeError = "Ya existe un registro con esa descripción";
+                return resp;
+            }
             if (entidad.IdClase == 0)
             {
                 _maestraUnitOfWork._claseRepository.Insert(entidad);
@@ -190,9 +212,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #region Cultivo
 
-        public async Task<List<GetCultivoDto>> getListCultivo()
+        public async Task<List<GetCultivoDto>> getListCultivo(string filter)
         {
-            var query = _maestraUnitOfWork._cultivoRepository.GetAll(orderBy: l => l.OrderBy(o => o.NombreCultivo));
+            var query = _maestraUnitOfWork._cultivoRepository.GetAll(l => l.estado
+            && (l.NombreCultivo.Contains(filter) || filter.Contains(l.NombreCultivo))
+            , orderBy: l => l.OrderBy(o => o.NombreCultivo));
 
             return _mapper.Map<List<GetCultivoDto>>(query);
         }
@@ -206,6 +230,15 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         public async Task<GetCultivoDto> CreateOrUpdateCultivo(GetCultivoDto model)
         {
             var entidad = _mapper.Map<Cultivo>(model);
+
+            var resp = new GetCultivoDto();
+            resp.EsError = _maestraUnitOfWork._cultivoRepository.GetAll(l => l.NombreCultivo == model.NombreCultivo && l.IdCultivo != model.IdCultivo).Any();
+            if (resp.EsError)
+            {
+                resp.MensajeError = "Ya existe un registro con esa descripción";
+                return resp;
+            }
+
             if (entidad.IdCultivo == 0)
             {
                 _maestraUnitOfWork._cultivoRepository.Insert(entidad);
@@ -232,9 +265,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #region Formulador
 
-        public async Task<List<GetFormuladorDto>> getListFormulador()
+        public async Task<List<GetFormuladorDto>> getListFormulador(string filter)
         {
-            var query = _maestraUnitOfWork._formuladorRepository.GetAll();
+            var query = _maestraUnitOfWork._formuladorRepository.GetAll(l => l.estado
+              && (l.NomFormulador.Contains(filter) || filter.Contains(l.NomFormulador))
+            );
 
             return _mapper.Map<List<GetFormuladorDto>>(query);
         }
@@ -248,6 +283,16 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         public async Task<GetFormuladorDto> CreateOrUpdateFormulador(GetFormuladorDto model)
         {
             var entidad = _mapper.Map<Formulador>(model);
+
+
+            var resp = new GetFormuladorDto();
+            resp.EsError = _maestraUnitOfWork._formuladorRepository.GetAll(l => l.NomFormulador == model.NomFormulador && l.IdFormulador != model.IdFormulador).Any();
+            if (resp.EsError)
+            {
+                resp.MensajeError = "Ya existe un registro con esa descripción";
+                return resp;
+            }
+
             if (entidad.IdFormulador == 0)
             {
                 _maestraUnitOfWork._formuladorRepository.Insert(entidad);
@@ -275,9 +320,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #region GrupoQuimico
 
-        public async Task<List<GetGrupoQuimicoDto>> getListGrupoQuimico()
+        public async Task<List<GetGrupoQuimicoDto>> getListGrupoQuimico(string filter)
         {
-            var query = _maestraUnitOfWork._grupoQuimicoRepository.GetAll();
+            var query = _maestraUnitOfWork._grupoQuimicoRepository.GetAll(l => l.estado
+            && (l.NomGrupoQuimico.Contains(filter) || filter.Contains(l.NomGrupoQuimico))
+            );
 
             return _mapper.Map<List<GetGrupoQuimicoDto>>(query);
         }
@@ -291,6 +338,15 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         public async Task<GetGrupoQuimicoDto> CreateOrUpdateGrupoQuimico(GetGrupoQuimicoDto model)
         {
             var entidad = _mapper.Map<GrupoQuimico>(model);
+
+            var resp = new GetGrupoQuimicoDto();
+            resp.EsError = _maestraUnitOfWork._grupoQuimicoRepository.GetAll(l => l.NomGrupoQuimico == model.NomGrupoQuimico && l.IdGrupoQuimico != model.IdGrupoQuimico).Any();
+            if (resp.EsError)
+            {
+                resp.MensajeError = "Ya existe un registro con esa descripción";
+                return resp;
+            }
+
             if (entidad.IdGrupoQuimico == 0)
             {
                 _maestraUnitOfWork._grupoQuimicoRepository.Insert(entidad);
@@ -318,9 +374,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #region Id Tipo Produycto
 
-        public async Task<List<GetIdTipoProductoDto>> getListIdTipoProducto()
+        public async Task<List<GetIdTipoProductoDto>> getListIdTipoProducto(string filter)
         {
-            var query = _maestraUnitOfWork._tipoProductoRepository.GetAll();
+            var query = _maestraUnitOfWork._tipoProductoRepository.GetAll(l => l.estado
+            && (l.NomTipoProducto.Contains(filter) || filter.Contains(l.NomTipoProducto))
+            );
 
             return _mapper.Map<List<GetIdTipoProductoDto>>(query);
         }
@@ -334,6 +392,15 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         public async Task<GetIdTipoProductoDto> CreateOrUpdateIdTipoProducto(GetIdTipoProductoDto model)
         {
             var entidad = _mapper.Map<IdTipoProducto>(model);
+
+            var resp = new GetIdTipoProductoDto();
+            resp.EsError = _maestraUnitOfWork._tipoProductoRepository.GetAll(l => l.NomTipoProducto == model.NomTipoProducto && l.IdTipoProducto1 != model.IdTipoProducto1).Any();
+            if (resp.EsError)
+            {
+                resp.MensajeError = "Ya existe un registro con esa descripción";
+                return resp;
+            }
+
             if (entidad.IdTipoProducto1 == 0)
             {
                 _maestraUnitOfWork._tipoProductoRepository.Insert(entidad);
@@ -404,9 +471,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #region Titular registros
 
-        public async Task<List<GetTitularRegistroDto>> getListTitularRegistro()
+        public async Task<List<GetTitularRegistroDto>> getListTitularRegistro(string filter)
         {
-            var query = _maestraUnitOfWork._titularRepository.GetAll();
+            var query = _maestraUnitOfWork._titularRepository.GetAll(l => l.estado
+            && (l.NomTitularRegistro.Contains(filter) || filter.Contains(l.NomTitularRegistro))
+            );
 
             return _mapper.Map<List<GetTitularRegistroDto>>(query);
         }
@@ -420,6 +489,15 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         public async Task<GetTitularRegistroDto> CreateOrUpdateTitularRegistro(GetTitularRegistroDto model)
         {
             var entidad = _mapper.Map<TitularRegistro>(model);
+
+            var resp = new GetTitularRegistroDto();
+            resp.EsError = _maestraUnitOfWork._titularRepository.GetAll(l => l.NomTitularRegistro == model.NomTitularRegistro && l.IdTitularRegistro != model.IdTitularRegistro).Any();
+            if (resp.EsError)
+            {
+                resp.MensajeError = "Ya existe un registro con esa descripción";
+                return resp;
+            }
+
             if (entidad.IdTitularRegistro == 0)
             {
                 _maestraUnitOfWork._titularRepository.Insert(entidad);
@@ -447,9 +525,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #region Toxicologica
 
-        public async Task<List<GetToxicologicaDto>> getListToxicologica()
+        public async Task<List<GetToxicologicaDto>> getListToxicologica(string filter)
         {
-            var query = _maestraUnitOfWork._toxicologicaRepository.GetAll();
+            var query = _maestraUnitOfWork._toxicologicaRepository.GetAll(l => l.estado
+            && (l.Descripcion.Contains(filter) || filter.Contains(l.Descripcion))
+            );
 
             return _mapper.Map<List<GetToxicologicaDto>>(query);
         }
@@ -463,6 +543,16 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         public async Task<GetToxicologicaDto> CreateOrUpdateToxicologica(GetToxicologicaDto model)
         {
             var entidad = _mapper.Map<Toxicologica>(model);
+
+            var resp = new GetToxicologicaDto();
+            resp.EsError = _maestraUnitOfWork._toxicologicaRepository.GetAll(l => l.Descripcion == model.Descripcion && l.IdToxicologica != model.IdToxicologica).Any();
+            if (resp.EsError)
+            {
+                resp.MensajeError = "Ya existe un registro con esa descripción";
+                return resp;
+            }
+
+
             if (entidad.IdToxicologica == 0)
             {
                 _maestraUnitOfWork._toxicologicaRepository.Insert(entidad);
@@ -490,9 +580,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #region Tipo Formulacion
 
-        public async Task<List<GetTipoFormulacionDto>> getListTipoFormulacion()
+        public async Task<List<GetTipoFormulacionDto>> getListTipoFormulacion(string filter)
         {
-            var query = _maestraUnitOfWork._tipoFormulacionRepository.GetAll();
+            var query = _maestraUnitOfWork._tipoFormulacionRepository.GetAll(l => l.estado
+            && (l.NomTipoFormulacion.Contains(filter) || filter.Contains(l.NomTipoFormulacion))
+            );
 
             return _mapper.Map<List<GetTipoFormulacionDto>>(query);
         }
@@ -508,6 +600,15 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
             try
             {
                 var entidad = _mapper.Map<TipoFormulacion>(model);
+
+                var resp = new GetTipoFormulacionDto();
+                resp.EsError = _maestraUnitOfWork._tipoFormulacionRepository.GetAll(l => l.NomTipoFormulacion == model.NomTipoFormulacion && l.IdTipoFormulacion != model.IdTipoFormulacion).Any();
+                if (resp.EsError)
+                {
+                    resp.MensajeError = "Ya existe un registro con esa descripción";
+                    return resp;
+                }
+
                 if (entidad.IdTipoFormulacion == 0)
                 {
                     _maestraUnitOfWork._tipoFormulacionRepository.Insert(entidad);
@@ -541,9 +642,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         #region Ingrediente Activo
 
-        public async Task<List<GetTipoIngredienteActivoDto>> getListTipoIngredienteActivo()
+        public async Task<List<GetTipoIngredienteActivoDto>> getListTipoIngredienteActivo(string filter)
         {
-            var query = _maestraUnitOfWork._ingredienteActivoRepository.GetAll(orderBy: l => l.OrderBy(o => o.NomIngredienteActivo));
+            var query = _maestraUnitOfWork._ingredienteActivoRepository.GetAll(l => l.estado
+            && (l.NomIngredienteActivo.Contains(filter) || filter.Contains(l.NomIngredienteActivo))
+            , orderBy: l => l.OrderBy(o => o.NomIngredienteActivo));
 
             return _mapper.Map<List<GetTipoIngredienteActivoDto>>(query);
         }
@@ -559,6 +662,14 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
             try
             {
                 var entidad = _mapper.Map<IngredienteActivo>(model);
+                var resp = new GetTipoIngredienteActivoDto();
+                resp.EsError = _maestraUnitOfWork._ingredienteActivoRepository.GetAll(l => l.NomIngredienteActivo == model.NomIngredienteActivo && l.IngredenteActivo != model.IngredenteActivo).Any();
+                if (resp.EsError)
+                {
+                    resp.MensajeError = "Ya existe un registro con esa descripción";
+                    return resp;
+                }
+
                 if (entidad.IngredenteActivo == 0)
                 {
                     _maestraUnitOfWork._ingredienteActivoRepository.Insert(entidad);
@@ -593,9 +704,11 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
         #region Fabricante
 
 
-        public async Task<List<GetFabricanteDto>> getListFabricante()
+        public async Task<List<GetFabricanteDto>> getListFabricante(string filter)
         {
-            var query = _maestraUnitOfWork._fabricanteRepository.GetAll(orderBy: l => l.OrderBy(o => o.NombreFabricante));
+            var query = _maestraUnitOfWork._fabricanteRepository.GetAll(l => l.Estado
+            && (l.NombreFabricante.Contains(filter) || filter.Contains(l.NombreFabricante))
+            , orderBy: l => l.OrderBy(o => o.NombreFabricante));
 
             return _mapper.Map<List<GetFabricanteDto>>(query);
         }
@@ -611,6 +724,14 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
             try
             {
                 var entidad = _mapper.Map<Fabricante>(model);
+
+                var resp = new GetFabricanteDto();
+                resp.EsError = _maestraUnitOfWork._fabricanteRepository.GetAll(l => l.NombreFabricante == model.NombreFabricante && l.IdFabricante != model.IdFabricante).Any();
+                if (resp.EsError)
+                {
+                    resp.MensajeError = "Ya existe un registro con esa descripción";
+                    return resp;
+                }
                 if (entidad.IdFabricante == 0)
                 {
                     _maestraUnitOfWork._fabricanteRepository.Insert(entidad);

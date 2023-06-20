@@ -1,41 +1,53 @@
 ﻿{
    "CodeGenerationMode": 2,
-   "ContextClassName": "dbContextAvgust2",
-   "ContextNamespace": "IDCL.AVGUST.SIP.Contexto2",
+   "ContextClassName": "DbAvgustCalcContext",
+   "ContextNamespace": "IDCL.AVGUST.SIP.Contexto",
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": "IDCL.AVGUST.SIP.Entity.Avgust",
-   "OutputContextPath": "Data2\\Security",
-   "OutputPath": "Data2\\Security",
+   "OutputContextPath": "DataCalc\\Calc",
+   "OutputPath": "DataCalc\\Calc",
    "PreserveCasingWithRegex": true,
-   "ProjectRootNamespace": "IDCL.AVGUST.SIP.Contexto2",
+   "ProjectRootNamespace": "IDCL.AVGUST.SIP.Contextos",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[Opcion]",
+         "Name": "[dbo].[Articulo_Categoria]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Perfil]",
+         "Name": "[dbo].[ArticuloServ]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[PerfilOpcion]",
+         "Name": "[dbo].[ListaPrecio]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Usuario]",
+         "Name": "[dbo].[ListaPrecioItem]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[UsuarioPerfil]",
+         "Name": "[dbo].[RentabilidadComision]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SimuladorPedido]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SimuladorPedidoItem]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TasasComision]",
          "ObjectType": 0
       }
    ],
-   "UiHint": "SERVERINDUSOFT1\\SQL17.IndusoftWebAvgust",
+   "UiHint": "serverindusoft1\\sql17.INDUSOFT_NET_ERP_AVGUSTTEST.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,

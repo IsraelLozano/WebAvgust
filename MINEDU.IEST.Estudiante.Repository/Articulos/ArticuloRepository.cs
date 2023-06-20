@@ -30,7 +30,6 @@ namespace IDCL.AVGUST.SIP.Repository.Articulos
                             IdFormulador = p.IdFormulador,
                             //IdGrupoQuimico = p.IdGrupoQuimico,
                             IdTipoFormulacion = p.IdTipoFormulacion,
-                            Concentracion = p.Concentracion,
                             IdTipoFormulacionNavigation = p.IdTipoFormulacion != null ? new TipoFormulacion
                             {
                                 IdTipoFormulacion = p.IdTipoFormulacionNavigation.IdTipoFormulacion,
