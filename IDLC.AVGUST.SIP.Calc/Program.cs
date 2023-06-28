@@ -46,8 +46,11 @@ builder.Services.AddAutoMapper(typeof(AutoMapperHelper).GetTypeInfo().Assembly);
 
 
 //EF Core - Inyeccion de Dependencia.
+builder.Services.AddRepositories(opt => opt.ConnectionString = backEndConfig.BdSqlServer);
 builder.Services.AddRepositoriesCalculator(opt => opt.ConnectionString = backEndConfig.BdSqlServer);
-
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddStorageManager(opt => opt.Type = StorageType.FileStorage);
+builder.Services.AddManager();
 
 //Servicio de acceso al contexto
 builder.Services.AddHttpContextAccessor();

@@ -25,6 +25,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
         Task<GetPdfDto> GetArticulosFormuladorAllPdfAsync(int idUsuario, string filtro);
         Task<MemoryStream> GetExcelGetArticulosFabricante(int idUsuario, string filtro);
         Task<MemoryStream> GetExcelGetArticulosFormuladorAll(int idUsuario, string filtro);
+        Task<MemoryStream> GetExcelCalculatorById(int idPedido);
 
         #endregion
     }

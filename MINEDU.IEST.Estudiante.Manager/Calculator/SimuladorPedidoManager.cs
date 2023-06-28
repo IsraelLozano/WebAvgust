@@ -26,6 +26,9 @@ namespace IDCL.AVGUST.SIP.Manager.Calculator
         }
 
 
+
+
+
         public async Task<GetPedidoDto> addPedido(GetPedidoDto model)
         {
             var entidad = _mapper.Map<SimuladorPedido>(model);

@@ -29,8 +29,9 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
         private readonly ResourceDto _resourceDto;
         private readonly IStorageManager _storageManager;
         private readonly SeguridadUnitOfWork _seguridadUnitOfWork;
+        private readonly CalculatorUnitOfWork _calculatorUnitOfWork;
 
-        public ReporteManager(IMapper mapper, ArticuloUnitOfWork articuloUnitOfWork, MaestraUnitOfWork maestraUnitOfWork, ResourceDto resourceDto, IStorageManager storageManager, SeguridadUnitOfWork seguridadUnitOfWork)
+        public ReporteManager(IMapper mapper, ArticuloUnitOfWork articuloUnitOfWork, MaestraUnitOfWork maestraUnitOfWork, ResourceDto resourceDto, IStorageManager storageManager, SeguridadUnitOfWork seguridadUnitOfWork, CalculatorUnitOfWork calculatorUnitOfWork)
         {
             _mapper = mapper;
             _articuloUnitOfWork = articuloUnitOfWork;
@@ -38,6 +39,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
             _resourceDto = resourceDto;
             _storageManager = storageManager;
             _seguridadUnitOfWork = seguridadUnitOfWork;
+            _calculatorUnitOfWork = calculatorUnitOfWork;
         }
 
 
@@ -1514,7 +1516,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
 
                 #region Data
 
-                Table tableBienesServicios = new Table(UnitValue.CreatePercentArray(new float[] { 1, 2, 2, 2, 2})).UseAllAvailableWidth().SetVerticalBorderSpacing(3).SetHorizontalBorderSpacing(3);
+                Table tableBienesServicios = new Table(UnitValue.CreatePercentArray(new float[] { 1, 2, 2, 2, 2 })).UseAllAvailableWidth().SetVerticalBorderSpacing(3).SetHorizontalBorderSpacing(3);
 
                 tableBienesServicios.AddHeaderCell(new Cell().SetBackgroundColor(cellColor).SetMinHeight(setMinHeight).SetTextAlignment(TextAlignment.CENTER).Add(new Paragraph("Item")
                     .SetFont(fontHeaderTable).SetFontSize(setFontSize - 1).SetFontColor(ColorConstants.BLACK)));
@@ -1593,6 +1595,112 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
             return data;
 
         }
+        #endregion
+
+
+        #region Calculator
+
+        public async Task<MemoryStream> GetExcelCalculatorById(int idPedido)
+        {
+            var data = _calculatorUnitOfWork._simuladorPedidoRepository.GetAll(l => l.IdPedido == idPedido, includeProperties: "SimuladorPedidoItems").FirstOrDefault();
+            var stream = new MemoryStream();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            using (var xlPackage = new ExcelPackage(stream))
+            {
+                var worksheet = xlPackage.Workbook.Worksheets.Add("Calculadora");
+                var namedStyle = xlPackage.Workbook.Styles.CreateNamedStyle("HyperLink");
+                namedStyle.Style.Font.UnderLine = true;
+                namedStyle.Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                const int startRow = 5;
+                var row = startRow;
+                worksheet.View.ShowGridLines = false;
+
+                //Create Headers and format them
+                worksheet.Cells["A1"].Value = "REPORTE PEDIDO SIMUADLOR";
+                using (var r = worksheet.Cells["A1:N1"])
+                {
+                    r.Merge = true;
+                    r.Style.Font.Color.SetColor(System.Drawing.Color.White);
+                    r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
+                    r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    r.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(23, 55, 93));
+                }
+
+                worksheet.Cells["A4"].Value = "Id";
+                worksheet.Cells["B4"].Value = data.IdPedido;
+                worksheet.Cells["D4"].Value = "Fecha Pedido";
+                worksheet.Cells["E4"].Value = data.FechaOperacion.ToShortDateString();
+                worksheet.Cells["G4"].Value = "VentaTotal";
+                worksheet.Cells["H4"].Value = data.VentaTotal;
+                worksheet.Cells["J4"].Value = "% Comision";
+                worksheet.Cells["K4"].Value = data.ComisionPercent;
+                worksheet.Cells["M4"].Value = "US$ Comision";
+                worksheet.Cells["N4"].Value = Math.Round((data.ComisionMonto * 100), 2);
+                //worksheet.Cells["A4:F4"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                //worksheet.Cells["A4:F4"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(184, 204, 228));
+                //worksheet.Cells["A4:F4"].Style.Font.Bold = true;
+
+
+
+                worksheet.Cells["A7"].Value = "Codigo";
+                worksheet.Cells["B7"].Value = "Articulo";
+                worksheet.Cells["C7"].Value = "Familia";
+                worksheet.Cells["D7"].Value = "Cantidad";
+                worksheet.Cells["E7"].Value = "Precio VVD";
+                worksheet.Cells["F7"].Value = "Importe";
+                worksheet.Cells["G7"].Value = "Costo";
+                worksheet.Cells["H7"].Value = "MB";
+                worksheet.Cells["I7"].Value = "Participacion";
+                worksheet.Cells["J7"].Value = "PesoAsignado";
+                worksheet.Cells["K7"].Value = "Comision%";
+                worksheet.Cells["A7:K7"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A7:K7"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(187, 207, 228));
+                worksheet.Cells["A7:K7"].Style.Font.Bold = true;
+
+
+                row = 8;
+                foreach (var item in data.SimuladorPedidoItems)
+                {
+                    worksheet.Cells[row, 1].Value = item.Codigo;
+                    worksheet.Cells[row, 2].Value = item.Producto;
+                    worksheet.Cells[row, 3].Value = item.Familia;
+                    worksheet.Cells[row, 4].Value = item.Cantidad;
+                    worksheet.Cells[row, 5].Value = item.PrecioVvd;
+                    worksheet.Cells[row, 6].Value = item.Importe;
+                    worksheet.Cells[row, 7].Value = item.Costo;
+                    worksheet.Cells[row, 8].Value = item.Mb;
+                    worksheet.Cells[row, 9].Value = item.PartImporteTotal;
+                    worksheet.Cells[row, 10].Value = item.PesoAsignadoPercent;
+                    worksheet.Cells[row, 11].Value = item.ComisionPercent;
+                    row++;
+                }
+
+                var sRango = "A7:K" + (row - 1).ToString();
+                worksheet.Cells[sRango].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                worksheet.Cells[sRango].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                worksheet.Cells[sRango].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+                worksheet.Cells[sRango].AutoFitColumns();
+                worksheet.Cells[sRango].Style.HorizontalAlignment = ExcelHorizontalAlignment.General;
+                worksheet.Cells[sRango].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                worksheet.Cells[sRango].Style.WrapText = true;
+
+                xlPackage.Workbook.Properties.Title = "Lista de articulos";
+                xlPackage.Workbook.Properties.Author = "Israel Lozano del Castillo danielitolozano85@gmail.com";
+                xlPackage.Workbook.Properties.Subject = "List de Articulos";
+                xlPackage.Save();
+                // Response.Clear();
+
+            }
+            stream.Position = 0;
+
+            return stream;
+        }
+
+
         #endregion
     }
 }
