@@ -1627,15 +1627,43 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 }
 
                 worksheet.Cells["A4"].Value = "Id";
+                worksheet.Cells["A4"].Style.Font.Bold = true;
+                worksheet.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+
                 worksheet.Cells["B4"].Value = data.IdPedido;
+                worksheet.Cells["B4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+
                 worksheet.Cells["D4"].Value = "Fecha Pedido";
+                worksheet.Cells["D4"].Style.Font.Bold = true;
+                worksheet.Cells["D4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+
                 worksheet.Cells["E4"].Value = data.FechaOperacion.ToShortDateString();
+                worksheet.Cells["E4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+
+
                 worksheet.Cells["G4"].Value = "VentaTotal";
+                worksheet.Cells["G4"].Style.Font.Bold = true;
+                worksheet.Cells["G4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+
+
                 worksheet.Cells["H4"].Value = data.VentaTotal;
+                worksheet.Cells["H4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+
                 worksheet.Cells["J4"].Value = "% Comision";
+                worksheet.Cells["J4"].Style.Font.Bold = true;
+                worksheet.Cells["J4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+
+
                 worksheet.Cells["K4"].Value = data.ComisionPercent;
+                worksheet.Cells["K4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+
                 worksheet.Cells["M4"].Value = "US$ Comision";
+                worksheet.Cells["M4"].Style.Font.Bold = true;
+                worksheet.Cells["M4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+
                 worksheet.Cells["N4"].Value = Math.Round((data.ComisionMonto * 100), 2);
+                worksheet.Cells["N4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+
                 //worksheet.Cells["A4:F4"].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 //worksheet.Cells["A4:F4"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(184, 204, 228));
                 //worksheet.Cells["A4:F4"].Style.Font.Bold = true;
