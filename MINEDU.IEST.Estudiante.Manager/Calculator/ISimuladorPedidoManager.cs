@@ -6,5 +6,6 @@ namespace IDCL.AVGUST.SIP.Manager.Calculator
     {
         Task<GetPedidoDto> addPedido(GetPedidoDto model);
         Task<List<GetPedidoDto>> getListPedidoAll();
+        Task<GetPedidoDto> GetPedidoById(int id);
     }
 }

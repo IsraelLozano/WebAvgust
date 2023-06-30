@@ -79,8 +79,8 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
             CreateMap<RentabilidadComision, GetRenatabilidadDto>().ReverseMap();
             CreateMap<ListaPrecioItem, GetListaPrecioItemDto>().ReverseMap();
 
-            CreateMap<SimuladorPedidoItem, GetPedidoItemDto>().ReverseMap();
             CreateMap<SimuladorPedido, GetPedidoDto>().ReverseMap();
+            CreateMap<SimuladorPedidoItem, GetPedidoItemDto>().ReverseMap();
 
             #endregion
         }

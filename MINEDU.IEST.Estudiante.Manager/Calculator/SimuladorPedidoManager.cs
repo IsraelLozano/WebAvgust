@@ -24,6 +24,13 @@ namespace IDCL.AVGUST.SIP.Manager.Calculator
             var response = _mapper.Map<List<GetPedidoDto>>(query);
             return response;
         }
+        public async Task<GetPedidoDto> GetPedidoById(int id)
+        {
+            var query = _calculatorUnitOfWork._simuladorPedidoRepository.GetAll(l => l.IdPedido == id, includeProperties: "SimuladorPedidoItems");
+
+            var response = _mapper.Map<GetPedidoDto>(query.FirstOrDefault());
+            return response;
+        }
 
 
 

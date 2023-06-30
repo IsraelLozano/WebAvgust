@@ -36,6 +36,12 @@ namespace IDLC.AVGUST.SIP.Calc.Controllers
             return Ok(await _simuladorPedidoManager.getListPedidoAll());
         }
 
+        [HttpGet("GetPedidoById/{id:int}")]
+        public async Task<IActionResult> GetPedidoById(int id)
+        {
+            return Ok(await _simuladorPedidoManager.GetPedidoById(id));
+        }
+
         [HttpPost("AddOrEditPedido")]
         public async Task<IActionResult> addPedido(GetPedidoDto request)
         {
