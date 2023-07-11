@@ -6,8 +6,8 @@
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": "IDCL.AVGUST.SIP.Entity.Avgust",
-   "OutputContextPath": "DataCalc\\Calc",
-   "OutputPath": "DataCalc\\Calc",
+   "OutputContextPath": "DataCalc\\CalcTemp",
+   "OutputPath": "DataCalc\\CalcTemp",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "IDCL.AVGUST.SIP.Contextos",
    "Schemas": null,
@@ -15,35 +15,11 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[Articulo_Categoria]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[ArticuloServ]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[ListaPrecio]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[ListaPrecioItem]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[RentabilidadComision]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SimuladorPedido]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SimuladorPedidoItem]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[TasasComision]",
+         "Name": "[dbo].[ListaPrecioItemDet]",
          "ObjectType": 0
       }
    ],
@@ -64,6 +40,7 @@
    "UseNodaTime": false,
    "UseNullableReferences": true,
    "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
    "UseSpatial": false,
    "UseT4": false
 }

@@ -24,6 +24,7 @@ namespace IDCL.AVGUST.SIP.Contextos.IDCL.AVGUST.SIP.Contexto
         public virtual DbSet<SimuladorPedido> SimuladorPedidos { get; set; } = null!;
         public virtual DbSet<SimuladorPedidoItem> SimuladorPedidoItems { get; set; } = null!;
         public virtual DbSet<TasasComision> TasasComisions { get; set; } = null!;
+        public virtual DbSet<ListaPrecioItemDet> ListaPrecioItemDets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +32,7 @@ namespace IDCL.AVGUST.SIP.Contextos.IDCL.AVGUST.SIP.Contexto
             modelBuilder.ApplyConfiguration(new Configurations.ArticuloServConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.ListaPrecioConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.ListaPrecioItemConfiguration());
+            modelBuilder.ApplyConfiguration(new Configurations.ListaPrecioItemDetConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.RentabilidadComisionConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.SimuladorPedidoConfiguration());
             modelBuilder.ApplyConfiguration(new Configurations.SimuladorPedidoItemConfiguration());

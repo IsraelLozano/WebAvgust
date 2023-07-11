@@ -16,10 +16,13 @@ namespace IDCL.AVGUST.SIP.Repository.Calculator
 
         public async Task<List<ArticuloServ>> GetArticulosAll(string filter)
         {
+            filter = filter ?? string.Empty;
+
             var query = await _context.ArticuloServs
                         .Where(l => l.IdEmpresa == 5
+                        && l.IdTipoArticulo == 333001
                         && l.FlagActivo
-                        && (filter.Contains(l.NomArticulo) || l.NomArticulo.Contains(filter) || filter == string.Empty)
+                        && (l.NomArticulo.Contains(filter) || filter.Contains(l.NomArticulo))
                         && l.RentabilidadComisions.Any())
 
                         .Select(l => new ArticuloServ
@@ -37,10 +40,17 @@ namespace IDCL.AVGUST.SIP.Repository.Calculator
                             {
                                 NombreCategoria = l.ArticuloCategorium.NombreCategoria
                             },
-                            ListaPrecioItems = l.ListaPrecioItems.Select(p => new ListaPrecioItem
+                            ListaPrecioItems = l.ListaPrecioItems.Where(s => s.IdListaPrecio == 10).Select(p => new ListaPrecioItem
                             {
                                 IdListaPrecio = p.IdListaPrecio,
-                                PrecioVenta = p.PrecioVenta
+                                PrecioVenta = p.PrecioVenta,
+                                PrecioBruto = p.PrecioBruto,
+                                ListaPrecioItemDets = p.ListaPrecioItemDets.Select(lt => new ListaPrecioItemDet
+                                {
+                                    Iditem = lt.Iditem,
+                                    DesdeCantidad = lt.DesdeCantidad,
+                                    PrecioBruto = lt.PrecioBruto,
+                                }).OrderBy(o => o.Iditem).ToList()
                             }).ToList(),
                             RentabilidadComisions = l.RentabilidadComisions.Where(z => z.IdArticulo == l.IdArticulo).Select(r => new RentabilidadComision
                             {
@@ -49,7 +59,7 @@ namespace IDCL.AVGUST.SIP.Repository.Calculator
                                 CostoUnit = r.CostoUnit
                             }).ToList(),
                         })
-                        .Take(200)
+                        .Take(500)
                         .ToListAsync();
             return query;
         }

@@ -5,6 +5,7 @@ using IDCL.AVGUST.SIP.ManagerDto.Articulos;
 using IDCL.AVGUST.SIP.ManagerDto.Articulos.Add;
 using IDCL.AVGUST.SIP.ManagerDto.Calculator.ArticuloCalc;
 using IDCL.AVGUST.SIP.ManagerDto.Calculator.ArticuloFamilia;
+using IDCL.AVGUST.SIP.ManagerDto.Calculator.ListaPrecioItemDet;
 using IDCL.AVGUST.SIP.ManagerDto.Calculator.ListaPreciosItem;
 using IDCL.AVGUST.SIP.ManagerDto.Calculator.RentabilidadComicion;
 using IDCL.AVGUST.SIP.ManagerDto.Calculator.Simulador;
@@ -77,7 +78,11 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
             CreateMap<ArticuloServ, GetArticuloCalDto>().ReverseMap();
             CreateMap<ArticuloCategorium, GetArticuloCategoriDto>().ReverseMap();
             CreateMap<RentabilidadComision, GetRenatabilidadDto>().ReverseMap();
-            CreateMap<ListaPrecioItem, GetListaPrecioItemDto>().ReverseMap();
+            CreateMap<ListaPrecioItem, GetListaPrecioItemDto>()
+                 .ForMember(dest => dest.tienePromo, source => source.MapFrom(s => s.ListaPrecioItemDets.Any()))
+                .ReverseMap();
+            CreateMap<ListaPrecioItemDet, GetListaPrecioItemDetDto>()
+                .ReverseMap();
 
             CreateMap<SimuladorPedido, GetPedidoDto>().ReverseMap();
             CreateMap<SimuladorPedidoItem, GetPedidoItemDto>().ReverseMap();

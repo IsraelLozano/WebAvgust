@@ -57,5 +57,6 @@ namespace IDCL.AVGUST.SIP.Entity.Calculator
 
         public ArticuloServ Id { get; set; } = null!;
         public ListaPrecio IdNavigation { get; set; } = null!;
+        public List<ListaPrecioItemDet> ListaPrecioItemDets { get; set; }
     }
 }
