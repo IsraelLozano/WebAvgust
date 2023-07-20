@@ -1616,53 +1616,54 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 worksheet.View.ShowGridLines = false;
 
                 //Create Headers and format them
-                worksheet.Cells["A1"].Value = "REPORTE PEDIDO SIMUADLOR";
-                using (var r = worksheet.Cells["A1:N1"])
+                worksheet.Cells["A1"].Value = "REPORTE PEDIDO SIMULADOR";
+                using (var r = worksheet.Cells["A1:I1"])
                 {
                     r.Merge = true;
+                    r.Style.Font.Size = 13;
                     r.Style.Font.Color.SetColor(System.Drawing.Color.White);
                     r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
                     r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                     r.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(23, 55, 93));
                 }
 
-                worksheet.Cells["A4"].Value = "Id";
-                worksheet.Cells["A4"].Style.Font.Bold = true;
-                worksheet.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                worksheet.Cells["B3"].Value = "Id:";
+                worksheet.Cells["B3"].Style.Font.Bold = true;
+                worksheet.Cells["B3"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 
-                worksheet.Cells["B4"].Value = data.IdPedido;
-                worksheet.Cells["B4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["C3"].Value = data.IdPedido;
+                worksheet.Cells["C3"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
 
-                worksheet.Cells["D4"].Value = "Fecha Pedido";
-                worksheet.Cells["D4"].Style.Font.Bold = true;
-                worksheet.Cells["D4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                worksheet.Cells["B4"].Value = "Fecha Pedido:";
+                worksheet.Cells["B4"].Style.Font.Bold = true;
+                worksheet.Cells["B4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 
-                worksheet.Cells["E4"].Value = data.FechaOperacion.ToShortDateString();
-                worksheet.Cells["E4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-
-
-                worksheet.Cells["G4"].Value = "VentaTotal";
-                worksheet.Cells["G4"].Style.Font.Bold = true;
-                worksheet.Cells["G4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                worksheet.Cells["C4"].Value = data.FechaOperacion.ToShortDateString();
+                worksheet.Cells["C4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
 
 
-                worksheet.Cells["H4"].Value = data.VentaTotal;
-                worksheet.Cells["H4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-
-                worksheet.Cells["J4"].Value = "% Comision";
-                worksheet.Cells["J4"].Style.Font.Bold = true;
-                worksheet.Cells["J4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                worksheet.Cells["B5"].Value = "Importe Total (US$):";
+                worksheet.Cells["B5"].Style.Font.Bold = true;
+                worksheet.Cells["B5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 
 
-                worksheet.Cells["K4"].Value = data.ComisionPercent;
-                worksheet.Cells["K4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                worksheet.Cells["C5"].Value = data.VentaTotal;
+                worksheet.Cells["C5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
 
-                worksheet.Cells["M4"].Value = "US$ Comision";
-                worksheet.Cells["M4"].Style.Font.Bold = true;
-                worksheet.Cells["M4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                worksheet.Cells["E4"].Value = "Comision (%):";
+                worksheet.Cells["E4"].Style.Font.Bold = true;
+                worksheet.Cells["E4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 
-                worksheet.Cells["N4"].Value = Math.Round(data.ComisionMonto, 3);
-                worksheet.Cells["N4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+
+                worksheet.Cells["F4"].Value = data.ComisionPercent;
+                worksheet.Cells["F4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+
+                worksheet.Cells["E5"].Value = "Comision (US$):";
+                worksheet.Cells["E5"].Style.Font.Bold = true;
+                worksheet.Cells["E5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+
+                worksheet.Cells["F5"].Value = Math.Round(data.ComisionMonto, 3);
+                worksheet.Cells["F5"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
 
                 //worksheet.Cells["A4:F4"].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 //worksheet.Cells["A4:F4"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(184, 204, 228));
@@ -1671,19 +1672,19 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
 
 
                 worksheet.Cells["A7"].Value = "Codigo";
-                worksheet.Cells["B7"].Value = "Articulo";
+                worksheet.Cells["B7"].Value = "Producto";
                 worksheet.Cells["C7"].Value = "Familia";
                 worksheet.Cells["D7"].Value = "Cantidad";
-                worksheet.Cells["E7"].Value = "Precio VVD";
-                worksheet.Cells["F7"].Value = "Importe";
-                worksheet.Cells["G7"].Value = "Costo";
-                worksheet.Cells["H7"].Value = "MB";
-                worksheet.Cells["I7"].Value = "Participacion";
-                worksheet.Cells["J7"].Value = "PesoAsignado";
-                worksheet.Cells["K7"].Value = "Comision%";
-                worksheet.Cells["A7:K7"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells["A7:K7"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(187, 207, 228));
-                worksheet.Cells["A7:K7"].Style.Font.Bold = true;
+                worksheet.Cells["E7"].Value = "P.U. (US$)";
+                worksheet.Cells["F7"].Value = "Importe (US$)";
+                //worksheet.Cells["G7"].Value = "Costo";
+                worksheet.Cells["G7"].Value = "Participación (%)";
+                worksheet.Cells["H7"].Value = "Rentabilidad (%)";
+                //worksheet.Cells["J7"].Value = "PesoAsignado";
+                worksheet.Cells["I7"].Value = "Comision (%)";
+                worksheet.Cells["A7:I7"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A7:I7"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(187, 207, 228));
+                worksheet.Cells["A7:I7"].Style.Font.Bold = true;
 
 
                 row = 8;
@@ -1695,15 +1696,13 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                     worksheet.Cells[row, 4].Value = item.Cantidad;
                     worksheet.Cells[row, 5].Value = item.PrecioVvd;
                     worksheet.Cells[row, 6].Value = item.Importe;
-                    worksheet.Cells[row, 7].Value = item.Costo;
+                    worksheet.Cells[row, 7].Value = item.PartImporteTotal;
                     worksheet.Cells[row, 8].Value = item.Mb;
-                    worksheet.Cells[row, 9].Value = item.PartImporteTotal;
-                    worksheet.Cells[row, 10].Value = item.PesoAsignadoPercent;
-                    worksheet.Cells[row, 11].Value = item.ComisionPercent;
+                    worksheet.Cells[row, 9].Value = item.ComisionPercent;
                     row++;
                 }
 
-                var sRango = "A7:K" + (row - 1).ToString();
+                var sRango = "A7:I" + (row - 1).ToString();
                 worksheet.Cells[sRango].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
                 worksheet.Cells[sRango].Style.Border.Top.Style = ExcelBorderStyle.Thin;
