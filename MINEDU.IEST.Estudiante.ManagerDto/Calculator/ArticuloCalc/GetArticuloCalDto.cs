@@ -19,5 +19,6 @@ namespace IDCL.AVGUST.SIP.ManagerDto.Calculator.ArticuloCalc
         public GetArticuloCategoriDto? ArticuloCategorium { get; set; }
         public List<GetListaPrecioItemDto> ListaPrecioItems { get; set; }
         public List<GetRenatabilidadDto> RentabilidadComisions { get; set; }
+
     }
 }

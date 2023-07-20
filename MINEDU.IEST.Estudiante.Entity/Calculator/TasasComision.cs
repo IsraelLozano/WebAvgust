@@ -5,9 +5,9 @@ namespace IDCL.AVGUST.SIP.Entity.Calculator
 {
     public class TasasComision
     {
-        public string Categoria { get; set; } = null!;
-        public int? LimiteIni { get; set; }
-        public int? LimiteFin { get; set; }
+        public string Categoria { get; set; }
+        public decimal? LimiteIni { get; set; }
+        public decimal? LimiteFin { get; set; }
         public decimal? Peso { get; set; }
         public string? UsuarioRegistro { get; set; }
         public DateTime? FechaRegistro { get; set; }

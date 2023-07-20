@@ -6,13 +6,14 @@
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": "IDCL.AVGUST.SIP.Entity.Avgust",
-   "OutputContextPath": "DataCalc\\CalcTemp",
-   "OutputPath": "DataCalc\\CalcTemp",
+   "OutputContextPath": "DataCalc2\\CalcTemp",
+   "OutputPath": "DataCalc2\\CalcTemp",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "IDCL.AVGUST.SIP.Contextos",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
    "Tables": [
       {
          "Name": "[dbo].[ListaPrecioItem]",
@@ -20,6 +21,10 @@
       },
       {
          "Name": "[dbo].[ListaPrecioItemDet]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TasasComision]",
          "ObjectType": 0
       }
    ],

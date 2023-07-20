@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using IDCL.AVGUST.SIP.ManagerDto.Calculator;
 using IDCL.AVGUST.SIP.ManagerDto.Calculator.ArticuloCalc;
 using IDCL.AVGUST.SIP.Repository.UnitOfWork;
+using System.Collections.Generic;
 
 namespace IDCL.AVGUST.SIP.Manager.Calculator
 {
@@ -15,18 +17,20 @@ namespace IDCL.AVGUST.SIP.Manager.Calculator
             _calculatorUnitOfWork = calculatorUnitOfWork;
         }
 
-        public async Task<List<GetArticuloCalDto>> GetArticuloCals(string filter)
+        public async Task<GetArticuloAllDto> GetArticuloCals(string filter)
         {
             //var query = _calculatorUnitOfWork._articuloCalcRepository
             //    .GetAll(l => l.FlagActivo && l.IdEmpresa == 5, includeProperties: "ArticuloCategorium,ListaPrecioItems,RentabilidadComisions");
 
+            var response = new GetArticuloAllDto();
+
             var query = await _calculatorUnitOfWork._articuloCalcRepository.GetArticulosAll(filter);
 
-            var response = _mapper.Map<List<GetArticuloCalDto>>(query);
-
+            response.articulos = _mapper.Map<List<GetArticuloCalDto>>(query);
+            response.tasaComisions = _mapper.Map<List<GetTasaComisionDto>>(_calculatorUnitOfWork._tasaComisionRepository.GetAll());
             return response;
         }
 
-      
+
     }
 }

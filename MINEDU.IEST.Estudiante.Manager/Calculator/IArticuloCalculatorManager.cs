@@ -4,6 +4,6 @@ namespace IDCL.AVGUST.SIP.Manager.Calculator
 {
     public interface IArticuloCalculatorManager
     {
-        Task<List<GetArticuloCalDto>> GetArticuloCals(string filter);
+        Task<GetArticuloAllDto> GetArticuloCals(string filter);
     }
 }

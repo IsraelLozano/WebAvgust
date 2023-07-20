@@ -11,7 +11,7 @@ namespace IDCL.AVGUST.SIP.Repository.UnitOfWork
         private readonly DbAvgustCalcContext _context;
         public IArticuloCalcRepository _articuloCalcRepository { get; }
         public IArticuloCategoriaRepository _articuloCategoriaRepository { get; }
-
+        public ITasaComisionRepository _tasaComisionRepository { get; }
         public ISimuladorPedidoRepository _simuladorPedidoRepository { get; }
         public ISimuladorPedidoDetalleRepository _simuladorPedidoDetalleRepository { get; }
 
@@ -19,13 +19,15 @@ namespace IDCL.AVGUST.SIP.Repository.UnitOfWork
             IArticuloCalcRepository articuloCalcRepository,
             IArticuloCategoriaRepository articuloCategoriaRepository,
             ISimuladorPedidoRepository simuladorPedidoRepository,
-            ISimuladorPedidoDetalleRepository simuladorPedidoDetalleRepository)
+            ISimuladorPedidoDetalleRepository simuladorPedidoDetalleRepository,
+            ITasaComisionRepository tasaComisionRepository)
         {
             _context = context;
             _articuloCalcRepository = articuloCalcRepository;
             _articuloCategoriaRepository = articuloCategoriaRepository;
             _simuladorPedidoRepository = simuladorPedidoRepository;
             _simuladorPedidoDetalleRepository = simuladorPedidoDetalleRepository;
+            _tasaComisionRepository = tasaComisionRepository;
         }
 
         public void Save()

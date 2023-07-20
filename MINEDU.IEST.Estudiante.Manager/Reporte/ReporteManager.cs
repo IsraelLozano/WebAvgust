@@ -1661,7 +1661,7 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 worksheet.Cells["M4"].Style.Font.Bold = true;
                 worksheet.Cells["M4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 
-                worksheet.Cells["N4"].Value = Math.Round((data.ComisionMonto * 100), 2);
+                worksheet.Cells["N4"].Value = Math.Round(data.ComisionMonto, 3);
                 worksheet.Cells["N4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
 
                 //worksheet.Cells["A4:F4"].Style.Fill.PatternType = ExcelFillStyle.Solid;

@@ -55,6 +55,7 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
 
             services.AddScoped<IProductoFormuladorRepository, ProductoFormuladorRepository>();
             services.AddScoped<IProductoFabricanteRepository, ProductoFabricanteRepository>();
+      
 
             services.AddScoped<ArticuloUnitOfWork>();
             services.AddScoped<MaestraUnitOfWork>();
@@ -80,6 +81,7 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
             services.AddScoped<IArticuloCategoriaRepository, ArticuloCategoriaRepository>();
             services.AddScoped<ISimuladorPedidoRepository, SimuladorPedidoRepository>();
             services.AddScoped<ISimuladorPedidoDetalleRepository, SimuladorPedidoDetalleRepository>();
+            services.AddScoped<ITasaComisionRepository, TasaComisionRepository>();
 
             services.AddScoped<IArticuloCalculatorManager, ArticuloCalculatorManager>();
             services.AddScoped<ISimuladorPedidoManager, SimuladorPedidoManager>();
@@ -89,7 +91,7 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
             services.AddDbContext<DbAvgustCalcContext>(opt =>
             {
                 opt.UseSqlServer(options.ConnectionString);
-                
+
             });
 
             return services;
