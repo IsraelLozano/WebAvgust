@@ -30,10 +30,17 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         {
             try
             {
+                var pathToSave = Path.Combine(_resourceDto.UrlFileBase, _resourceDto.Documents);
+
+                if (!Directory.Exists(pathToSave))
+                {
+                    Directory.CreateDirectory(pathToSave);
+                }
+
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files.First();
                 //var folderName = Path.Combine("Resources", "documents");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), _resourceDto.Documents);
+               
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
@@ -60,7 +67,7 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         [Route("download")]
         public async Task<IActionResult> Download([FromQuery] string fileUrl)
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), $"{_resourceDto.Documents}/{fileUrl}");
+            var filePath = Path.Combine(_resourceDto.UrlFileBase, $"{_resourceDto.Documents}/{fileUrl}");
 
             if (!System.IO.File.Exists(filePath))
                 return NotFound();
@@ -82,7 +89,7 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
             try
             {
                 var folderName = Path.Combine("Resources", "Images");
-                var pathToRead = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                var pathToRead = Path.Combine(_resourceDto.UrlFileBase, folderName);
                 var photos = Directory.EnumerateFiles(pathToRead)
                     .Where(IsAPhotoFile)
                     .Select(fullPath => Path.Combine(folderName, Path.GetFileName(fullPath)));
