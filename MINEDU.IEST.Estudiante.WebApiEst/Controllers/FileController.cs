@@ -40,7 +40,7 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
                 var formCollection = await Request.ReadFormAsync();
                 var file = formCollection.Files.First();
                 //var folderName = Path.Combine("Resources", "documents");
-               
+
                 if (file.Length > 0)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
@@ -67,7 +67,7 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         [Route("download")]
         public async Task<IActionResult> Download([FromQuery] string fileUrl)
         {
-            var filePath = Path.Combine(_resourceDto.UrlFileBase, $"{_resourceDto.Documents}/{fileUrl}");
+            var filePath = Path.Combine(_resourceDto.UrlFileBase, _resourceDto.Documents, fileUrl);
 
             if (!System.IO.File.Exists(filePath))
                 return NotFound();

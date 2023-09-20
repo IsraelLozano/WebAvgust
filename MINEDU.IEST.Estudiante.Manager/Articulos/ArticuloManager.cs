@@ -150,7 +150,10 @@ namespace IDCL.AVGUST.SIP.Manager.Articulos
         public async Task<GetPdfDto> GetArticuloDocumentoPdf(int idArticulo, int idItem)
         {
             var doc = _articuloUnitOfWork._documentoRepository.GetAll(p => p.IdArticulo == idArticulo && p.IdItem == idItem).FirstOrDefault();
-            var ruta = Path.Combine(_resourceDto.Documents, doc.NomDocumento);
+            var ruta = Path.Combine(_resourceDto.UrlFileBase, _resourceDto.Documents, doc.NomDocumento);
+            if (!System.IO.File.Exists(ruta))
+                throw new FileNotFoundException($"Archivo no existe: {doc.NomDocumento}");
+
             MemoryStream _output = new MemoryStream(System.IO.File.ReadAllBytes(ruta));
             var pdf64 = _storageManager.GetBase64(_output);
             GetPdfDto data = new GetPdfDto
