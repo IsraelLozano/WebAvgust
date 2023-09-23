@@ -31,7 +31,7 @@ namespace IDCL.AVGUST.SIP.WebApiEst.Controllers
         }
 
         [HttpGet("GetReporteArticulosPlaga/{idUsuario:int}/{filtro?}")]
-        public async Task<IActionResult> GetReporteArticulosPlaga(int idUsuario, string filtro)
+        public async Task<IActionResult> GetReporteArticulosPlaga(int idUsuario, string filtro="")
         {
             return Ok(await _reporteManager.GetArticulosPorPlaga(idUsuario, filtro));
         }

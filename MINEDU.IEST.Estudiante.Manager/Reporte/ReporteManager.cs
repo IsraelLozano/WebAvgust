@@ -46,6 +46,8 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
         #region Querys
         public async Task<List<GetArticuloDto>> GetArticulosById(int idUsuario, int tipoFiltro, string filtro, int idIngredienteActivo)
         {
+            filtro = filtro ?? string.Empty;
+
             var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == idUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
 
@@ -113,12 +115,23 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
 
                 filter = query.ToList();
             }
+            else
+            {
+                var query = _articuloUnitOfWork._articuloRepository
+                   .GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
+                   includeProperties: "IdTitularRegistroNavigation,Composicions,Composicions.GrupoQuimicoNavegation,Composicions.IngredienteActivoNavigation",
+                   orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
+
+                filter = query.ToList();
+            }
 
             var response = _mapper.Map<List<GetArticuloDto>>(filter);
             return response;
         }
         public async Task<List<GetArticuloDto>> GetArticulosPorPlaga(int idUsuario, string filtro)
         {
+            filtro = filtro ?? string.Empty;
+
             var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == idUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
 
@@ -130,8 +143,14 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
                 includeProperties: "IdPaisNavigation,IdTitularRegistroNavigation,Usos,Usos.IdCultivoNavigation,Usos.IdNomCientificoPlagaNavigation",
                 orderBy: p => p.OrderByDescending(l => l.NombreComercial)).ToList();
 
-            filter = query
-                .Where(p => p.Usos.Select(l => l.IdNomCientificoPlagaNavigation.NombreCientificoPlaga).Contains(filtro)).ToList();
+            if (string.IsNullOrEmpty(filtro))
+            {
+                filter = query.ToList();
+            }
+            else
+            {
+                filter = query.Where(p => p.Usos.Select(l => l.IdNomCientificoPlagaNavigation.NombreCientificoPlaga).Contains(filtro)).ToList();
+            }
 
             var response = _mapper.Map<List<GetArticuloDto>>(filter);
             return response;
@@ -141,6 +160,8 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
             var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == idUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
 
+            filtro = filtro ?? string.Empty;
+
             var filter = new List<Articulo>();
 
             var query = _articuloUnitOfWork._articuloRepository.GetAll(p => paises.Contains(p.IdPais.Value) && p.FlgActivo,
@@ -148,9 +169,16 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
         "Usos.IdNomCientificoPlagaNavigation,Caracteristicas.IdToxicologicaNavigation",
                 orderBy: p => p.OrderByDescending(l => l.IdArticulo)).AsEnumerable();
 
+            if (string.IsNullOrEmpty(filtro))
+            {
+                filter = query.ToList();
+            }
+            else
+            {
+                filter = query.Where(p => p.Usos.Select(l => l.IdCultivoNavigation.NombreCultivo).Contains(filtro)).ToList();
+            }
 
-            filter = query
-                .Where(p => p.Usos.Select(l => l.IdCultivoNavigation.NombreCultivo).Contains(filtro)).ToList();
+            
 
             //filter = query.Where(p => filtro.Contains(p.NombreComercial, StringComparison.CurrentCultureIgnoreCase) || p.NombreComercial.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
 
@@ -162,6 +190,8 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
         {
             var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == idUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
+
+            filtro = filtro ?? string.Empty;
 
             var filter = new List<Articulo>();
 
@@ -183,6 +213,8 @@ namespace IDCL.AVGUST.SIP.Manager.Reporte
         {
             var user = _seguridadUnitOfWork._usuarioRepositoy.GetAll(p => p.IdUsuario == idUsuario, includeProperties: "UsuarioPais,UsuarioPais.IdPaisNavigation").FirstOrDefault();
             var paises = user.UsuarioPais.Select(p => p.IdPais).ToList();
+
+            filtro = filtro ?? string.Empty;
 
             var filter = new List<Articulo>();
 
