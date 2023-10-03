@@ -12,6 +12,7 @@ using IDCL.AVGUST.SIP.ManagerDto.Calculator.RentabilidadComicion;
 using IDCL.AVGUST.SIP.ManagerDto.Calculator.Simulador;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros.Add;
+using IDCL.AVGUST.SIP.ManagerDto.Reports;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad.Add;
 
@@ -90,6 +91,24 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
 
             CreateMap<TasasComision, GetTasaComisionDto>().ReverseMap();
 
+            #endregion
+
+
+
+            #region Reports
+            CreateMap<Articulo, GetArticuloShortDto>().ReverseMap();
+            CreateMap<Uso, GetPlagaReportsDto>().ReverseMap();
+            CreateMap<Uso, GetCultivoReportsDto>().ReverseMap();
+
+            CreateMap<ProductoFabricante, GetProductoFabricanteReportsDto>().ReverseMap();
+            CreateMap<ProductoFormulador, GetProductoFormuladorReportsDto>().ReverseMap();
+            CreateMap<Articulo, GetArticuloShortCompDto>().ReverseMap();
+
+            CreateMap<Composicion, GetComposicionReportsDto>()
+
+                //.ForMember(dest => dest.IdArticuloNavigation.NombreFormulador,
+                //source => source.MapFrom(s => (s.IdArticuloNavigation.ProductoFormuladors != null && s.IdArticuloNavigation.ProductoFormuladors.Any()) ? s.IdArticuloNavigation.ProductoFormuladors.FirstOrDefault().IdFormuladorNavigation.NomFormulador : string.Empty))
+                .ReverseMap();
             #endregion
         }
     }

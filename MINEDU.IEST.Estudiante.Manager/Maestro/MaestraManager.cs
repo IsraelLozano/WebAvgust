@@ -706,6 +706,7 @@ namespace IDCL.AVGUST.SIP.Manager.Maestro
 
         public async Task<List<GetFabricanteDto>> getListFabricante(string filter)
         {
+            
             var query = _maestraUnitOfWork._fabricanteRepository.GetAll(l => l.Estado
             && (l.NombreFabricante.Contains(filter) || filter.Contains(l.NombreFabricante))
             , orderBy: l => l.OrderBy(o => o.NombreFabricante));
