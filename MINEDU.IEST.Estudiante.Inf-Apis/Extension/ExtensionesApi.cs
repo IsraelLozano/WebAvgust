@@ -1,28 +1,30 @@
-﻿using IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto;
+﻿using IDCL.AVGUST.SIP.Contexto.DataPedido;
+using IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Contexto;
 using IDCL.AVGUST.SIP.Contextos.IDCL.AVGUST.SIP.Contexto;
 using IDCL.AVGUST.SIP.Manager.Articulos;
 using IDCL.AVGUST.SIP.Manager.Calculator;
 using IDCL.AVGUST.SIP.Manager.Maestro;
+using IDCL.AVGUST.SIP.Manager.Pedido;
 using IDCL.AVGUST.SIP.Manager.Reporte;
 using IDCL.AVGUST.SIP.Manager.Seguridad;
 using IDCL.AVGUST.SIP.Repository.Articulos;
 using IDCL.AVGUST.SIP.Repository.Calculator;
 using IDCL.AVGUST.SIP.Repository.Maestra;
+using IDCL.AVGUST.SIP.Repository.Pedido;
 using IDCL.AVGUST.SIP.Repository.Seguridad;
 using IDCL.AVGUST.SIP.Repository.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MINEDU.IEST.Estudiante.Inf_Utils.Helpers.Dapper;
 
 namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
 {
     public static class ExtensionesApi
     {
-
         public class RepositoriesOptions
         {
             public string ConnectionString { get; set; }
         }
-
         public static IServiceCollection AddRepositories(this IServiceCollection services, Action<RepositoriesOptions> configureOptions)
         {
             var options = new RepositoriesOptions();
@@ -55,11 +57,11 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
 
             services.AddScoped<IProductoFormuladorRepository, ProductoFormuladorRepository>();
             services.AddScoped<IProductoFabricanteRepository, ProductoFabricanteRepository>();
-      
 
             services.AddScoped<ArticuloUnitOfWork>();
             services.AddScoped<MaestraUnitOfWork>();
             services.AddScoped<SeguridadUnitOfWork>();
+  
 
             services.AddDbContext<dbContextAvgust>(opt =>
             {
@@ -70,8 +72,6 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
 
             return services;
         }
-
-
         public static IServiceCollection AddRepositoriesCalculator(this IServiceCollection services, Action<RepositoriesOptions> configureOptions)
         {
             var options = new RepositoriesOptions();
@@ -96,10 +96,25 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
 
             return services;
         }
+        
+        public static IServiceCollection AddRepositoriesSp(this IServiceCollection services, Action<RepositoriesOptions> configureOptions)
+        {
+            var options = new RepositoriesOptions();
+            configureOptions(options);
 
+            services.AddScoped<IPedidoRepository, PedidoRepository>();
+            services.AddScoped<IPersonaRepository, PersonaRepository>();
+            services.AddScoped<IDapper, DataBase>();
+            services.AddScoped<PedidoUnitOfWork>();
 
+            services.AddDbContext<DbPedidoContext>(opt =>
+            {
+                opt.UseSqlServer(options.ConnectionString);
 
+            });
 
+            return services;
+        }
         public static IServiceCollection AddManager(this IServiceCollection services)
         {
 
@@ -107,6 +122,7 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
             services.AddScoped<ISeguridadManager, SeguridadManager>();
             services.AddScoped<IMaestraManager, MaestraManager>();
             services.AddScoped<IReporteManager, ReporteManager>();
+            services.AddScoped<IPedidoManager, PedidoManager>();
 
             return services;
 
@@ -125,8 +141,6 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
             return services;
 
         }
-
-
     }
 
 }

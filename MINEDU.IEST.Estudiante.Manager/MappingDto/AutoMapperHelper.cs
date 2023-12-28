@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust;
 using IDCL.AVGUST.SIP.Entity.Calculator;
+using IDCL.AVGUST.SIP.Entity.Pedido;
+using IDCL.AVGUST.SIP.Entity.Pedido.SpEntity;
 using IDCL.AVGUST.SIP.ManagerDto.Articulos;
 using IDCL.AVGUST.SIP.ManagerDto.Articulos.Add;
 using IDCL.AVGUST.SIP.ManagerDto.Calculator;
@@ -12,9 +14,11 @@ using IDCL.AVGUST.SIP.ManagerDto.Calculator.RentabilidadComicion;
 using IDCL.AVGUST.SIP.ManagerDto.Calculator.Simulador;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros.Add;
+using IDCL.AVGUST.SIP.ManagerDto.Pedido;
 using IDCL.AVGUST.SIP.ManagerDto.Reports;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad.Add;
+using IDCL.AVGUST.SIP.ManagerDto.StoreProcedure;
 
 namespace IDCL.AVGUST.SIP.Manager.MappingDto
 {
@@ -22,6 +26,8 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
     {
         public AutoMapperHelper()
         {
+
+            #region Generales
             CreateMap<Usuario, GetUsuarioDto>().ReverseMap();
             CreateMap<Usuario, AddOrEditUserDto>().ReverseMap();
             CreateMap<UsuarioPai, AddOrEditUsuarioPaisDto>().ReverseMap();
@@ -59,6 +65,7 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
             CreateMap<Uso, GetUsoDto>();
             CreateMap<Caracteristica, GetCaracteristicaDto>();
 
+            #endregion
 
             #region Articulos
             CreateMap<Articulo, AddOrEditArticuloDto>().ReverseMap();
@@ -93,8 +100,6 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
 
             #endregion
 
-
-
             #region Reports
             CreateMap<Articulo, GetArticuloShortDto>().ReverseMap();
             CreateMap<Uso, GetPlagaReportsDto>().ReverseMap();
@@ -109,6 +114,20 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
                 //.ForMember(dest => dest.IdArticuloNavigation.NombreFormulador,
                 //source => source.MapFrom(s => (s.IdArticuloNavigation.ProductoFormuladors != null && s.IdArticuloNavigation.ProductoFormuladors.Any()) ? s.IdArticuloNavigation.ProductoFormuladors.FirstOrDefault().IdFormuladorNavigation.NomFormulador : string.Empty))
                 .ReverseMap();
+            #endregion
+
+            #region Store Procedure
+            CreateMap<CostoArticulo, GetCostoArticuloDto>();
+
+
+            #endregion
+
+            #region Pedidos
+
+            CreateMap<PedidoCab, AddPedidoDto>().ReverseMap();
+            CreateMap<PedidoDet, AddPedidoDetalleDto>().ReverseMap();
+
+
             #endregion
         }
     }

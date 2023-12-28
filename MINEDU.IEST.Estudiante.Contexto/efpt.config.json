@@ -1,13 +1,13 @@
 ﻿{
    "CodeGenerationMode": 2,
-   "ContextClassName": "DbAvgustCalcContext",
+   "ContextClassName": "DbPedidoContext",
    "ContextNamespace": "IDCL.AVGUST.SIP.Contexto",
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": "IDCL.AVGUST.SIP.Entity.Avgust",
-   "OutputContextPath": "DataCalc2\\CalcTemp",
-   "OutputPath": "DataCalc2\\CalcTemp",
+   "OutputContextPath": "DataPedido",
+   "OutputPath": "DataPedidoTemp",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "IDCL.AVGUST.SIP.Contextos",
    "Schemas": null,
@@ -16,24 +16,17 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "[dbo].[ListaPrecioItem]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[ListaPrecioItemDet]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[TasasComision]",
+         "Name": "[dbo].[Persona]",
          "ObjectType": 0
       }
    ],
-   "UiHint": "serverindusoft1\\sql17.INDUSOFT_NET_ERP_AVGUSTTEST.dbo",
+   "UiHint": "serverindusoft1\\sql22.INDUSOFT_NET_ERP_AVGUST.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDateOnlyTimeOnly": false,
    "UseDbContextSplitting": true,
+   "UseDecimalDataAnnotationForSprocResult": true,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
    "UseHierarchyId": false,
@@ -41,6 +34,7 @@
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": true,
    "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": true,
