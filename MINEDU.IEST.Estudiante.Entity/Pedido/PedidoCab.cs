@@ -10,147 +10,45 @@ namespace IDCL.AVGUST.SIP.Entity.Pedido
         public int IdLocal { get; set; }
         public int CodPedido { get; set; }
         public string? CodPedidoCad { get; set; }
-        public DateTime Fecha { get; set; }
-        /// <summary>
-        /// id de Consignatario
-        /// </summary>
-        public int? IdConsignatario { get; set; }
-        /// <summary>
-        /// id Notificar a las partes
-        /// </summary>
-        public int? IdNotificar { get; set; }
-        /// <summary>
-        /// id de Consignatario FitoSanitario
-        /// </summary>
-        public int? IdConsFitosanitario { get; set; }
-        /// <summary>
-        /// id para Facturar
-        /// </summary>
-        public int IdFacturar { get; set; }
-        /// <summary>
-        /// id de Broker
-        /// </summary>
-        public int? IdBroker { get; set; }
-        /// <summary>
-        /// id de Semana
-        /// </summary>
-        public int? IdSemanaEmbarque { get; set; }
-        /// <summary>
-        /// Pais Origen
-        /// </summary>
-        public int? IdPaisOrigen { get; set; }
-        /// <summary>
-        /// id de Origen  Ejemplo Callao Peru
-        /// </summary>
-        public int? IdOrigen { get; set; }
-        /// <summary>
-        /// Pais Destino
-        /// </summary>
-        public int? IdPaisDestino { get; set; }
-        /// <summary>
-        /// id de Destino Honk Kong
-        /// </summary>
-        public int? IdDestino { get; set; }
-        /// <summary>
-        /// id Flete Ejemplo Collect
-        /// </summary>
-        public int? IdFlete { get; set; }
-        /// <summary>
-        /// id Ejemplo SEA WILL BILL
-        /// </summary>
-        public int? IdBlEmision { get; set; }
-        /// <summary>
-        /// id MG
-        /// </summary>
-        public int? IdTipoCompra { get; set; }
-        /// <summary>
-        /// Incoterms FOB CALLAO
-        /// </summary>
+        public DateTime Fecha { get; set; }      
+        public int? IdConsignatario { get; set; }      
+        public int? IdNotificar { get; set; }      
+        public int? IdConsFitosanitario { get; set; }      
+        public int IdFacturar { get; set; }      
+        public int? IdBroker { get; set; }      
+        public int? IdSemanaEmbarque { get; set; }      
+        public int? IdPaisOrigen { get; set; }      
+        public int? IdOrigen { get; set; }      
+        public int? IdPaisDestino { get; set; }      
+        public int? IdDestino { get; set; }      
+        public int? IdFlete { get; set; }      
+        public int? IdBlEmision { get; set; }      
+        public int? IdTipoCompra { get; set; }      
         public int? IdIncoterms { get; set; }
         public int? IdIncotermsPrecio { get; set; }
         public string? IdMoneda { get; set; }
         public string? Observacion { get; set; }
-        public string? Indicaciones { get; set; }
-        /// <summary>
-        /// Operador Logistico
-        /// </summary>
-        public int? IdOperador { get; set; }
-        /// <summary>
-        /// Estado de Pedido P=Pendiente, C=Cerrado
-        /// </summary>
-        public string Estado { get; set; } = null!;
-        /// <summary>
-        /// Numero de Reserva / Booking
-        /// </summary>
-        public string? Reserva { get; set; }
-        /// <summary>
-        /// Naviera
-        /// </summary>
-        public int? IdNaviera { get; set; }
-        /// <summary>
-        /// Fecha Estimada de Llegada
-        /// </summary>
-        public DateTime? Eta { get; set; }
-        /// <summary>
-        /// Fecha Estimada de Salida
-        /// </summary>
+        public string? Indicaciones { get; set; }      
+        public int? IdOperador { get; set; }      
+        public string Estado { get; set; } = null!;      
+        public string? Reserva { get; set; }      
+        public int? IdNaviera { get; set; }      
+        public DateTime? Eta { get; set; }      
         public DateTime? Etd { get; set; }
-        public string? Barco { get; set; }
-        /// <summary>
-        /// Almacen de Ingreso de Contenedor
-        /// </summary>
-        public int? AlmacenIngreso { get; set; }
-        /// <summary>
-        /// Fecha de Posicionamiento Contenedor
-        /// </summary>
-        public DateTime? FechaPosic { get; set; }
-        /// <summary>
-        /// Fecha de Inspeccion
-        /// </summary>
-        public DateTime? FechaInspeccion { get; set; }
-        /// <summary>
-        /// Contenedor
-        /// </summary>
-        public string? Contenedor { get; set; }
-        /// <summary>
-        /// Numero de Termografo
-        /// </summary>
-        public string? TermografosNum { get; set; }
-        /// <summary>
-        /// Termografo 2
-        /// </summary>
-        public string? TermografosNum2 { get; set; }
-        /// <summary>
-        /// Ubicacion de Termografo
-        /// </summary>
-        public string? TermografosUbi { get; set; }
-        /// <summary>
-        /// Ubicacion de Termografo2
-        /// </summary>
-        public string? TermografosUbi2 { get; set; }
-        /// <summary>
-        /// Precinto Operador
-        /// </summary>
-        public string? PrecintoOperador { get; set; }
-        /// <summary>
-        /// Precinto Naviera
-        /// </summary>
-        public string? PrecintoNaviera { get; set; }
-        /// <summary>
-        /// Precinto Senasa
-        /// </summary>
-        public string? PrecintoSenasa { get; set; }
-        /// <summary>
-        /// Precinto Aduana
-        /// </summary>
-        public string? PrecintoAduana { get; set; }
-        /// <summary>
-        /// Precinto Otros
-        /// </summary>
-        public string? PrecintoOtro { get; set; }
-        /// <summary>
-        /// Numero de Guia de Despacho
-        /// </summary>
+        public string? Barco { get; set; }      
+        public int? AlmacenIngreso { get; set; }      
+        public DateTime? FechaPosic { get; set; }      
+        public DateTime? FechaInspeccion { get; set; }      
+        public string? Contenedor { get; set; }      
+        public string? TermografosNum { get; set; }      
+        public string? TermografosNum2 { get; set; }      
+        public string? TermografosUbi { get; set; }      
+        public string? TermografosUbi2 { get; set; }      
+        public string? PrecintoOperador { get; set; }      
+        public string? PrecintoNaviera { get; set; }      
+        public string? PrecintoSenasa { get; set; }      
+        public string? PrecintoAduana { get; set; }      
+        public string? PrecintoOtro { get; set; }      
         public string? NroGuia { get; set; }
         public string? NroDocReferencia { get; set; }
         public DateTime? FecFactura { get; set; }
@@ -167,18 +65,9 @@ namespace IDCL.AVGUST.SIP.Entity.Pedido
         public string? ObsStock { get; set; }
         public bool? IndObsCredito { get; set; }
         public string? ObsCredito { get; set; }
-        public int? IdVendedor { get; set; }
-        /// <summary>
-        /// Zona de Trabajo
-        /// </summary>
-        public int? IdEstablecimiento { get; set; }
-        /// <summary>
-        /// Zona de Trabajo
-        /// </summary>
-        public int? IdZona { get; set; }
-        /// <summary>
-        /// 0 = Nacional 1 = Exportacion
-        /// </summary>
+        public int? IdVendedor { get; set; }      
+        public int? IdEstablecimiento { get; set; }      
+        public int? IdZona { get; set; }      
         public bool? Tipo { get; set; }
         public decimal? TotsubTotal { get; set; }
         public decimal? TotDscto1 { get; set; }

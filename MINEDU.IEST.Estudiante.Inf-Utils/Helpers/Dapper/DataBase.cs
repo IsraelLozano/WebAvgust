@@ -56,11 +56,11 @@ namespace MINEDU.IEST.Estudiante.Inf_Utils.Helpers.Dapper
             return result;
         }
 
-        public T Get<T>(string sql, DynamicParameters param, CommandType commandType = CommandType.StoredProcedure)
+        public async Task<T> Get<T>(string sql, DynamicParameters param, CommandType commandType = CommandType.StoredProcedure)
         {
             using (IDbConnection db = new SqlConnection(_config.GetSection(Connectionstring).Value))
             {
-                return db.Query<T>(sql, commandType: commandType).FirstOrDefault();
+                return db.QueryAsync<T>(sql, param, commandType: commandType).Result.FirstOrDefault();
             }
         }
 

@@ -50,12 +50,18 @@ namespace IDCL.AVGUST.SIP.Manager.Pedido
                     resp.MensajeError = "El ruc ingresado no existe o no es valido";
                     return resp;
                 }
+                //Obtener Codigo Pedido 
+                var nroPedido = await _pedidoUnitOfWork._pedidoRepository.ObtenerNroPedido(5, 1, "P");
 
                 //Adicionales
                 pedido.IdEmpresa = 5;
                 pedido.IdLocal = 1;
+                pedido.CodPedidoCad = nroPedido;
                 pedido.UsuarioModificacion = pedido.UsuarioRegistro;
                 pedido.FechaModificacion = pedido.FechaRegistro;
+                pedido.IndCotPed = "P";
+                pedido.IdTipCondicion = 1;
+                pedido.Estado = "1";
 
                 pedido.PedidoDets.ForEach(l =>
                 {
@@ -68,7 +74,7 @@ namespace IDCL.AVGUST.SIP.Manager.Pedido
                 _pedidoUnitOfWork._pedidoRepository.Insert(pedido);
                 await _pedidoUnitOfWork.SaveAsync();
 
-                var result  = _mapper.Map<AddPedidoDto>(pedido);
+                var result = _mapper.Map<AddPedidoDto>(pedido);
                 result.IdFacturar = pedido.IdPedido;
                 return result;
             }

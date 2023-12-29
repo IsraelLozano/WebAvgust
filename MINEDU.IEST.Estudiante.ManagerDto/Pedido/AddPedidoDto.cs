@@ -7,21 +7,25 @@ namespace IDCL.AVGUST.SIP.ManagerDto.Pedido
         //public int IdPedido { get; set; }
         //public int IdEmpresa { get; set; }
 
+
+        /*
+         indCotPed="P";
+        "idTipCondicion":1,
+          "idFacturar": 0,
+        "estado": "P",
+         */
+        public int IdFacturar { get; set; }
         public string NroRuc { get; set; }
         public int IdLocal { get; set; }
         public int CodPedido { get; set; } = 0;
-        public string? CodPedidoCad { get; set; }
         public DateTime Fecha { get; set; }       
-        public int IdFacturar { get; set; }        
         public string? IdMoneda { get; set; }
         public string? Observacion { get; set; }
         public string? Indicaciones { get; set; }        
-        public string Estado { get; set; } = null!;        
         public string? NroGuia { get; set; }
         public DateTime? FecFactura { get; set; }
         public string? NroFactura { get; set; }
         public int? IdFormaPago { get; set; }
-        public int? IdTipCondicion { get; set; }
         public int? IdCondicion { get; set; }
         public bool? IndDsctoProntoPago { get; set; }
         public decimal? DsctoProntoPago { get; set; }
@@ -46,7 +50,6 @@ namespace IDCL.AVGUST.SIP.ManagerDto.Pedido
         public string? PuntoLlegada { get; set; }
         public int? TipoDoc { get; set; }
         public int? IdTransporte { get; set; }
-        public string? IndCotPed { get; set; }
         public int? IdPedidoEnlace { get; set; }
         public string? TipoGeneracion { get; set; }
         public int? IdDivision { get; set; }

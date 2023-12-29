@@ -29,6 +29,16 @@ namespace IDCL.AVGUST.SIP.Repository.Pedido
             var qResult = await _database.GetAll<CostoArticulo>(procedureName, parameters, CommandType.StoredProcedure);
             return qResult;
         }
+        public async Task<string> ObtenerNroPedido(int idEmpresa, int idLocal, string indCotPed)
+        {
+            var procedureName = "usp_ObtenerNroPedido";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("idLocal", idLocal, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("indCotPed", indCotPed, DbType.String, ParameterDirection.Input);
+            var qResult = await _database.Get<string>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
 
     }
 }

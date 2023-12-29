@@ -7,5 +7,6 @@ namespace IDCL.AVGUST.SIP.Repository.Pedido
     public interface IPedidoRepository:IGenericRepository<PedidoCab>
     {
         Task<List<CostoArticulo>> ListarCostoArticulo(int idEmpresa, string codArticulo);
+        Task<string> ObtenerNroPedido(int idEmpresa, int idLocal, string indCotPed);
     }
 }
