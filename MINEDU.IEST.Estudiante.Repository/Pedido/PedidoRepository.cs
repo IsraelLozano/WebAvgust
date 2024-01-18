@@ -19,12 +19,13 @@ namespace IDCL.AVGUST.SIP.Repository.Pedido
             this._database = database;
         }
 
-        public async Task<List<CostoArticulo>> ListarCostoArticulo(int idEmpresa, string codArticulo)
+        public async Task<List<CostoArticulo>> ListarCostoArticulo(int idEmpresa, string codArticulo, string fechaStock)
         {
             var procedureName = "usp_ApiListarCostoArticulo";
             var parameters = new DynamicParameters();
             parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
             parameters.Add("codArticulo", codArticulo, DbType.String, ParameterDirection.Input);
+            parameters.Add("FechaStock", fechaStock, DbType.String, ParameterDirection.Input);
 
             var qResult = await _database.GetAll<CostoArticulo>(procedureName, parameters, CommandType.StoredProcedure);
             return qResult;

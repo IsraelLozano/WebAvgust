@@ -104,6 +104,7 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
 
             services.AddScoped<IPedidoRepository, PedidoRepository>();
             services.AddScoped<IPersonaRepository, PersonaRepository>();
+            services.AddScoped<ITipoCambioRepository, TipoCambioRepository>();
             services.AddScoped<IDapper, DataBase>();
             services.AddScoped<PedidoUnitOfWork>();
 

@@ -19,12 +19,15 @@ namespace IDCL.AVGUST.SIP.Contexto.DataPedido
         public virtual DbSet<PedidoCab> PedidoCabs { get; set; } = null!;
         public virtual DbSet<PedidoDet> PedidoDets { get; set; } = null!;
         public virtual DbSet<Persona> Personas { get; set; } = null!;
+        public virtual DbSet<TipoCambio> TipoCambios { get; set; } = null!;
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         modelBuilder.ApplyConfiguration(new Configurations.ExpPedidoCabConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.ExpPedidoDetConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.PersonaConfiguration());
+        modelBuilder.ApplyConfiguration(new Configurations.TipoCambioConfiguration());
 
             OnModelCreatingPartial(modelBuilder);
         }

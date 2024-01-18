@@ -6,7 +6,7 @@
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": "IDCL.AVGUST.SIP.Entity.Avgust",
-   "OutputContextPath": "DataPedido",
+   "OutputContextPath": "DataPedidoTemp",
    "OutputPath": "DataPedidoTemp",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "IDCL.AVGUST.SIP.Contextos",
@@ -16,7 +16,7 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "[dbo].[Persona]",
+         "Name": "[dbo].[TipoCambio]",
          "ObjectType": 0
       }
    ],

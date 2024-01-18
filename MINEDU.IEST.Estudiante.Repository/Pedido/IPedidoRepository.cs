@@ -4,9 +4,9 @@ using MINEDU.IEST.Estudiante.Repository.Base;
 
 namespace IDCL.AVGUST.SIP.Repository.Pedido
 {
-    public interface IPedidoRepository:IGenericRepository<PedidoCab>
+    public interface IPedidoRepository : IGenericRepository<PedidoCab>
     {
-        Task<List<CostoArticulo>> ListarCostoArticulo(int idEmpresa, string codArticulo);
+        Task<List<CostoArticulo>> ListarCostoArticulo(int idEmpresa, string codArticulo, string fechaStock);
         Task<string> ObtenerNroPedido(int idEmpresa, int idLocal, string indCotPed);
     }
 }

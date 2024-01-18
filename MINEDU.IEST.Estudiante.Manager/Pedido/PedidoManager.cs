@@ -20,13 +20,16 @@ namespace IDCL.AVGUST.SIP.Manager.Pedido
             this._pedidoUnitOfWork = pedidoUnitOfWork;
         }
 
-        public async Task<List<GetCostoArticuloDto>> getListArticulos(int idArticulo, string codigo)
+        public async Task<List<GetCostoArticuloDto>> getListArticulos(int idArticulo, string codigo, string fechaStock)
         {
             if (codigo == null)
             {
                 codigo = "%";
             }
-            var query = await _pedidoUnitOfWork._pedidoRepository.ListarCostoArticulo(idArticulo, codigo);
+
+            fechaStock = fechaStock ?? DateTime.Now.ToString("yyyyMMdd");
+
+            var query = await _pedidoUnitOfWork._pedidoRepository.ListarCostoArticulo(idArticulo, codigo, fechaStock);
 
             return _mapper.Map<List<GetCostoArticuloDto>>(query);
         }
@@ -62,11 +65,21 @@ namespace IDCL.AVGUST.SIP.Manager.Pedido
                 pedido.IndCotPed = "P";
                 pedido.IdTipCondicion = 1;
                 pedido.Estado = "1";
+                pedido.NroGuia = pedido.NroFactura = pedido.NroGuiaGen = pedido.NroFacturaGen = string.Empty;
+                pedido.FecFactura = null;
+                pedido.TipoGeneracion = "N";
+                var tc = _pedidoUnitOfWork._tipoCambioRepository
+                                            .GetAll(l => l.IdMoneda == "02" && l.FecCambio.Date == pedido.Fecha.Date)
+                                            .FirstOrDefault();
+                if (tc != null)
+                    pedido.TipCambio = tc.ValVenta;
 
                 pedido.PedidoDets.ForEach(l =>
                 {
                     l.IdEmpresa = pedido.IdEmpresa;
                     l.IdLocal = pedido.IdLocal;
+                    l.CantidadUnit = 0;
+                    l.CantidadFinal = l.Cantidad;
                     l.UsuarioRegistro = l.UsuarioModificacion = pedido.UsuarioRegistro;
                     l.FechaRegistro = l.FechaModificacion = pedido.FechaRegistro;
                 });

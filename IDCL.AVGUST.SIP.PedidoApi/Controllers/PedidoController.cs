@@ -20,10 +20,10 @@ namespace IDCL.AVGUST.SIP.PedidoApi.Controllers
             _pedidoManager = pedidoManager;
         }
 
-        [HttpGet("GetListCostoArticulo/{idEmpresa:int}/{codArticulo?}")]
-        public async Task<IActionResult> GetArticulos(int idEmpresa, string? codArticulo = null)
+        [HttpGet("GetListCostoArticulo/{idEmpresa:int}/{codArticulo?}/{fechaStock?}")]
+        public async Task<IActionResult> GetArticulos(int idEmpresa, string? codArticulo = null, string? fechaStock = null)
         {
-            return Ok(await _pedidoManager.getListArticulos(idEmpresa, codArticulo));
+            return Ok(await _pedidoManager.getListArticulos(idEmpresa, codArticulo, fechaStock));
         }
 
         [HttpPost("AddPedido")]
