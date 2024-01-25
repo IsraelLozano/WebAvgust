@@ -19,6 +19,7 @@ using IDCL.AVGUST.SIP.ManagerDto.Reports;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad.Add;
 using IDCL.AVGUST.SIP.ManagerDto.StoreProcedure;
+using IDCL.AVGUST.SIP.ManagerDto.StoreProcedure.LineaCuentas;
 
 namespace IDCL.AVGUST.SIP.Manager.MappingDto
 {
@@ -127,6 +128,26 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
             CreateMap<PedidoCab, AddPedidoDto>().ReverseMap();
             CreateMap<PedidoDet, AddPedidoDetalleDto>().ReverseMap();
 
+
+            CreateMap<ListarTopCliente, GetListarTopClienteDto>().ReverseMap();
+            CreateMap<SegmentoZona, GetListaSegmentoZonaDto>().ReverseMap();
+            CreateMap<VentaClienteProducto, GetListaVentaClienteProductoDto>().ReverseMap();
+            CreateMap<VentaProducto, GetListaVentaProdutoDto>().ReverseMap();
+            CreateMap<ZonaVendendor, GetListaZonaVendedorDto>().ReverseMap();
+
+
+
+            #endregion
+
+            #region Lineas cuentas
+
+            CreateMap<AvanceCobranzaZV, GetAvanceCobranzaZVDto>().ReverseMap();
+            CreateMap<ClientesAprobados,GetClientesAprobadoDto>().ReverseMap();
+            CreateMap<ClientesAtendidos,GetClientesAtendidosDto>().ReverseMap();
+            CreateMap<ClientesAtendidosSinLC,GetClientesAtentidosSinLCDto>().ReverseMap();
+            CreateMap<CtaCteAtrazadaZona,GetCtaCteAtrazadaZonaDto>().ReverseMap();
+            CreateMap<LetraPorAceptarZona,GetLetraPorAceptarZonaDto>().ReverseMap();
+            CreateMap<LineaCreditoDisponible,GetLineaCreditoDisponibleDto>().ReverseMap();
 
             #endregion
         }

@@ -30,6 +30,138 @@ namespace IDCL.AVGUST.SIP.Repository.Pedido
             var qResult = await _database.GetAll<CostoArticulo>(procedureName, parameters, CommandType.StoredProcedure);
             return qResult;
         }
+        
+        public async Task<List<ZonaVendendor>> ListarZonaVendedor(int idEmpresa, string fechaInicio, string fechaFin)
+        {
+            var procedureName = "usp_ApiListarZonaVendedor";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("desde", fechaInicio, DbType.String, ParameterDirection.Input);
+            parameters.Add("hasta", fechaFin, DbType.String, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<ZonaVendendor>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+        
+        public async Task<List<SegmentoZona>> ListarSegmentoZona(int idEmpresa, string fechaInicio, string fechaFin)
+        {
+            var procedureName = "usp_ApiListarSegmentoZona";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("desde", fechaInicio, DbType.String, ParameterDirection.Input);
+            parameters.Add("hasta", fechaFin, DbType.String, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<SegmentoZona>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+        
+        public async Task<List<ListarTopCliente>> ListarTopCliente(int idEmpresa, string fechaInicio, string fechaFin)
+        {
+            var procedureName = "usp_ApiListarTopCliente";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("desde", fechaInicio, DbType.String, ParameterDirection.Input);
+            parameters.Add("hasta", fechaFin, DbType.String, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<ListarTopCliente>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+        
+        public async Task<List<VentaProducto>> ListarVentaProducto(int idEmpresa, string fechaInicio, string fechaFin)
+        {
+            var procedureName = "usp_ApiListarVentaProducto";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("desde", fechaInicio, DbType.String, ParameterDirection.Input);
+            parameters.Add("hasta", fechaFin, DbType.String, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<VentaProducto>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+        
+        public async Task<List<VentaClienteProducto>> ListarVentaClienteProducto(int idEmpresa, string fechaInicio, string fechaFin)
+        {
+            var procedureName = "usp_ApiListarVentaClienteProducto";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("desde", fechaInicio, DbType.String, ParameterDirection.Input);
+            parameters.Add("hasta", fechaFin, DbType.String, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<VentaClienteProducto>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+
+        #region Linea Cuentas
+
+        public async Task<List<LineaCreditoDisponible>> ListarLineaCreditoDisponibleZonaCliente(int idEmpresa)
+        {
+            var procedureName = "usp_ApiListarLineaCreditoDisponibleZonaCliente";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<LineaCreditoDisponible>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+        public async Task<List<ClientesAprobados>> ListarClientesAprobadosLCPorZona(int idEmpresa)
+        {
+            var procedureName = "usp_ApiListarNumeroClientesAprobadosLCPorZona";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<ClientesAprobados>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+        public async Task<List<ClientesAtendidos>> ListarClientesAtendidosLCPorZona(int idEmpresa)
+        {
+            var procedureName = "usp_ApiListarNumeroClientesAtendidosLCPorZona";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<ClientesAtendidos>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+        public async Task<List<ClientesAtendidosSinLC>> ListarClientesAtendidosSinLC(int idEmpresa)
+        {
+            var procedureName = "usp_ApiListarNumeroClientesAtendidosSinLCPorZona";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<ClientesAtendidosSinLC>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+        public async Task<List<AvanceCobranzaZV>> ListarAvanceCobranzaZonaVendedor(int idEmpresa, string fechaInicio, string fechaFin)
+        {
+            var procedureName = "usp_ApiListarAvanceCobranzaZonaVendedor";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@fecIni", fechaInicio, DbType.String, ParameterDirection.Input);
+            parameters.Add("@fecFin", fechaFin, DbType.String, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<AvanceCobranzaZV>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+        public async Task<List<CtaCteAtrazadaZona>> ListarCtaCteAtrazadaPorZona(int idEmpresa, string fechaFiltro)
+        {
+            var procedureName = "usp_ApiListarCtaCteAtrazadaPorZona";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("fecFiltro", fechaFiltro, DbType.String, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<CtaCteAtrazadaZona>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+        public async Task<List<LetraPorAceptarZona>> ListarLetraPorAceptarZona(int idEmpresa)
+        {
+            var procedureName = "usp_ApiListarLetraPorAceptarZona";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<LetraPorAceptarZona>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+
+        #endregion
+
         public async Task<string> ObtenerNroPedido(int idEmpresa, int idLocal, string indCotPed)
         {
             var procedureName = "usp_ObtenerNroPedido";
