@@ -12,6 +12,8 @@ namespace IDCL.AVGUST.SIP.PedidoApi.Controllers
         private readonly ILogger<PedidoController> _logger;
         private readonly IPedidoManager _pedidoManager;
 
+
+        //Camoens
         public PedidoController(ILogger<PedidoController> logger, IPedidoManager pedidoManager)
         {
             _logger = logger;
