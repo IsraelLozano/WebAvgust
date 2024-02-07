@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DataAnnotationsExtensions" Version="5.0.1.27" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MINEDU.IEST.Estudiante.Inf-Utils\IDCL.AVGUST.SIP.Inf-Utils.csproj" />
   </ItemGroup>
 

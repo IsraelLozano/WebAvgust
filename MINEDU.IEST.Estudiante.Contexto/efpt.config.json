@@ -1,26 +1,42 @@
 ﻿{
    "CodeGenerationMode": 2,
-   "ContextClassName": "DbPedidoContext",
-   "ContextNamespace": "IDCL.AVGUST.SIP.Contexto",
+   "ContextClassName": "DbTacamaContext",
+   "ContextNamespace": "IDCL.Tacama.Core.Contexto",
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
-   "ModelNamespace": "IDCL.AVGUST.SIP.Entity.Avgust",
-   "OutputContextPath": "DataPedidoTemp",
-   "OutputPath": "DataPedidoTemp",
+   "ModelNamespace": "IDCL.Tacama.Core.Entity",
+   "OutputContextPath": "DataTacama",
+   "OutputPath": "DataTacama",
    "PreserveCasingWithRegex": true,
-   "ProjectRootNamespace": "IDCL.AVGUST.SIP.Contextos",
+   "ProjectRootNamespace": "IDCL.Tacama.Core.Contexto",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "[dbo].[TipoCambio]",
+         "Name": "[dbo].[Rol]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TramaDiario]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TramaHistorico]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Usuario]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UsuarioRol]",
          "ObjectType": 0
       }
    ],
-   "UiHint": "serverindusoft1\\sql22.INDUSOFT_NET_ERP_AVGUST.dbo",
+   "UiHint": "serverindusoft1\\sql22.INDUSOFT_NET_ERP_TACAMA.dbo",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,

@@ -7,12 +7,16 @@ using IDCL.AVGUST.SIP.Manager.Maestro;
 using IDCL.AVGUST.SIP.Manager.Pedido;
 using IDCL.AVGUST.SIP.Manager.Reporte;
 using IDCL.AVGUST.SIP.Manager.Seguridad;
+using IDCL.AVGUST.SIP.Manager.Tacama;
 using IDCL.AVGUST.SIP.Repository.Articulos;
 using IDCL.AVGUST.SIP.Repository.Calculator;
 using IDCL.AVGUST.SIP.Repository.Maestra;
 using IDCL.AVGUST.SIP.Repository.Pedido;
 using IDCL.AVGUST.SIP.Repository.Seguridad;
+using IDCL.AVGUST.SIP.Repository.Tacama;
 using IDCL.AVGUST.SIP.Repository.UnitOfWork;
+using IDCL.AVGUST.SIP.Repository.UnitOfWork.Tacama;
+using IDCL.Tacama.Core.Contexto.IDCL.Tacama.Core.Contexto;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MINEDU.IEST.Estudiante.Inf_Utils.Helpers.Dapper;
@@ -72,6 +76,7 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
 
             return services;
         }
+
         public static IServiceCollection AddRepositoriesCalculator(this IServiceCollection services, Action<RepositoriesOptions> configureOptions)
         {
             var options = new RepositoriesOptions();
@@ -128,6 +133,8 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
             return services;
 
         }
+        
+      
         public static IServiceCollection AddSecurityApi(this IServiceCollection services, Action<RepositoriesOptions> configureOptions)
         {
             var options = new RepositoriesOptions();
@@ -142,6 +149,42 @@ namespace MINEDU.IEST.Estudiante.Inf_Apis.Extension
             return services;
 
         }
+
+
+
+        #region Tacama
+
+        public static IServiceCollection AddRepositoriesTacama(this IServiceCollection services, Action<RepositoriesOptions> configureOptions)
+        {
+            var options = new RepositoriesOptions();
+            configureOptions(options);
+
+            services.AddScoped<IUsuarioTacRepository, UsuarioTacRepository>();
+            services.AddScoped<ITramaDiarioRepository, TramaDiarioRepository>();
+            services.AddScoped<TacamaUnitOfWork>();
+
+
+            services.AddDbContext<DbTacamaContext>(opt =>
+            {
+                opt.UseSqlServer(options.ConnectionString);
+            });
+
+
+
+            return services;
+        }
+
+
+        public static IServiceCollection AddManagerTacama(this IServiceCollection services)
+        {
+
+            services.AddScoped<ITacamaManager, TacamaManager>();
+
+            return services;
+
+        }
+
+        #endregion
     }
 
 }

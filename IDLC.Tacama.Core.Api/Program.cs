@@ -1,19 +1,17 @@
 using IDCL.AVGUST.SIP.Manager.MappingDto;
-using IDCL.AVGUST.SIP.PedidoApi.Helpers;
+using IDLC.Tacama.Core.Api.Helpers;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
-using MINEDU.IEST.Estudiante.Inf_Apis.Extension;
 using MINEDU.IEST.Estudiante.Inf_Utils.Dtos;
 using MINEDU.IEST.Estudiante.Inf_Utils.Filters;
 using MINEDU.IEST.Estudiante.Inf_Utils.Helpers.EmailSender;
 using MINEDU.IEST.Estudiante.Inf_Utils.Helpers.FileManager;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
+using MINEDU.IEST.Estudiante.Inf_Apis.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
-// Add services to the container.
-
 var configuration = builder.Configuration;
 var CurrentEnvironment = builder.Environment;
 
@@ -46,18 +44,13 @@ builder.Services.AddAutoMapper(typeof(AutoMapperHelper).GetTypeInfo().Assembly);
 
 
 //EF Core - Inyeccion de Dependencia.
-builder.Services.AddRepositories(opt => opt.ConnectionString = backEndConfig.BdSqlServer);
-builder.Services.AddRepositoriesSp(opt => opt.ConnectionString = backEndConfig.BdSqlServer);
-builder.Services.AddRepositoriesCalculator(opt => opt.ConnectionString = backEndConfig.BdSqlServer);
-builder.Services.AddSecurityApi(opt => opt.ConnectionString = backEndConfig.BdSqlServer);
-builder.Services.AddManager();
+builder.Services.AddRepositoriesTacama(opt => opt.ConnectionString = backEndConfig.BdSqlServer);
+builder.Services.AddManagerTacama();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddStorageManager(opt => opt.Type = StorageType.FileStorage);
 
-
 //Servicio de acceso al contexto
 builder.Services.AddHttpContextAccessor();
-
 
 //Inyectando CORS
 builder.Services.AddCors(options =>
@@ -86,19 +79,19 @@ builder.Services.AddSwaggerGen(opt =>
 {
     opt.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Web Api Gestion Pedidos - AVGUST",
+        Title = "Web Api Gestion Pedidos - TACAMA",
         Version = "v1",
         Description = "Recurso de Web API para pedidos",
         TermsOfService = new Uri("https://example.com/terms"),
         Contact = new OpenApiContact
         {
-            Name = "AVGUST",
+            Name = "TACAMA",
             Email = "danielitolozano85@gmail.com",
             Url = new Uri("https://twitter.com/IsraelCamoens"),
         },
         License = new OpenApiLicense
         {
-            Name = "Gestion de Estudiante API LICX",
+            Name = "Gestion de tacama API LICX",
             Url = new Uri("https://example.com/license"),
         }
     });
@@ -114,11 +107,11 @@ builder.Services.AddSwaggerGen(opt =>
 var app = builder.Build();
 
 
-app.UseStaticFiles(new StaticFileOptions()
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), $"{CurrentEnvironment.WebRootPath}/swagger-ui")),
-    RequestPath = "/swagger-ui"
-});
+//app.UseStaticFiles(new StaticFileOptions()
+//{
+//    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), $"{CurrentEnvironment.WebRootPath}/swagger-ui")),
+//    RequestPath = "/swagger-ui"
+//});
 
 if (app.Environment.IsDevelopment())
 {
@@ -134,7 +127,7 @@ else
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/ws-pedido/swagger/v1/swagger.json", "Web Api Avgust v1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/ws-tacama/swagger/v1/swagger.json", "Web Api Tacama v1"));
 }
 
 

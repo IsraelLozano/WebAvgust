@@ -20,6 +20,9 @@ using IDCL.AVGUST.SIP.ManagerDto.Seguridad;
 using IDCL.AVGUST.SIP.ManagerDto.Seguridad.Add;
 using IDCL.AVGUST.SIP.ManagerDto.StoreProcedure;
 using IDCL.AVGUST.SIP.ManagerDto.StoreProcedure.LineaCuentas;
+using IDCL.AVGUST.SIP.ManagerDto.Tacama;
+using IDCL.AVGUST.SIP.ManagerDto.Tacama.TramaDiario;
+using IDCL.Tacama.Core.Entity;
 
 namespace IDCL.AVGUST.SIP.Manager.MappingDto
 {
@@ -149,6 +152,12 @@ namespace IDCL.AVGUST.SIP.Manager.MappingDto
             CreateMap<LetraPorAceptarZona,GetLetraPorAceptarZonaDto>().ReverseMap();
             CreateMap<LineaCreditoDisponible,GetLineaCreditoDisponibleDto>().ReverseMap();
 
+            #endregion
+
+            #region Tacama
+            CreateMap<Rol, GetUsuarioRolTacamaDto> ().ReverseMap();
+            CreateMap<UsuarioTacama, GetUsuarioTacamaDto> ().ReverseMap();
+            CreateMap<TramaDiario, GetTramaDiarioDto> ().ReverseMap();
             #endregion
         }
     }
