@@ -1,4 +1,5 @@
 ﻿using IDCL.AVGUST.SIP.Manager.Tacama;
+using IDLC.Tacama.Core.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using MINEDU.IEST.Estudiante.Inf_Utils.Helpers;
 
@@ -20,15 +21,25 @@ namespace IDLC.Tacama.Core.Api.Controllers
         [HttpGet("login/{usuario}/{clave}")]
         public async Task<IActionResult> login(string usuario, string clave)
         {
+
+            var resp = new response();
+
             try
             {
                 var response = await _tacamaManager.login(usuario, clave);
                 if (response.EsError)
                 {
+                    resp.status = "Error";
+                    resp.message = "Validaciones";
+
                     ModelState.AddModelError("validacion", response.MensajeError);
-                    return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+                    resp.data = ExtensionTools.Validaciones(ModelState);
+                    return UnprocessableEntity(resp);
                 }
-                return Ok(response);
+                resp.status = "OK";
+                resp.message = "OK";
+                resp.data = response;
+                return Ok(resp);
             }
             catch (Exception ex)
             {

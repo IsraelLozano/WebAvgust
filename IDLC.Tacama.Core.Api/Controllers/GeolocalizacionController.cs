@@ -1,7 +1,10 @@
-﻿using IDCL.AVGUST.SIP.Manager.Tacama;
+﻿using IDCL.AVGUST.SIP.Entity.Pedido;
+using IDCL.AVGUST.SIP.Manager.Tacama;
 using IDCL.AVGUST.SIP.ManagerDto.Tacama.TramaDiario;
+using IDLC.Tacama.Core.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using MINEDU.IEST.Estudiante.Inf_Utils.Helpers;
+using System.Net;
 
 namespace IDLC.Tacama.Core.Api.Controllers
 {
@@ -19,24 +22,42 @@ namespace IDLC.Tacama.Core.Api.Controllers
         }
 
         [HttpGet("GetGeoByIdPersona/{IdPersona:int}")]
-        public async Task<IActionResult> GetGeoByIdPersona(int IdPersona) => Ok(await _tacamaManager.GetTramaListByIdPersona(IdPersona));
+        public async Task<IActionResult> GetGeoByIdPersona(int IdPersona)
+        {
+            var resp = new response
+            {
+                status = "OK",
+                message = "OK",
+                data = await _tacamaManager.GetTramaListByIdPersona(IdPersona)
+            };
+
+            return Ok(resp);
+        }
+
 
         [HttpPost("AddTrama")]
         public async Task<IActionResult> AddTrama(GetTramaDiarioDto model)
         {
+            var resp = new response();
+
             try
             {
-
                 if (model.Latitud == 0) ModelState.AddModelError("Latitud", "Latitud no valido");
-
                 if (model.Longitud == 0) ModelState.AddModelError("Longitud", "Longitud no valido");
-
                 if (!ModelState.IsValid)
                 {
-                    return UnprocessableEntity(ExtensionTools.Validaciones(ModelState));
+                    resp.status = "Error";
+                    resp.message = "Validaciones";
+                    resp.data = ExtensionTools.Validaciones(ModelState);
+
+                    return UnprocessableEntity(resp);
                 }
-                var response = await _tacamaManager.AddTramaDiaria(model);
-                return Ok(response);
+
+                resp.status = "OK";
+                resp.message = "OK";
+                resp.data = await _tacamaManager.AddTramaDiaria(model);
+                //var response = await _tacamaManager.AddTramaDiaria(model);
+                return Ok(resp);
             }
             catch (Exception ex)
             {
