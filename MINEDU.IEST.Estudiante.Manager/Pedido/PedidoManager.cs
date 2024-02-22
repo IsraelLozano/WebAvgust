@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using IDCL.AVGUST.SIP.Contexto.IDCL.AVGUST.SIP.Entity.Avgust;
 using IDCL.AVGUST.SIP.Entity.Pedido;
+using IDCL.AVGUST.SIP.Entity.Pedido.SpEntity;
 using IDCL.AVGUST.SIP.ManagerDto.Articulos.Add;
 using IDCL.AVGUST.SIP.ManagerDto.Maestros;
 using IDCL.AVGUST.SIP.ManagerDto.Pedido;
@@ -190,5 +191,28 @@ namespace IDCL.AVGUST.SIP.Manager.Pedido
 
         }
 
+
+        #region adicionales
+
+        public async Task<List<ListaPptoVentaZonaVendedor>> ListarVentasPresupuestoZonaVendedor(int idEmpresa, string anio, string mes, int idZona)
+        {
+            return await _pedidoUnitOfWork._pedidoRepository.ListarVentasPresupuestoZonaVendedor(idEmpresa, anio, mes, idZona);
+
+        }
+        
+        public async Task<List<ListarCobranzaPresupuestoZonaVendedor>> ListarCobranzaPresupuestoZonaVendedor(int idEmpresa, string anio, string mes, int idZona)
+        {
+            return await _pedidoUnitOfWork._pedidoRepository.ListarCobranzaPresupuestoZonaVendedor(idEmpresa, anio, mes, idZona);
+
+        }
+        
+        public async Task<List<ListarCreditoZonaClienteVf>> ListarCreditoZonaClienteVf(int idEmpresa, int idZona)
+        {
+            return await _pedidoUnitOfWork._pedidoRepository.ListarCreditoZonaClienteVf(idEmpresa,idZona);
+
+        }
+
+
+        #endregion
     }
 }

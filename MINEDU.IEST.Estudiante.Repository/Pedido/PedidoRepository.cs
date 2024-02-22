@@ -173,5 +173,45 @@ namespace IDCL.AVGUST.SIP.Repository.Pedido
             return qResult;
         }
 
+
+        public async Task<List<ListaPptoVentaZonaVendedor>> ListarVentasPresupuestoZonaVendedor(int idEmpresa, string anio, string mes, int idZona)
+        {
+            var procedureName = "usp_ApiListarVentasPresupuestoZonaVendedor";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("Anio", anio, DbType.String, ParameterDirection.Input);
+            parameters.Add("Mes", mes, DbType.String, ParameterDirection.Input);
+            parameters.Add("idZona", idZona, DbType.String, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<ListaPptoVentaZonaVendedor>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+        
+        public async Task<List<ListarCobranzaPresupuestoZonaVendedor>> ListarCobranzaPresupuestoZonaVendedor(int idEmpresa, string anio, string mes, int idZona)
+        {
+            var procedureName = "usp_ApiListarCobranzaPresupuestoZonaVendedor";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("Anio", anio, DbType.String, ParameterDirection.Input);
+            parameters.Add("Mes", mes, DbType.String, ParameterDirection.Input);
+            parameters.Add("idZona", idZona, DbType.String, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<ListarCobranzaPresupuestoZonaVendedor>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+        
+        public async Task<List<ListarCreditoZonaClienteVf>> ListarCreditoZonaClienteVf(int idEmpresa, int idZona)
+        {
+            var procedureName = "usp_ApiListarCreditoZonaCliente";
+            var parameters = new DynamicParameters();
+            parameters.Add("idEmpresa", idEmpresa, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("idZona", idZona, DbType.String, ParameterDirection.Input);
+
+            var qResult = await _database.GetAll<ListarCreditoZonaClienteVf>(procedureName, parameters, CommandType.StoredProcedure);
+            return qResult;
+        }
+
+
+
     }
 }

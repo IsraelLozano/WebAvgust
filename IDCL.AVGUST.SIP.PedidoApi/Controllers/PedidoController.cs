@@ -76,25 +76,25 @@ namespace IDCL.AVGUST.SIP.PedidoApi.Controllers
         {
             return Ok(await _pedidoManager.ListarClientesAtendidosLCPorZona(idEmpresa));
         }
-        
+
         [HttpGet("GetListarClientesAtendidosSinLC/{idEmpresa:int}")]
         public async Task<IActionResult> GetListarClientesAtendidosSinLC(int idEmpresa)
         {
             return Ok(await _pedidoManager.ListarClientesAtendidosSinLC(idEmpresa));
         }
-        
+
         [HttpGet("GetListarAvanceCobranzaZonaVendedor/{idEmpresa:int}/{fechaInicio}/{fechaFin}")]
         public async Task<IActionResult> GetListarAvanceCobranzaZonaVendedor(int idEmpresa, string fechaInicio, string fechaFin)
         {
             return Ok(await _pedidoManager.ListarAvanceCobranzaZonaVendedor(idEmpresa, fechaInicio, fechaFin));
         }
-        
+
         [HttpGet("GetListarCtaCteAtrazadaPorZona/{idEmpresa:int}/{fechaFiltro}")]
         public async Task<IActionResult> GetListarCtaCteAtrazadaPorZona(int idEmpresa, string fechaFiltro)
         {
-            return Ok(await _pedidoManager.ListarCtaCteAtrazadaPorZona(idEmpresa,fechaFiltro));
+            return Ok(await _pedidoManager.ListarCtaCteAtrazadaPorZona(idEmpresa, fechaFiltro));
         }
-        
+
         [HttpGet("GetListarLetraPorAceptarZona/{idEmpresa:int}")]
         public async Task<IActionResult> GetListarLetraPorAceptarZona(int idEmpresa)
         {
@@ -126,5 +126,28 @@ namespace IDCL.AVGUST.SIP.PedidoApi.Controllers
                 throw;
             }
         }
+
+
+        #region Adicionales
+
+        [HttpGet("ListarVentasPresupuestoZonaVendedor/{idEmpresa:int}/{anio}/{mes}/{idZona:int}")]
+        public async Task<IActionResult> ListarVentasPresupuestoZonaVendedor(int idEmpresa, string anio, string mes, int idZona)
+        {
+            return Ok(await _pedidoManager.ListarVentasPresupuestoZonaVendedor(idEmpresa, anio, mes, idZona));
+        }
+
+        [HttpGet("ListarCobranzaPresupuestoZonaVendedor/{idEmpresa:int}/{anio}/{mes}/{idZona:int}")]
+        public async Task<IActionResult> ListarCobranzaPresupuestoZonaVendedor(int idEmpresa, string anio, string mes, int idZona)
+        {
+            return Ok(await _pedidoManager.ListarCobranzaPresupuestoZonaVendedor(idEmpresa, anio, mes, idZona));
+        }
+
+        [HttpGet("ListarCreditoZonaClienteVf/{idEmpresa:int}/{idZona:int}")]
+        public async Task<IActionResult> ListarCreditoZonaClienteVf(int idEmpresa, int idZona)
+        {
+            return Ok(await _pedidoManager.ListarCreditoZonaClienteVf(idEmpresa, idZona));
+        }
+
+        #endregion
     }
 }

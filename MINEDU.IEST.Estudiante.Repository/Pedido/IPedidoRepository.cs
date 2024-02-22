@@ -10,7 +10,9 @@ namespace IDCL.AVGUST.SIP.Repository.Pedido
         Task<List<ClientesAprobados>> ListarClientesAprobadosLCPorZona(int idEmpresa);
         Task<List<ClientesAtendidos>> ListarClientesAtendidosLCPorZona(int idEmpresa);
         Task<List<ClientesAtendidosSinLC>> ListarClientesAtendidosSinLC(int idEmpresa);
+        Task<List<ListarCobranzaPresupuestoZonaVendedor>> ListarCobranzaPresupuestoZonaVendedor(int idEmpresa, string anio, string mes, int idZona);
         Task<List<CostoArticulo>> ListarCostoArticulo(int idEmpresa, string codArticulo, string fechaStock);
+        Task<List<ListarCreditoZonaClienteVf>> ListarCreditoZonaClienteVf(int idEmpresa, int idZona);
         Task<List<CtaCteAtrazadaZona>> ListarCtaCteAtrazadaPorZona(int idEmpresa, string fechaFiltro);
         Task<List<LetraPorAceptarZona>> ListarLetraPorAceptarZona(int idEmpresa);
         Task<List<LineaCreditoDisponible>> ListarLineaCreditoDisponibleZonaCliente(int idEmpresa);
@@ -18,6 +20,7 @@ namespace IDCL.AVGUST.SIP.Repository.Pedido
         Task<List<ListarTopCliente>> ListarTopCliente(int idEmpresa, string fechaInicio, string fechaFin);
         Task<List<VentaClienteProducto>> ListarVentaClienteProducto(int idEmpresa, string fechaInicio, string fechaFin);
         Task<List<VentaProducto>> ListarVentaProducto(int idEmpresa, string fechaInicio, string fechaFin);
+        Task<List<ListaPptoVentaZonaVendedor>> ListarVentasPresupuestoZonaVendedor(int idEmpresa, string anio, string mes, int idZona);
         Task<List<ZonaVendendor>> ListarZonaVendedor(int idEmpresa, string fechaInicio, string fechaFin);
         Task<string> ObtenerNroPedido(int idEmpresa, int idLocal, string indCotPed);
     }
